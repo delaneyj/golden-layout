@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Golden Layout - Web Components Demo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: system-ui, -apple-system, sans-serif;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+    
+    h1 {
+      margin-top: 0;
+    }
+    
+    .demo-container {
+      height: calc(100vh - 120px);
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .demo-content {
+      padding: 20px;
+    }
+    
+    .demo-content h2 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Golden Layout - Web Components Demo</h1>
+  
+  <div class="demo-container">
+    <gl-layout>
+      <gl-row>
+        <gl-stack data-width="50%">
+          <gl-component-container title="Component 1">
+            <div class="demo-content">
+              <h2>Component 1</h2>
+              <p>This is the first component in the layout.</p>
+              <p>You can drag tabs to reorder them, close tabs, and maximize stacks.</p>
+            </div>
+          </gl-component-container>
+          <gl-component-container title="Component 2">
+            <div class="demo-content">
+              <h2>Component 2</h2>
+              <p>This is the second component.</p>
+              <p>Click on tabs to switch between them.</p>
+            </div>
+          </gl-component-container>
+        </gl-stack>
+        
+        <gl-splitter orientation="horizontal"></gl-splitter>
+        
+        <gl-column data-width="50%">
+          <gl-stack data-height="60%">
+            <gl-component-container title="Component 3">
+              <div class="demo-content">
+                <h2>Component 3</h2>
+                <p>This component is in a column layout.</p>
+                <p>Drag the splitters to resize panes.</p>
+              </div>
+            </gl-component-container>
+          </gl-stack>
+          
+          <gl-splitter orientation="vertical"></gl-splitter>
+          
+          <gl-stack data-height="40%">
+            <gl-component-container title="Component 4">
+              <div class="demo-content">
+                <h2>Component 4</h2>
+                <p>This is the bottom component.</p>
+              </div>
+            </gl-component-container>
+            <gl-component-container title="Component 5">
+              <div class="demo-content">
+                <h2>Component 5</h2>
+                <p>Another tab in the bottom stack.</p>
+              </div>
+            </gl-component-container>
+          </gl-stack>
+        </gl-column>
+      </gl-row>
+    </gl-layout>
+  </div>
+  
+  <script type="module">
+    import './src/index.ts';
+    import './src/styles/golden-layout.css';
+    
+    // Example of listening to events
+    const layout = document.querySelector('gl-layout');
+    
+    layout.addEventListener('tab-changed', (e) => {
+      console.log('Tab changed:', e.detail);
+    });
+    
+    layout.addEventListener('tab-close', (e) => {
+      console.log('Tab closed:', e.detail);
+    });
+    
+    layout.addEventListener('maximize-changed', (e) => {
+      console.log('Maximize state changed:', e.detail);
+    });
+  </script>
+</body>
+</html>

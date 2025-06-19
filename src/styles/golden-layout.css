@@ -1,0 +1,119 @@
+@import "open-props/style";
+@import "open-props/normalize";
+
+/* Golden Layout CSS Variables */
+:root {
+  /* Layout */
+  --gl-layout-bg: var(--gray-0);
+  --gl-layout-border: var(--gray-3);
+
+  /* Stack */
+  --gl-stack-bg: var(--gray-0);
+  --gl-stack-border: var(--gray-3);
+
+  /* Header */
+  --gl-header-bg: var(--gray-1);
+  --gl-header-border: var(--gray-3);
+  --gl-header-height: 30px;
+
+  /* Tabs */
+  --gl-tab-bg: var(--gray-1);
+  --gl-tab-border: var(--gray-3);
+  --gl-tab-active-bg: var(--gray-0);
+  --gl-tab-hover-bg: var(--gray-2);
+  --gl-tab-close-hover-bg: var(--gray-3);
+  --gl-tab-close-active-bg: var(--gray-4);
+
+  /* Controls */
+  --gl-control-hover-bg: var(--gray-3);
+  --gl-control-active-bg: var(--gray-4);
+
+  /* Splitter */
+  --gl-splitter-size: 5px;
+  --gl-splitter-bg: var(--gray-2);
+  --gl-splitter-hover-bg: var(--gray-3);
+  --gl-splitter-active-bg: var(--gray-4);
+  --gl-splitter-handle-color: var(--gray-5);
+
+  /* Component Container */
+  --gl-component-padding: var(--size-3);
+
+  /* Scrollbar */
+  --gl-scrollbar-thumb: var(--gray-4);
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gl-layout-bg: var(--gray-9);
+    --gl-layout-border: var(--gray-7);
+
+    --gl-stack-bg: var(--gray-9);
+    --gl-stack-border: var(--gray-7);
+
+    --gl-header-bg: var(--gray-8);
+    --gl-header-border: var(--gray-7);
+
+    --gl-tab-bg: var(--gray-8);
+    --gl-tab-border: var(--gray-7);
+    --gl-tab-active-bg: var(--gray-9);
+    --gl-tab-hover-bg: var(--gray-7);
+    --gl-tab-close-hover-bg: var(--gray-6);
+    --gl-tab-close-active-bg: var(--gray-5);
+
+    --gl-control-hover-bg: var(--gray-6);
+    --gl-control-active-bg: var(--gray-5);
+
+    --gl-splitter-bg: var(--gray-7);
+    --gl-splitter-hover-bg: var(--gray-6);
+    --gl-splitter-active-bg: var(--gray-5);
+    --gl-splitter-handle-color: var(--gray-5);
+
+    --gl-scrollbar-thumb: var(--gray-6);
+  }
+}
+
+/* Theme classes */
+.golden-layout-light {
+  --gl-layout-bg: var(--gray-0);
+  --gl-layout-border: var(--gray-3);
+  --gl-stack-bg: var(--gray-0);
+  --gl-stack-border: var(--gray-3);
+  --gl-header-bg: var(--gray-1);
+  --gl-header-border: var(--gray-3);
+  --gl-tab-bg: var(--gray-1);
+  --gl-tab-border: var(--gray-3);
+  --gl-tab-active-bg: var(--gray-0);
+  --gl-tab-hover-bg: var(--gray-2);
+}
+
+.golden-layout-dark {
+  --gl-layout-bg: var(--gray-9);
+  --gl-layout-border: var(--gray-7);
+  --gl-stack-bg: var(--gray-9);
+  --gl-stack-border: var(--gray-7);
+  --gl-header-bg: var(--gray-8);
+  --gl-header-border: var(--gray-7);
+  --gl-tab-bg: var(--gray-8);
+  --gl-tab-border: var(--gray-7);
+  --gl-tab-active-bg: var(--gray-9);
+  --gl-tab-hover-bg: var(--gray-7);
+}
+
+/* Utility classes */
+.gl-no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.gl-drag-proxy {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.8;
+  background: var(--gray-1);
+  border: 2px solid var(--blue-5);
+  border-radius: var(--radius-2);
+  padding: var(--size-2);
+  font-size: var(--font-size-1);
+}
