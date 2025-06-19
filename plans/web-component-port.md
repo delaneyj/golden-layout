@@ -1,27 +1,11 @@
 ## Plan: Port Golden Layout to Web Components with Vite/Vitest
 
-### Phase 1: Reorganize Current Structure
-
-1. **Create `old` directory and move existing code**:
-   ```
-   mkdir old
-   mv src/ test/ dist/ lib/ scripts/ apitest/ doc/ old/
-   mv package.json tsconfig.*.json webpack.config.js karma.conf.js old/
-   mv .eslintrc.js api-extractor.json typedoc.*.json old/
-   ```
-
-2. **Keep in root**:
-   - `.git/` (version control)
-   - `README.md`
-   - `LICENSE`
-   - `.gitignore`
-
-### Phase 2: New Project Structure
+### Phase 1: New Project Structure
 
 Create fresh structure for Web Components:
 ```
 golden-layout/
-├── old/              # Previous implementation
+├── old/              # Existing implementation
 ├── src/
 │   ├── components/   # Web Components
 │   ├── core/        # Core utilities
@@ -38,7 +22,7 @@ golden-layout/
 └── biome.json
 ```
 
-### Phase 3: Web Components Implementation
+### Phase 2: Web Components Implementation
 
 #### Key Components to Create
 
@@ -73,7 +57,7 @@ golden-layout/
    - Resize handle
    - Touch and mouse support
 
-### Phase 4: Build Configuration
+### Phase 3: Build Configuration
 
 #### package.json
 ```json
