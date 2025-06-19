@@ -86,6 +86,19 @@ export class GlStack extends BaseElement {
           box-shadow: 0 0 0 2px var(--gl-stack-drag-over-shadow, rgba(0, 123, 255, 0.25));
         }
         
+        :host(.drag-over)::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: var(--gl-stack-drag-over-bg, rgba(0, 123, 255, 0.1));
+          pointer-events: none;
+          z-index: 10;
+          border-radius: inherit;
+        }
+        
         .content {
           flex: 1;
           overflow: auto;
@@ -241,13 +254,22 @@ export class GlStack extends BaseElement {
 
   private handleDragOver = (e: DragEvent): void => {
     // Check if we're dragging a tab
-    const layout = this.closest('gl-layout') as HTMLElement & { _draggedElement?: HTMLElement };
+    const layout = this.closest('gl-layout') as HTMLElement & { 
+      _draggedElement?: HTMLElement;
+      _dropIndicator?: { show(target: HTMLElement, position?: string): void };
+    };
+    
     if (layout?._draggedElement?.tagName === 'GL-TAB') {
       e.preventDefault();
       e.stopPropagation();
       
       // Add visual feedback
       this.classList.add('drag-over');
+      
+      // Show drop indicator
+      if (layout._dropIndicator) {
+        layout._dropIndicator.show(this, 'center');
+      }
     }
   };
 
@@ -255,6 +277,14 @@ export class GlStack extends BaseElement {
     // Remove visual feedback when drag leaves
     if (e.target === this) {
       this.classList.remove('drag-over');
+      
+      // Hide drop indicator
+      const layout = this.closest('gl-layout') as HTMLElement & { 
+        _dropIndicator?: { hide(): void };
+      };
+      if (layout?._dropIndicator) {
+        layout._dropIndicator.hide();
+      }
     }
   };
 
@@ -382,7 +412,16 @@ export class GlStack extends BaseElement {
     
     this.classList.remove('drag-over');
     
-    const layout = this.closest('gl-layout') as HTMLElement & { _draggedElement?: HTMLElement };
+    const layout = this.closest('gl-layout') as HTMLElement & { 
+      _draggedElement?: HTMLElement;
+      _dropIndicator?: { hide(): void };
+    };
+    
+    // Hide drop indicator
+    if (layout?._dropIndicator) {
+      layout._dropIndicator.hide();
+    }
+    
     const draggedTab = layout?._draggedElement;
     
     if (draggedTab?.tagName === 'GL-TAB') {

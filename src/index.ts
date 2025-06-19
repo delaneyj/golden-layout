@@ -7,6 +7,7 @@ export { GlComponentContainer } from './components/gl-component-container';
 export { GlRow } from './components/gl-row';
 export { GlColumn } from './components/gl-column';
 export { GlSplitter } from './components/gl-splitter';
+export { GlDropIndicator } from './components/gl-drop-indicator';
 
 // Export types
 export type { LayoutConfig, ItemConfig, ComponentConfig, Size, Position } from './types/config';
@@ -20,3 +21,4 @@ import './components/gl-component-container';
 import './components/gl-row';
 import './components/gl-column';
 import './components/gl-splitter';
+import './components/gl-drop-indicator';

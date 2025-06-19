@@ -40,6 +40,18 @@
 
   /* Scrollbar */
   --gl-scrollbar-thumb: var(--gray-4);
+  
+  /* Drop Indicator */
+  --gl-drop-indicator-bg: rgba(59, 130, 246, 0.15);
+  --gl-drop-indicator-border: var(--blue-6);
+  --gl-drop-indicator-radius: var(--radius-2);
+  --gl-drop-indicator-label-bg: var(--blue-6);
+  --gl-drop-indicator-label-color: white;
+  
+  /* Drag Over */
+  --gl-stack-drag-over-border: var(--blue-6);
+  --gl-stack-drag-over-shadow: rgba(59, 130, 246, 0.25);
+  --gl-stack-drag-over-bg: rgba(59, 130, 246, 0.05);
 }
 
 /* Dark theme */
@@ -70,6 +82,14 @@
     --gl-splitter-handle-color: var(--gray-5);
 
     --gl-scrollbar-thumb: var(--gray-6);
+    
+    --gl-drop-indicator-bg: rgba(96, 165, 250, 0.15);
+    --gl-drop-indicator-border: var(--blue-5);
+    --gl-drop-indicator-label-bg: var(--blue-5);
+    
+    --gl-stack-drag-over-border: var(--blue-5);
+    --gl-stack-drag-over-shadow: rgba(96, 165, 250, 0.25);
+    --gl-stack-drag-over-bg: rgba(96, 165, 250, 0.05);
   }
 }
 
