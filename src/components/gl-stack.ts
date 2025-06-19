@@ -102,17 +102,20 @@ export class GlStack extends BaseElement {
 
   private observeContentChanges(): void {
     let updateTimeout: number | null = null;
-    
+
     const observer = new MutationObserver((mutations) => {
       // Check if any of the mutations are actual content changes (not tab changes)
-      const hasContentChange = mutations.some(mutation => {
-        return Array.from(mutation.addedNodes).some(node => 
-          node instanceof HTMLElement && !node.matches('gl-tab')
-        ) || Array.from(mutation.removedNodes).some(node => 
-          node instanceof HTMLElement && !node.matches('gl-tab')
+      const hasContentChange = mutations.some((mutation) => {
+        return (
+          Array.from(mutation.addedNodes).some(
+            (node) => node instanceof HTMLElement && !node.matches('gl-tab'),
+          ) ||
+          Array.from(mutation.removedNodes).some(
+            (node) => node instanceof HTMLElement && !node.matches('gl-tab'),
+          )
         );
       });
-      
+
       if (hasContentChange) {
         // Debounce updates to ensure all attributes are set
         if (updateTimeout) {
