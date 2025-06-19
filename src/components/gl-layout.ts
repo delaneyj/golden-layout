@@ -87,6 +87,11 @@ export class GlLayout extends BaseElement {
   };
 
   private handleDragEnd = (): void => {
+    // Clean up any drag-over classes
+    this.querySelectorAll('.drag-over').forEach(el => {
+      el.classList.remove('drag-over');
+    });
+    
     this._draggedElement = null;
     this.emit('item-drag-end');
   };

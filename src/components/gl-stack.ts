@@ -43,9 +43,18 @@ export class GlStack extends BaseElement {
     this.addEventListener('tab-close-requested', this.handleTabClose);
     this.addEventListener('maximize-requested', this.handleMaximize);
     this.addEventListener('close-requested', this.handleClose);
+    this.addEventListener('dragover', this.handleDragOver);
+    this.addEventListener('drop', this.handleDrop);
+    this.addEventListener('dragleave', this.handleDragLeave);
 
     // Setup mutation observer to watch for content changes
     this.observeContentChanges();
+    
+    // Initialize tabs and set first as active
+    setTimeout(() => {
+      this.updateTabs();
+      this.updateActiveTab();
+    }, 0);
   }
 
   protected render(): void {
@@ -72,13 +81,18 @@ export class GlStack extends BaseElement {
           z-index: 1000;
         }
         
+        :host(.drag-over) {
+          border-color: var(--gl-stack-drag-over-border, #007bff);
+          box-shadow: 0 0 0 2px var(--gl-stack-drag-over-shadow, rgba(0, 123, 255, 0.25));
+        }
+        
         .content {
           flex: 1;
           overflow: auto;
           position: relative;
         }
         
-        ::slotted(*) {
+        ::slotted(gl-component-container) {
           display: none;
           width: 100%;
           height: 100%;
@@ -87,7 +101,7 @@ export class GlStack extends BaseElement {
           left: 0;
         }
         
-        ::slotted(.active) {
+        ::slotted(gl-component-container.active) {
           display: block;
         }
       </style>
@@ -134,7 +148,7 @@ export class GlStack extends BaseElement {
     });
   }
 
-  private updateTabs(): void {
+  updateTabs(): void {
     const tabsSlot = this.querySelector('slot[name="tabs"]');
     if (!tabsSlot) {
       // Create tabs from content children
@@ -157,7 +171,7 @@ export class GlStack extends BaseElement {
     }
   }
 
-  private updateActiveTab(): void {
+  updateActiveTab(): void {
     const contents = Array.from(this.children).filter((child) => !child.hasAttribute('slot'));
 
     const tabs = Array.from(this.querySelectorAll('gl-tab'));
@@ -220,6 +234,73 @@ export class GlStack extends BaseElement {
   private handleClose = (): void => {
     this.emit('stack-close');
     this.remove();
+  };
+
+  private handleDragOver = (e: DragEvent): void => {
+    // Check if we're dragging a tab
+    const layout = this.closest('gl-layout') as HTMLElement & { _draggedElement?: HTMLElement };
+    if (layout?._draggedElement?.tagName === 'GL-TAB') {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Add visual feedback
+      this.classList.add('drag-over');
+    }
+  };
+
+  private handleDragLeave = (e: DragEvent): void => {
+    // Remove visual feedback when drag leaves
+    if (e.target === this) {
+      this.classList.remove('drag-over');
+    }
+  };
+
+  private handleDrop = (e: DragEvent): void => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    this.classList.remove('drag-over');
+    
+    const layout = this.closest('gl-layout') as HTMLElement & { _draggedElement?: HTMLElement };
+    const draggedTab = layout?._draggedElement;
+    
+    if (draggedTab?.tagName === 'GL-TAB') {
+      // Find the associated component for this tab
+      const sourceStack = draggedTab.closest('gl-stack') as GlStack;
+      if (!sourceStack || sourceStack === this) return;
+      
+      const tabs = Array.from(sourceStack.querySelectorAll('gl-tab'));
+      const tabIndex = tabs.indexOf(draggedTab);
+      
+      if (tabIndex === -1) return;
+      
+      // Get the component at the same index
+      const components = Array.from(sourceStack.children).filter(
+        (child): child is HTMLElement => child instanceof HTMLElement && !child.hasAttribute('slot')
+      );
+      const component = components[tabIndex];
+      
+      if (component) {
+        // Move the component to this stack
+        this.appendChild(component);
+        
+        // Remove the old tab
+        draggedTab.remove();
+        
+        // Update tabs in both stacks
+        sourceStack.updateTabs();
+        sourceStack.updateActiveTab();
+        this.updateTabs();
+        this.updateActiveTab();
+        
+        // Emit event
+        this.emit('component-moved', {
+          component,
+          from: sourceStack,
+          to: this
+        });
+      }
+    }
   };
 }
 

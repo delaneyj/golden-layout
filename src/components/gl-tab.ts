@@ -87,6 +87,11 @@ export class GlTab extends BaseElement {
           background: var(--gl-tab-hover-bg, #e0e0e0);
         }
         
+        :host(.dragging) {
+          opacity: 0.5;
+          cursor: move;
+        }
+        
         .title {
           flex: 1;
           overflow: hidden;
@@ -129,6 +134,8 @@ export class GlTab extends BaseElement {
     }
 
     this.addEventListener('click', this.handleClick);
+    this.addEventListener('dragstart', this.handleDragStart);
+    this.addEventListener('dragend', this.handleDragEnd);
   }
 
   private handleClick = (e: Event): void => {
@@ -141,6 +148,18 @@ export class GlTab extends BaseElement {
   private handleClose = (e: Event): void => {
     e.stopPropagation();
     this.emit('tab-close-requested');
+  };
+
+  private handleDragStart = (e: DragEvent): void => {
+    this.classList.add('dragging');
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', this.title);
+    }
+  };
+
+  private handleDragEnd = (): void => {
+    this.classList.remove('dragging');
   };
 }
 
