@@ -224,6 +224,9 @@ export class GlStack extends BaseElement {
 
       this.updateTabs();
       this.updateActiveTab();
+      
+      // Check if stack is empty and remove it
+      this.checkAndRemoveIfEmpty();
     }
   };
 
@@ -254,6 +257,124 @@ export class GlStack extends BaseElement {
       this.classList.remove('drag-over');
     }
   };
+
+  private cleanupSplitters(container: Element): void {
+    const children = Array.from(container.children);
+    let i = 0;
+    
+    while (i < children.length) {
+      const child = children[i];
+      
+      // Remove splitter if it's at the start
+      if (i === 0 && child.tagName === 'GL-SPLITTER') {
+        child.remove();
+        children.splice(i, 1);
+        continue;
+      }
+      
+      // Remove splitter if it's at the end
+      if (i === children.length - 1 && child.tagName === 'GL-SPLITTER') {
+        child.remove();
+        children.splice(i, 1);
+        continue;
+      }
+      
+      // Remove splitter if it's between two splitters
+      if (child.tagName === 'GL-SPLITTER' && 
+          i > 0 && children[i - 1].tagName === 'GL-SPLITTER') {
+        child.remove();
+        children.splice(i, 1);
+        continue;
+      }
+      
+      i++;
+    }
+    
+    // Redistribute space among remaining children
+    this.redistributeSpace(container);
+  }
+  
+  private redistributeSpace(container: Element): void {
+    if (container.tagName !== 'GL-ROW' && container.tagName !== 'GL-COLUMN') {
+      return;
+    }
+    
+    const children = Array.from(container.children).filter(
+      child => child.tagName !== 'GL-SPLITTER'
+    ) as HTMLElement[];
+    
+    if (children.length === 0) return;
+    
+    // Clear any fixed widths/heights and let flexbox distribute space
+    const isRow = container.tagName === 'GL-ROW';
+    const sizeAttr = isRow ? 'data-width' : 'data-height';
+    
+    children.forEach(child => {
+      child.removeAttribute(sizeAttr);
+      child.style.width = '';
+      child.style.height = '';
+      child.style.flex = '';
+    });
+    
+    // Trigger resize on the container to recalculate sizes
+    if ('updateChildSizes' in container) {
+      (container as any).updateChildSizes();
+    }
+  }
+
+  private checkAndRemoveIfEmpty(): void {
+    const contents = Array.from(this.children).filter((child) => !child.hasAttribute('slot'));
+    
+    if (contents.length === 0) {
+      const parent = this.parentElement;
+      if (!parent) {
+        this.remove();
+        return;
+      }
+      
+      const siblings = Array.from(parent.children);
+      const stackIndex = siblings.indexOf(this);
+      
+      // Remove adjacent splitter if exists
+      if (stackIndex > 0 && siblings[stackIndex - 1]?.tagName === 'GL-SPLITTER') {
+        siblings[stackIndex - 1].remove();
+      } else if (stackIndex < siblings.length - 1 && siblings[stackIndex + 1]?.tagName === 'GL-SPLITTER') {
+        siblings[stackIndex + 1].remove();
+      }
+      
+      // Remove the empty stack
+      this.remove();
+      
+      // Redistribute space in parent after removal
+      this.redistributeSpace(parent);
+      
+      // Check parent after removal
+      const remainingChildren = Array.from(parent.children);
+      
+      if (parent.tagName === 'GL-ROW' || parent.tagName === 'GL-COLUMN') {
+        if (remainingChildren.length === 0) {
+          // Parent is now empty, check if we need to clean up grandparent
+          const grandParent = parent.parentElement;
+          parent.remove();
+          
+          if (grandParent && (grandParent.tagName === 'GL-ROW' || grandParent.tagName === 'GL-COLUMN')) {
+            // Clean up splitters in grandparent
+            this.cleanupSplitters(grandParent);
+          }
+        } else if (remainingChildren.length === 1 && parent.parentElement) {
+          // Parent has only one child, replace parent with that child
+          const onlyChild = remainingChildren[0];
+          const grandParent = parent.parentElement;
+          grandParent.replaceChild(onlyChild, parent);
+          
+          // Clean up splitters in grandparent
+          if (grandParent.tagName === 'GL-ROW' || grandParent.tagName === 'GL-COLUMN') {
+            this.cleanupSplitters(grandParent);
+          }
+        }
+      }
+    }
+  }
 
   private handleDrop = (e: DragEvent): void => {
     e.preventDefault();
@@ -299,6 +420,9 @@ export class GlStack extends BaseElement {
           from: sourceStack,
           to: this
         });
+        
+        // Check if source stack is empty and remove it
+        sourceStack.checkAndRemoveIfEmpty();
       }
     }
   };

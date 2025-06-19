@@ -259,9 +259,16 @@ describe('tree manipulation', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    // Stack2 should now be empty but still exist
-    expect(stack2?.querySelectorAll('gl-component-container').length).toBe(0);
-    expect(stack2?.parentElement).toBeTruthy();
+    // Stack2 should be removed due to auto-cleanup
+    expect(container.querySelector('#stack2')).toBeNull();
+    
+    // Splitter should also be removed
+    expect(container.querySelectorAll('gl-splitter').length).toBe(0);
+    
+    // Only stack1 should remain
+    const layout = container.querySelector('gl-layout');
+    expect(layout?.children.length).toBe(1);
+    expect(layout?.children[0].id).toBe('stack1');
   });
 
   it('moves components between stacks', async () => {

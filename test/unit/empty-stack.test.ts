@@ -123,7 +123,7 @@ describe('empty stack', () => {
     expect(components?.[0].classList.contains('active')).toBe(true);
   });
 
-  it('maintains empty stack when all components are removed', async () => {
+  it('removes empty stack when all components are removed', async () => {
     container.innerHTML = `
       <gl-layout>
         <gl-stack>
@@ -136,6 +136,7 @@ describe('empty stack', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
+    const layout = container.querySelector('gl-layout');
     const stack = container.querySelector('gl-stack');
     const tab = container.querySelector('gl-tab');
 
@@ -146,14 +147,10 @@ describe('empty stack', () => {
     // Wait for updates
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    // Verify stack is now empty
-    const remainingComponents = stack?.querySelectorAll('gl-component-container');
-    expect(remainingComponents?.length).toBe(0);
-
-    const remainingTabs = stack?.querySelectorAll('gl-tab');
-    expect(remainingTabs?.length).toBe(0);
-
-    // Stack element itself should still exist
-    expect(stack?.parentElement).toBeTruthy();
+    // Stack should be removed due to auto-cleanup
+    expect(container.querySelector('gl-stack')).toBeNull();
+    
+    // Layout should be empty
+    expect(layout?.children.length).toBe(0);
   });
 });
