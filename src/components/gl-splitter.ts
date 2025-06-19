@@ -60,9 +60,18 @@ export class GlSplitter extends BaseElement {
           position: relative;
           user-select: none;
           touch-action: none;
+          flex-shrink: 0;
           ${isHorizontal ? 'cursor: ew-resize;' : 'cursor: ns-resize;'}
-          ${isHorizontal ? 'width: var(--gl-splitter-size, 5px);' : 'height: var(--gl-splitter-size, 5px);'}
-          ${isHorizontal ? 'min-width: var(--gl-splitter-size, 5px);' : 'min-height: var(--gl-splitter-size, 5px);'}
+          ${isHorizontal ? 
+            `width: var(--gl-splitter-size, 5px);
+             min-width: var(--gl-splitter-size, 5px);
+             max-width: var(--gl-splitter-size, 5px);
+             height: 100%;` : 
+            `height: var(--gl-splitter-size, 5px);
+             min-height: var(--gl-splitter-size, 5px);
+             max-height: var(--gl-splitter-size, 5px);
+             width: 100%;`
+          }
         }
         
         :host(:hover) {

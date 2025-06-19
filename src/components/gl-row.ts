@@ -26,7 +26,7 @@ export class GlRow extends BaseElement {
           flex-direction: row;
           width: 100%;
           height: 100%;
-          gap: var(--gl-splitter-size, 5px);
+          gap: 0;
         }
         
         ::slotted(*) {
@@ -37,6 +37,10 @@ export class GlRow extends BaseElement {
         
         ::slotted([data-width]) {
           flex: 0 0 auto;
+        }
+        
+        ::slotted(gl-splitter) {
+          flex: 0 0 var(--gl-splitter-size, 5px);
         }
       </style>
       <slot></slot>
@@ -52,12 +56,15 @@ export class GlRow extends BaseElement {
   }
 
   private updateChildSizes(): void {
-    const children = Array.from(this.children) as HTMLElement[];
+    const children = Array.from(this.children).filter(
+      child => child.tagName !== 'GL-SPLITTER'
+    ) as HTMLElement[];
     const totalWidth = this.offsetWidth;
+    const splitterCount = this.querySelectorAll('gl-splitter').length;
     const splitterSize = Number.parseInt(
       getComputedStyle(this).getPropertyValue('--gl-splitter-size') || '5',
     );
-    const splitterTotal = splitterSize * Math.max(0, children.length - 1);
+    const splitterTotal = splitterSize * splitterCount;
     const availableWidth = totalWidth - splitterTotal;
 
     // Calculate flexible space
