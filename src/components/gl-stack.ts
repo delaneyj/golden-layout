@@ -256,10 +256,25 @@ export class GlStack extends BaseElement {
     // Check if we're dragging a tab
     const layout = this.closest('gl-layout') as HTMLElement & { 
       _draggedElement?: HTMLElement;
-      _dropIndicator?: { show(target: HTMLElement, position?: string): void };
+      _dropIndicator?: { show(target: HTMLElement, position?: string): void; hide(): void };
     };
     
     if (layout?._draggedElement?.tagName === 'GL-TAB') {
+      const draggedTab = layout._draggedElement;
+      const sourceStack = draggedTab.closest('gl-stack');
+      
+      // Don't allow any drops on the same stack
+      if (sourceStack === this) {
+        if (e.dataTransfer) {
+          e.dataTransfer.dropEffect = 'none';
+        }
+        this.classList.remove('drag-over');
+        if (layout._dropIndicator) {
+          layout._dropIndicator.hide();
+        }
+        return;
+      }
+      
       e.preventDefault();
       e.stopPropagation();
       
@@ -459,6 +474,9 @@ export class GlStack extends BaseElement {
       const sourceStack = draggedTab.closest('gl-stack') as GlStack;
       if (!sourceStack) return;
       
+      // Don't allow any drops on the same stack
+      if (sourceStack === this) return;
+      
       const tabs = Array.from(sourceStack.querySelectorAll('gl-tab'));
       const tabIndex = tabs.indexOf(draggedTab);
       
@@ -473,9 +491,7 @@ export class GlStack extends BaseElement {
       if (component) {
         // Handle drop based on position
         if (position === 'center') {
-          // Drop as new tab in this stack (existing behavior)
-          if (sourceStack === this) return;
-          
+          // Drop as new tab in this stack
           this.appendChild(component);
           draggedTab.remove();
           

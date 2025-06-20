@@ -96,21 +96,29 @@ describe('drop indicator', () => {
   it('hides drop indicator on drag leave', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="stack">
-          <gl-component-container title="Component 1">
-            <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
+        <gl-row>
+          <gl-stack id="source">
+            <gl-component-container title="Component 1">
+              <div>Content 1</div>
+            </gl-component-container>
+          </gl-stack>
+          <gl-splitter orientation="horizontal"></gl-splitter>
+          <gl-stack id="target">
+            <gl-component-container title="Component 2">
+              <div>Content 2</div>
+            </gl-component-container>
+          </gl-stack>
+        </gl-row>
       </gl-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const layout = container.querySelector('gl-layout') as any;
-    const tab = container.querySelector('gl-tab');
-    const stack = container.querySelector('#stack');
+    const tab = container.querySelector('#source gl-tab');
+    const stack = container.querySelector('#target');
 
-    // Setup drag
+    // Setup drag from different stack
     layout._draggedElement = tab;
 
     // Show drop indicator
