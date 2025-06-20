@@ -309,6 +309,18 @@ export class GlStack extends BaseElement {
         position = 'center' as any;
       }
       
+      // Check if this drop would result in no layout change
+      if (this.isNoOpDrop(sourceStack as GlStack, position)) {
+        if (e.dataTransfer) {
+          e.dataTransfer.dropEffect = 'none';
+        }
+        this.classList.remove('drag-over');
+        if (layout._dropIndicator) {
+          layout._dropIndicator.hide();
+        }
+        return;
+      }
+      
       // Show drop indicator with position
       if (layout._dropIndicator) {
         layout._dropIndicator.show(this, position);
@@ -560,6 +572,74 @@ export class GlStack extends BaseElement {
     newStack.updateActiveTab();
     this.updateTabs();
     this.updateActiveTab();
+  }
+  
+  private isNoOpDrop(sourceStack: GlStack, dropPosition: string): boolean {
+    // Get the parent containers
+    const sourceParent = sourceStack.parentElement;
+    const targetParent = this.parentElement;
+    
+    // If they don't share the same parent, it's not a no-op
+    if (sourceParent !== targetParent) {
+      return false;
+    }
+    
+    // If dropping in center and there's only one component in source, it could still be useful
+    if (dropPosition === 'center') {
+      return false;
+    }
+    
+    // Check if source and target are siblings
+    const siblings = Array.from(sourceParent!.children);
+    const sourceIndex = siblings.indexOf(sourceStack);
+    const targetIndex = siblings.indexOf(this);
+    
+    // If not direct siblings (might have splitters between), get actual positions
+    const sourcePos = this.getStackPosition(sourceStack, siblings);
+    const targetPos = this.getStackPosition(this, siblings);
+    
+    // Check parent orientation
+    const isRow = sourceParent?.tagName === 'GL-ROW';
+    const isColumn = sourceParent?.tagName === 'GL-COLUMN';
+    
+    // Check if the drop would recreate the same layout
+    if (isRow) {
+      // In a row, left/right drops matter
+      if (dropPosition === 'left' && targetPos === sourcePos + 1) {
+        // Dropping on left of next sibling - no change
+        return true;
+      }
+      if (dropPosition === 'right' && targetPos === sourcePos - 1) {
+        // Dropping on right of previous sibling - no change
+        return true;
+      }
+    } else if (isColumn) {
+      // In a column, top/bottom drops matter
+      if (dropPosition === 'top' && targetPos === sourcePos + 1) {
+        // Dropping on top of next sibling - no change
+        return true;
+      }
+      if (dropPosition === 'bottom' && targetPos === sourcePos - 1) {
+        // Dropping on bottom of previous sibling - no change
+        return true;
+      }
+    }
+    
+    return false;
+  }
+  
+  private getStackPosition(stack: Element, siblings: Element[]): number {
+    // Get position counting only stacks, not splitters
+    let position = 0;
+    for (const sibling of siblings) {
+      if (sibling === stack) {
+        return position;
+      }
+      if (sibling.tagName === 'GL-STACK') {
+        position++;
+      }
+    }
+    return -1;
   }
 }
 
