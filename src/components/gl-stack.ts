@@ -266,9 +266,37 @@ export class GlStack extends BaseElement {
       // Add visual feedback
       this.classList.add('drag-over');
       
-      // Show drop indicator
+      // Determine drop position based on cursor location
+      const rect = this.getBoundingClientRect();
+      // Handle test environment where clientX/Y might be 0
+      const clientX = e.clientX || (e as any).pageX || 0;
+      const clientY = e.clientY || (e as any).pageY || 0;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      const xRatio = rect.width > 0 ? x / rect.width : 0.5;
+      const yRatio = rect.height > 0 ? y / rect.height : 0.5;
+      
+      let position: 'top' | 'right' | 'bottom' | 'left' = 'top';
+      
+      // Determine which edge is closest to the cursor
+      const edgeThreshold = 0.3; // 30% from edge
+      
+      if (yRatio < edgeThreshold) {
+        position = 'top';
+      } else if (yRatio > 1 - edgeThreshold) {
+        position = 'bottom';
+      } else if (xRatio < edgeThreshold) {
+        position = 'left';
+      } else if (xRatio > 1 - edgeThreshold) {
+        position = 'right';
+      } else {
+        // Center area - drop as new tab in this stack
+        position = 'center' as any;
+      }
+      
+      // Show drop indicator with position
       if (layout._dropIndicator) {
-        layout._dropIndicator.show(this, 'center');
+        layout._dropIndicator.show(this, position);
       }
     }
   };
@@ -414,8 +442,10 @@ export class GlStack extends BaseElement {
     
     const layout = this.closest('gl-layout') as HTMLElement & { 
       _draggedElement?: HTMLElement;
-      _dropIndicator?: { hide(): void };
+      _dropIndicator?: { hide(): void; position?: string };
     };
+    
+    const position = layout?._dropIndicator?.position || 'center';
     
     // Hide drop indicator
     if (layout?._dropIndicator) {
@@ -427,7 +457,7 @@ export class GlStack extends BaseElement {
     if (draggedTab?.tagName === 'GL-TAB') {
       // Find the associated component for this tab
       const sourceStack = draggedTab.closest('gl-stack') as GlStack;
-      if (!sourceStack || sourceStack === this) return;
+      if (!sourceStack) return;
       
       const tabs = Array.from(sourceStack.querySelectorAll('gl-tab'));
       const tabIndex = tabs.indexOf(draggedTab);
@@ -441,17 +471,22 @@ export class GlStack extends BaseElement {
       const component = components[tabIndex];
       
       if (component) {
-        // Move the component to this stack
-        this.appendChild(component);
-        
-        // Remove the old tab
-        draggedTab.remove();
-        
-        // Update tabs in both stacks
-        sourceStack.updateTabs();
-        sourceStack.updateActiveTab();
-        this.updateTabs();
-        this.updateActiveTab();
+        // Handle drop based on position
+        if (position === 'center') {
+          // Drop as new tab in this stack (existing behavior)
+          if (sourceStack === this) return;
+          
+          this.appendChild(component);
+          draggedTab.remove();
+          
+          sourceStack.updateTabs();
+          sourceStack.updateActiveTab();
+          this.updateTabs();
+          this.updateActiveTab();
+        } else {
+          // Create a new split layout
+          this.createSplitLayout(component, draggedTab, sourceStack, position as 'top' | 'right' | 'bottom' | 'left');
+        }
         
         // Emit event
         this.emit('component-moved', {
@@ -465,6 +500,51 @@ export class GlStack extends BaseElement {
       }
     }
   };
+  
+  private createSplitLayout(component: HTMLElement, draggedTab: HTMLElement, sourceStack: GlStack, position: 'top' | 'right' | 'bottom' | 'left'): void {
+    const parent = this.parentElement;
+    if (!parent) return;
+    
+    // Determine if we need a row or column
+    const isHorizontalSplit = position === 'left' || position === 'right';
+    const containerType = isHorizontalSplit ? 'gl-row' : 'gl-column';
+    
+    // Create new container
+    const newContainer = document.createElement(containerType);
+    
+    // Create new stack for the dropped component
+    const newStack = document.createElement('gl-stack');
+    newStack.appendChild(component);
+    
+    // Create splitter
+    const splitter = document.createElement('gl-splitter');
+    splitter.setAttribute('orientation', isHorizontalSplit ? 'horizontal' : 'vertical');
+    
+    // Replace current stack with new container
+    parent.replaceChild(newContainer, this);
+    
+    // Add elements in correct order
+    if (position === 'left' || position === 'top') {
+      newContainer.appendChild(newStack);
+      newContainer.appendChild(splitter);
+      newContainer.appendChild(this);
+    } else {
+      newContainer.appendChild(this);
+      newContainer.appendChild(splitter);
+      newContainer.appendChild(newStack);
+    }
+    
+    // Remove the dragged tab from source
+    draggedTab.remove();
+    
+    // Update all stacks
+    sourceStack.updateTabs();
+    sourceStack.updateActiveTab();
+    newStack.updateTabs();
+    newStack.updateActiveTab();
+    this.updateTabs();
+    this.updateActiveTab();
+  }
 }
 
 customElements.define('gl-stack', GlStack);

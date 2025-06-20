@@ -3,6 +3,10 @@ import { BaseElement } from '../core/base-element';
 export class GlDropIndicator extends BaseElement {
   private _targetElement: HTMLElement | null = null;
   private _position: 'center' | 'top' | 'right' | 'bottom' | 'left' = 'center';
+  
+  get position(): string {
+    return this._position;
+  }
 
   static get observedAttributes(): string[] {
     return [];
@@ -43,7 +47,7 @@ export class GlDropIndicator extends BaseElement {
           top: 0;
           left: 0;
           right: 0;
-          height: 50%;
+          height: 30%;
           border-bottom-left-radius: 0;
           border-bottom-right-radius: 0;
         }
@@ -52,7 +56,7 @@ export class GlDropIndicator extends BaseElement {
           bottom: 0;
           left: 0;
           right: 0;
-          height: 50%;
+          height: 30%;
           border-top-left-radius: 0;
           border-top-right-radius: 0;
         }
@@ -61,7 +65,7 @@ export class GlDropIndicator extends BaseElement {
           top: 0;
           left: 0;
           bottom: 0;
-          width: 50%;
+          width: 30%;
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
         }
@@ -70,7 +74,7 @@ export class GlDropIndicator extends BaseElement {
           top: 0;
           right: 0;
           bottom: 0;
-          width: 50%;
+          width: 30%;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         }

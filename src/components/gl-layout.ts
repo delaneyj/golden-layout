@@ -42,7 +42,9 @@ export class GlLayout extends BaseElement {
     this.removeEventListener('dragend', this.handleDragEnd);
     
     // Remove drop indicator
-    this._dropIndicator?.remove();
+    if (this._dropIndicator && typeof this._dropIndicator.remove === 'function') {
+      this._dropIndicator.remove();
+    }
     this._dropIndicator = null;
   }
 
