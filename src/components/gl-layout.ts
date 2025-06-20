@@ -70,12 +70,23 @@ export class GlLayout extends BaseElement {
   }
 
   private handleDragStart = (e: DragEvent): void => {
-    if (e.target instanceof HTMLElement && e.target.hasAttribute('draggable')) {
-      this._draggedElement = e.target;
+    // Check if it's a pane header being dragged
+    const target = e.target as HTMLElement;
+    const pane = target.closest('gl-pane');
+    
+    if (pane && target.classList.contains('header')) {
+      this._draggedElement = pane as HTMLElement;
       if (e.dataTransfer) {
         e.dataTransfer.effectAllowed = 'move';
       }
-      this.emit('item-drag-start', { element: e.target });
+      this.emit('item-drag-start', { element: pane });
+    } else if (target.hasAttribute('draggable')) {
+      // Legacy support for other draggable elements
+      this._draggedElement = target;
+      if (e.dataTransfer) {
+        e.dataTransfer.effectAllowed = 'move';
+      }
+      this.emit('item-drag-start', { element: target });
     }
   };
 

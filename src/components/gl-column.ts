@@ -30,7 +30,7 @@ export class GlColumn extends BaseElement {
         }
         
         ::slotted(*) {
-          flex: 1;
+          flex: 1 1 auto;
           min-height: 0;
           position: relative;
         }
@@ -55,44 +55,21 @@ export class GlColumn extends BaseElement {
     this.resizeObserver.observe(this);
   }
 
+  public updateLayout(): void {
+    this.updateChildSizes();
+  }
+  
   private updateChildSizes(): void {
     const children = Array.from(this.children).filter(
       child => child.tagName !== 'GL-SPLITTER'
     ) as HTMLElement[];
-    const totalHeight = this.offsetHeight;
-    const splitterCount = this.querySelectorAll('gl-splitter').length;
-    const splitterSize = Number.parseInt(
-      getComputedStyle(this).getPropertyValue('--gl-splitter-size') || '5',
-    );
-    const splitterTotal = splitterSize * splitterCount;
-    const availableHeight = totalHeight - splitterTotal;
-
-    // Calculate flexible space
-    let fixedHeight = 0;
-    let flexCount = 0;
-
+    
+    // Reset all children to use flexbox
     children.forEach((child) => {
-      const height = child.dataset.height;
-      if (height) {
-        const heightValue = height.endsWith('%')
-          ? (Number.parseFloat(height) / 100) * availableHeight
-          : Number.parseFloat(height);
-        fixedHeight += heightValue;
-        child.style.height = `${heightValue}px`;
-      } else {
-        flexCount++;
-      }
+      child.style.flex = '1 1 auto';
+      child.style.height = '';
+      child.style.minHeight = '50px';
     });
-
-    // Distribute remaining space to flexible children
-    if (flexCount > 0) {
-      const flexHeight = Math.max(0, availableHeight - fixedHeight) / flexCount;
-      children.forEach((child) => {
-        if (!child.dataset.height) {
-          child.style.flex = `0 0 ${flexHeight}px`;
-        }
-      });
-    }
   }
 }
 

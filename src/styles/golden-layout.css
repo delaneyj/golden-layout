@@ -7,9 +7,13 @@
   --gl-layout-bg: var(--gray-0);
   --gl-layout-border: var(--gray-3);
 
-  /* Stack */
+  /* Stack (deprecated) */
   --gl-stack-bg: var(--gray-0);
   --gl-stack-border: var(--gray-3);
+  
+  /* Pane */
+  --gl-pane-bg: #ffffff;
+  --gl-pane-border: #e5e7eb;
 
   /* Header */
   --gl-header-bg: var(--gray-1);
@@ -52,6 +56,9 @@
   --gl-stack-drag-over-border: var(--blue-6);
   --gl-stack-drag-over-shadow: rgba(59, 130, 246, 0.25);
   --gl-stack-drag-over-bg: rgba(59, 130, 246, 0.05);
+  --gl-pane-drag-over-border: var(--blue-6);
+  --gl-pane-drag-over-shadow: rgba(59, 130, 246, 0.25);
+  --gl-pane-drag-over-bg: rgba(59, 130, 246, 0.05);
 }
 
 /* Dark theme */

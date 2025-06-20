@@ -30,7 +30,7 @@ export class GlRow extends BaseElement {
         }
         
         ::slotted(*) {
-          flex: 1;
+          flex: 1 1 auto;
           min-width: 0;
           position: relative;
         }
@@ -55,44 +55,21 @@ export class GlRow extends BaseElement {
     this.resizeObserver.observe(this);
   }
 
+  public updateLayout(): void {
+    this.updateChildSizes();
+  }
+  
   private updateChildSizes(): void {
     const children = Array.from(this.children).filter(
       child => child.tagName !== 'GL-SPLITTER'
     ) as HTMLElement[];
-    const totalWidth = this.offsetWidth;
-    const splitterCount = this.querySelectorAll('gl-splitter').length;
-    const splitterSize = Number.parseInt(
-      getComputedStyle(this).getPropertyValue('--gl-splitter-size') || '5',
-    );
-    const splitterTotal = splitterSize * splitterCount;
-    const availableWidth = totalWidth - splitterTotal;
-
-    // Calculate flexible space
-    let fixedWidth = 0;
-    let flexCount = 0;
-
+    
+    // Reset all children to use flexbox
     children.forEach((child) => {
-      const width = child.dataset.width;
-      if (width) {
-        const widthValue = width.endsWith('%')
-          ? (Number.parseFloat(width) / 100) * availableWidth
-          : Number.parseFloat(width);
-        fixedWidth += widthValue;
-        child.style.width = `${widthValue}px`;
-      } else {
-        flexCount++;
-      }
+      child.style.flex = '1 1 auto';
+      child.style.width = '';
+      child.style.minWidth = '50px';
     });
-
-    // Distribute remaining space to flexible children
-    if (flexCount > 0) {
-      const flexWidth = Math.max(0, availableWidth - fixedWidth) / flexCount;
-      children.forEach((child) => {
-        if (!child.dataset.width) {
-          child.style.flex = `0 0 ${flexWidth}px`;
-        }
-      });
-    }
   }
 }
 

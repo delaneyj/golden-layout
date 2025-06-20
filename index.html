@@ -26,10 +26,25 @@
     
     .demo-content {
       padding: 20px;
+      color: #333;
+      background-color: #ffffff;
+      min-height: 100px;
+      font-size: 14px;
+      line-height: 1.5;
     }
     
     .demo-content h2 {
       margin-top: 0;
+      margin-bottom: 10px;
+      color: #000;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .demo-content p {
+      margin: 10px 0;
+      color: #666;
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -39,54 +54,54 @@
   <div class="demo-container">
     <gl-layout>
       <gl-row>
-        <gl-stack data-width="50%">
-          <gl-component-container title="Component 1">
+        <gl-pane title="Component 1">
+          <gl-component-container>
             <div class="demo-content">
               <h2>Component 1</h2>
-              <p>This is the first component in the layout.</p>
-              <p>You can drag tabs to reorder them, close tabs, and maximize stacks.</p>
-              <p><strong>Drag tabs between stacks</strong> to move components around!</p>
+              <p>This is a non-modal pane layout.</p>
+              <p>You can drag pane headers to rearrange the layout.</p>
+              <p><strong>Drag panes to edges</strong> to create splits!</p>
             </div>
           </gl-component-container>
-          <gl-component-container title="Component 2">
-            <div class="demo-content">
-              <h2>Component 2</h2>
-              <p>This is the second component.</p>
-              <p>Click on tabs to switch between them.</p>
-            </div>
-          </gl-component-container>
-        </gl-stack>
+        </gl-pane>
         
         <gl-splitter orientation="horizontal"></gl-splitter>
         
-        <gl-column data-width="50%">
-          <gl-stack data-height="60%">
-            <gl-component-container title="Component 3">
+        <gl-column>
+          <gl-pane title="Component 2">
+            <gl-component-container>
               <div class="demo-content">
-                <h2>Component 3</h2>
-                <p>This component is in a column layout.</p>
-                <p>Drag the splitters to resize panes.</p>
+                <h2>Component 2</h2>
+                <p>Each pane shows its content directly.</p>
+                <p>No tabs - just like Blender, Nuke, or DaVinci Resolve.</p>
               </div>
             </gl-component-container>
-          </gl-stack>
+          </gl-pane>
           
           <gl-splitter orientation="vertical"></gl-splitter>
           
-          <gl-stack data-height="40%">
-            <gl-component-container title="Component 4">
+          <gl-pane title="Component 3">
+            <gl-component-container>
               <div class="demo-content">
-                <h2>Component 4</h2>
-                <p>This is the bottom component.</p>
+                <h2>Component 3</h2>
+                <p>Drag splitters to resize panes.</p>
+                <p>Close panes with the X button.</p>
               </div>
             </gl-component-container>
-            <gl-component-container title="Component 5">
-              <div class="demo-content">
-                <h2>Component 5</h2>
-                <p>Another tab in the bottom stack.</p>
-              </div>
-            </gl-component-container>
-          </gl-stack>
+          </gl-pane>
         </gl-column>
+        
+        <gl-splitter orientation="horizontal"></gl-splitter>
+        
+        <gl-pane title="Component 4">
+          <gl-component-container>
+            <div class="demo-content">
+              <h2>Component 4</h2>
+              <p>Professional non-modal layout.</p>
+              <p>Perfect for complex applications.</p>
+            </div>
+          </gl-component-container>
+        </gl-pane>
       </gl-row>
     </gl-layout>
   </div>
@@ -109,6 +124,37 @@
     layout.addEventListener('maximize-changed', (e) => {
       console.log('Maximize state changed:', e.detail);
     });
+    
+    // Debug: Check if panes are rendering
+    setTimeout(() => {
+      const panes = document.querySelectorAll('gl-pane');
+      console.log('Found panes:', panes.length);
+      panes.forEach((pane, i) => {
+        const container = pane.querySelector('gl-component-container');
+        const demoContent = pane.querySelector('.demo-content');
+        console.log(`Pane ${i}:`, {
+          title: pane.getAttribute('title'),
+          shadowRoot: !!pane.shadowRoot,
+          contentElement: pane.shadowRoot?.querySelector('.content'),
+          container: !!container,
+          containerShadow: !!container?.shadowRoot,
+          demoContent: !!demoContent,
+          demoText: demoContent?.textContent?.trim().substring(0, 50) + '...'
+        });
+        
+        // Check computed styles
+        if (demoContent) {
+          const styles = window.getComputedStyle(demoContent);
+          console.log(`Demo content ${i} styles:`, {
+            color: styles.color,
+            backgroundColor: styles.backgroundColor,
+            display: styles.display,
+            visibility: styles.visibility,
+            opacity: styles.opacity
+          });
+        }
+      });
+    }, 1000);
   </script>
 </body>
 </html>

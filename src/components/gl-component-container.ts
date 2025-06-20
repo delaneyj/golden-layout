@@ -54,16 +54,23 @@ export class GlComponentContainer extends BaseElement {
           display: block;
           width: 100%;
           height: 100%;
-          overflow: auto;
+          box-sizing: border-box;
+        }
+        
+        .container {
           padding: var(--gl-component-padding, 10px);
+          width: 100%;
+          height: 100%;
           box-sizing: border-box;
         }
         
         ::slotted(*) {
-          width: 100%;
+          display: block;
         }
       </style>
-      <slot></slot>
+      <div class="container">
+        <slot></slot>
+      </div>
     `;
   }
 
