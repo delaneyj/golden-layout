@@ -53,12 +53,39 @@ export class GlLayout extends BaseElement {
 
     this.shadowRoot.innerHTML = `
       <style>
+        /* Gruvbox Dark Medium defaults */
         :host {
           display: block;
           width: 100%;
           height: 100%;
           position: relative;
           overflow: hidden;
+          /* Define default theme colors as CSS variables for child components */
+          --gl-layout-bg: #282828;
+          
+          /* Use the CSS variable for background */
+          background: var(--gl-layout-bg);
+          --gl-layout-border: #504945;
+          --gl-pane-bg: #282828;
+          --gl-pane-border: #504945;
+          --gl-header-bg: #3c3836;
+          --gl-header-border: #504945;
+          --gl-header-color: #ebdbb2;
+          --gl-control-hover-bg: #504945;
+          --gl-control-active-bg: #665c54;
+          --gl-control-color: #bdae93;
+          --gl-splitter-bg: #3c3836;
+          --gl-splitter-hover-bg: #665c54;
+          --gl-splitter-active-bg: #fe8019;
+          --gl-component-padding: 16px;
+          --gl-drop-indicator-bg: rgba(131, 165, 152, 0.15);
+          --gl-drop-indicator-border: #83a598;
+          --gl-drop-indicator-radius: 4px;
+          --gl-drop-indicator-label-bg: #83a598;
+          --gl-drop-indicator-label-color: #282828;
+          --gl-pane-drag-over-border: #83a598;
+          --gl-pane-drag-over-shadow: rgba(131, 165, 152, 0.25);
+          --gl-pane-drag-over-bg: rgba(131, 165, 152, 0.05);
         }
         ::slotted(*) {
           width: 100%;

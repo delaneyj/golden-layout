@@ -30,8 +30,8 @@ export class GlDropIndicator extends BaseElement {
         
         .indicator {
           position: absolute;
-          background: var(--gl-drop-indicator-bg, rgba(0, 123, 255, 0.2));
-          border: 2px solid var(--gl-drop-indicator-border, #007bff);
+          background: var(--gl-drop-indicator-bg, rgba(131, 165, 152, 0.15)); /* gruvbox blue with transparency */
+          border: 2px solid var(--gl-drop-indicator-border, #83a598); /* gruvbox blue */
           border-radius: var(--gl-drop-indicator-radius, 4px);
           transition: all 0.2s ease;
         }
@@ -84,8 +84,8 @@ export class GlDropIndicator extends BaseElement {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          background: var(--gl-drop-indicator-label-bg, #007bff);
-          color: var(--gl-drop-indicator-label-color, white);
+          background: var(--gl-drop-indicator-label-bg, #83a598); /* gruvbox blue */
+          color: var(--gl-drop-indicator-label-color, #282828); /* gruvbox bg0 */
           padding: 4px 12px;
           border-radius: 4px;
           font-size: 12px;

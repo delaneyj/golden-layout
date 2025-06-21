@@ -56,7 +56,7 @@ export class GlSplitter extends BaseElement {
       <style>
         :host {
           display: block;
-          background: var(--gl-splitter-bg, #e0e0e0);
+          background: var(--gl-splitter-bg, #3c3836); /* gruvbox bg1 */
           position: relative;
           user-select: none;
           touch-action: none;
@@ -75,24 +75,14 @@ export class GlSplitter extends BaseElement {
         }
         
         :host(:hover) {
-          background: var(--gl-splitter-hover-bg, #d0d0d0);
+          background: var(--gl-splitter-hover-bg, #665c54); /* gruvbox bg3 */
         }
         
         :host(.dragging) {
-          background: var(--gl-splitter-active-bg, #bbb);
+          background: var(--gl-splitter-active-bg, #fe8019); /* gruvbox orange */
         }
         
-        .handle {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          ${isHorizontal ? 'width: 2px; height: 30px;' : 'width: 30px; height: 2px;'}
-          background: var(--gl-splitter-handle-color, rgba(0, 0, 0, 0.2));
-          border-radius: 1px;
-        }
       </style>
-      <div class="handle"></div>
     `;
   }
 

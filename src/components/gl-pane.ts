@@ -67,8 +67,8 @@ export class GlPane extends BaseElement {
           width: 100%;
           height: 100%;
           min-height: 0;
-          background: var(--gl-pane-bg, #ffffff);
-          border: 1px solid var(--gl-pane-border, #ccc);
+          background: var(--gl-pane-bg, #282828); /* gruvbox bg0 */
+          border: 1px solid var(--gl-pane-border, #504945); /* gruvbox bg2 */
           position: relative;
           overflow: hidden;
           box-sizing: border-box;
@@ -84,8 +84,8 @@ export class GlPane extends BaseElement {
         }
         
         :host(.drag-over) {
-          border-color: var(--gl-pane-drag-over-border, #007bff);
-          box-shadow: 0 0 0 2px var(--gl-pane-drag-over-shadow, rgba(0, 123, 255, 0.25));
+          border-color: var(--gl-pane-drag-over-border, #83a598); /* gruvbox blue */
+          box-shadow: 0 0 0 2px var(--gl-pane-drag-over-shadow, rgba(131, 165, 152, 0.25));
         }
         
         :host(.drag-over)::before {
@@ -95,7 +95,7 @@ export class GlPane extends BaseElement {
           left: 0;
           right: 0;
           bottom: 0;
-          background: var(--gl-pane-drag-over-bg, rgba(0, 123, 255, 0.1));
+          background: var(--gl-pane-drag-over-bg, rgba(131, 165, 152, 0.05));
           pointer-events: none;
           z-index: 10;
           border-radius: inherit;
@@ -107,8 +107,8 @@ export class GlPane extends BaseElement {
           justify-content: space-between;
           height: var(--gl-header-height, 30px);
           padding: 0 8px;
-          background: var(--gl-header-bg, #f5f5f5);
-          border-bottom: 1px solid var(--gl-header-border, #ddd);
+          background: var(--gl-header-bg, #3c3836); /* gruvbox bg1 */
+          border-bottom: 1px solid var(--gl-header-border, #504945); /* gruvbox bg2 */
           cursor: move;
           user-select: none;
         }
@@ -120,6 +120,7 @@ export class GlPane extends BaseElement {
         .title {
           font-size: 13px;
           font-weight: 500;
+          color: var(--gl-header-color, #ebdbb2); /* gruvbox fg1 */
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -142,17 +143,18 @@ export class GlPane extends BaseElement {
           border: none;
           border-radius: 2px;
           cursor: pointer;
+          color: var(--gl-control-color, #bdae93); /* gruvbox fg3 */
           opacity: 0.7;
           transition: all 0.2s;
         }
         
         .control:hover {
-          background: var(--gl-control-hover-bg, rgba(0, 0, 0, 0.1));
+          background: var(--gl-control-hover-bg, #504945); /* gruvbox bg2 */
           opacity: 1;
         }
         
         .control:active {
-          background: var(--gl-control-active-bg, rgba(0, 0, 0, 0.2));
+          background: var(--gl-control-active-bg, #665c54); /* gruvbox bg3 */
         }
         
         .content {
@@ -160,7 +162,7 @@ export class GlPane extends BaseElement {
           min-height: 0;
           overflow: auto;
           position: relative;
-          background: var(--gl-pane-bg, #ffffff);
+          background: var(--gl-pane-bg, #282828); /* gruvbox bg0 */
         }
         
         ::slotted(*) {
@@ -523,7 +525,7 @@ export class GlPane extends BaseElement {
     // Dispatch a resize event to trigger the parent's resize observer
     if (parent && (parent.tagName === 'GL-ROW' || parent.tagName === 'GL-COLUMN')) {
       // Call the public updateLayout method
-      const updateMethod = (parent as any).updateLayout;
+      const updateMethod = (parent as HTMLElement & { updateLayout?: () => void }).updateLayout;
       if (typeof updateMethod === 'function') {
         updateMethod.call(parent);
       }

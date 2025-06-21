@@ -5,29 +5,141 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Golden Layout - Web Components Demo</title>
   <style>
+    /* Define page-level theme variables with Gruvbox Dark Medium defaults */
+    :root {
+      --page-bg-hard: #1d2021;
+      --page-bg0: #282828;
+      --page-bg1: #3c3836;
+      --page-bg2: #504945;
+      --page-fg0: #fbf1c7;
+      --page-fg1: #ebdbb2;
+      --page-fg2: #d5c4a1;
+      --page-accent: #fabd2f;
+    }
+    
+    /* Light theme overrides */
+    .theme-light {
+      --page-bg-hard: #f9fafb;
+      --page-bg0: #ffffff;
+      --page-bg1: #f3f4f6;
+      --page-bg2: #e5e7eb;
+      --page-fg0: #111827;
+      --page-fg1: #374151;
+      --page-fg2: #6b7280;
+      --page-accent: #3b82f6;
+    }
+    
+    /* High contrast theme overrides */
+    .theme-high-contrast {
+      --page-bg-hard: #000000;
+      --page-bg0: #000000;
+      --page-bg1: #1a1a1a;
+      --page-bg2: #333333;
+      --page-fg0: #ffffff;
+      --page-fg1: #ffffff;
+      --page-fg2: #cccccc;
+      --page-accent: #ffff00;
+    }
+    
+    /* GitHub Dark theme */
+    .theme-github-dark {
+      --page-bg-hard: #0d1117;
+      --page-bg0: #161b22;
+      --page-bg1: #21262d;
+      --page-bg2: #30363d;
+      --page-fg0: #f0f6fc;
+      --page-fg1: #c9d1d9;
+      --page-fg2: #8b949e;
+      --page-accent: #58a6ff;
+    }
+    
+    /* Dracula theme */
+    .theme-dracula {
+      --page-bg-hard: #21222c;
+      --page-bg0: #282a36;
+      --page-bg1: #343746;
+      --page-bg2: #44475a;
+      --page-fg0: #f8f8f2;
+      --page-fg1: #f8f8f2;
+      --page-fg2: #6272a4;
+      --page-accent: #bd93f9;
+    }
+    
+    /* Night Owl theme */
+    .theme-night-owl {
+      --page-bg-hard: #010e1a;
+      --page-bg0: #011627;
+      --page-bg1: #0e293f;
+      --page-bg2: #1d3b53;
+      --page-fg0: #d6deeb;
+      --page-fg1: #d6deeb;
+      --page-fg2: #637777;
+      --page-accent: #82aaff;
+    }
+    
+    /* Monokai Pro theme */
+    .theme-monokai-pro {
+      --page-bg-hard: #1d1e19;
+      --page-bg0: #2d2a2e;
+      --page-bg1: #3a3639;
+      --page-bg2: #423f42;
+      --page-fg0: #fcfcfa;
+      --page-fg1: #fcfcfa;
+      --page-fg2: #939293;
+      --page-accent: #ffd866;
+    }
+    
+    /* Cobalt2 theme */
+    .theme-cobalt2 {
+      --page-bg-hard: #122738;
+      --page-bg0: #193549;
+      --page-bg1: #1f4662;
+      --page-bg2: #2e5775;
+      --page-fg0: #ffffff;
+      --page-fg1: #aec2e0;
+      --page-fg2: #9fb7d0;
+      --page-accent: #ffc600;
+    }
+    
+    /* PowerShell theme */
+    .theme-powershell {
+      --page-bg-hard: #012456;
+      --page-bg0: #012456;
+      --page-bg1: #013a7c;
+      --page-bg2: #0250a2;
+      --page-fg0: #ffffff;
+      --page-fg1: #eeedf0;
+      --page-fg2: #c7c7c7;
+      --page-accent: #ffff00;
+    }
+    
     body {
       margin: 0;
       padding: 20px;
       font-family: system-ui, -apple-system, sans-serif;
       height: 100vh;
       box-sizing: border-box;
+      background-color: var(--page-bg-hard);
+      color: var(--page-fg1);
+      transition: background-color 0.3s, color 0.3s;
     }
     
     h1 {
       margin-top: 0;
+      color: var(--page-fg0);
     }
     
     .demo-container {
       height: calc(100vh - 120px);
-      border: 1px solid #ddd;
+      border: 1px solid var(--page-bg2);
       border-radius: 4px;
       overflow: hidden;
     }
     
     .demo-content {
       padding: 20px;
-      color: #333;
-      background-color: #ffffff;
+      color: var(--page-fg1);
+      background-color: transparent;
       min-height: 100px;
       font-size: 14px;
       line-height: 1.5;
@@ -36,23 +148,61 @@
     .demo-content h2 {
       margin-top: 0;
       margin-bottom: 10px;
-      color: #000;
+      color: var(--page-fg0);
       font-size: 18px;
       font-weight: 600;
     }
     
     .demo-content p {
       margin: 10px 0;
-      color: #666;
+      color: var(--page-fg2);
       line-height: 1.6;
+    }
+    
+    .demo-content strong {
+      color: var(--page-accent);
+      font-weight: 600;
+    }
+    
+    .theme-selector {
+      margin-bottom: 20px;
+    }
+    
+    .theme-selector label {
+      color: var(--page-fg2);
+    }
+    
+    .theme-selector select {
+      background: var(--page-bg1);
+      color: var(--page-fg1);
+      border: 1px solid var(--page-bg2);
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     }
   </style>
 </head>
 <body>
   <h1>Golden Layout - Web Components Demo</h1>
   
+  <div class="theme-selector">
+    <label>Theme: 
+      <select id="theme-select">
+        <option value="">Gruvbox Dark (Default)</option>
+        <option value="theme-light">Light</option>
+        <option value="theme-high-contrast">High Contrast</option>
+        <option value="theme-github-dark">GitHub Dark</option>
+        <option value="theme-dracula">Dracula</option>
+        <option value="theme-night-owl">Night Owl</option>
+        <option value="theme-monokai-pro">Monokai Pro</option>
+        <option value="theme-cobalt2">Cobalt2</option>
+        <option value="theme-powershell">PowerShell</option>
+      </select>
+    </label>
+  </div>
+  
   <div class="demo-container">
-    <gl-layout>
+    <gl-layout id="layout">
       <gl-row>
         <gl-pane title="Component 1">
           <gl-component-container>
@@ -111,50 +261,31 @@
     import './src/styles/golden-layout.css';
     
     // Example of listening to events
-    const layout = document.querySelector('gl-layout');
+    const layoutElement = document.querySelector('gl-layout');
     
-    layout.addEventListener('tab-changed', (e) => {
+    layoutElement.addEventListener('tab-changed', (e) => {
       console.log('Tab changed:', e.detail);
     });
     
-    layout.addEventListener('tab-close', (e) => {
+    layoutElement.addEventListener('tab-close', (e) => {
       console.log('Tab closed:', e.detail);
     });
     
-    layout.addEventListener('maximize-changed', (e) => {
+    layoutElement.addEventListener('maximize-changed', (e) => {
       console.log('Maximize state changed:', e.detail);
     });
     
-    // Debug: Check if panes are rendering
-    setTimeout(() => {
-      const panes = document.querySelectorAll('gl-pane');
-      console.log('Found panes:', panes.length);
-      panes.forEach((pane, i) => {
-        const container = pane.querySelector('gl-component-container');
-        const demoContent = pane.querySelector('.demo-content');
-        console.log(`Pane ${i}:`, {
-          title: pane.getAttribute('title'),
-          shadowRoot: !!pane.shadowRoot,
-          contentElement: pane.shadowRoot?.querySelector('.content'),
-          container: !!container,
-          containerShadow: !!container?.shadowRoot,
-          demoContent: !!demoContent,
-          demoText: demoContent?.textContent?.trim().substring(0, 50) + '...'
-        });
-        
-        // Check computed styles
-        if (demoContent) {
-          const styles = window.getComputedStyle(demoContent);
-          console.log(`Demo content ${i} styles:`, {
-            color: styles.color,
-            backgroundColor: styles.backgroundColor,
-            display: styles.display,
-            visibility: styles.visibility,
-            opacity: styles.opacity
-          });
-        }
-      });
-    }, 1000);
+    // Theme selector
+    const themeSelect = document.getElementById('theme-select');
+    
+    themeSelect.addEventListener('change', (e) => {
+      const theme = e.target.value;
+      
+      // Apply theme to both layout component and body
+      layoutElement.className = theme;
+      document.body.className = theme;
+      // Default (empty string) uses the root variables (Gruvbox Dark)
+    });
   </script>
 </body>
 </html>

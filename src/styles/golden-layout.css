@@ -1,146 +1,200 @@
-@import "open-props/style";
-@import "open-props/normalize";
+/* Golden Layout CSS Variables - Override these to theme your layout */
+/* Components include Gruvbox Dark Medium as default theme */
 
-/* Golden Layout CSS Variables */
-:root {
-  /* Layout */
-  --gl-layout-bg: var(--gray-0);
-  --gl-layout-border: var(--gray-3);
-
-  /* Stack (deprecated) */
-  --gl-stack-bg: var(--gray-0);
-  --gl-stack-border: var(--gray-3);
-  
-  /* Pane */
+/* Custom theme example - Light theme */
+.theme-light {
+  --gl-layout-bg: #ffffff;
+  --gl-layout-border: #e5e7eb;
   --gl-pane-bg: #ffffff;
   --gl-pane-border: #e5e7eb;
-
-  /* Header */
-  --gl-header-bg: var(--gray-1);
-  --gl-header-border: var(--gray-3);
-  --gl-header-height: 30px;
-
-  /* Tabs */
-  --gl-tab-bg: var(--gray-1);
-  --gl-tab-border: var(--gray-3);
-  --gl-tab-active-bg: var(--gray-0);
-  --gl-tab-hover-bg: var(--gray-2);
-  --gl-tab-close-hover-bg: var(--gray-3);
-  --gl-tab-close-active-bg: var(--gray-4);
-
-  /* Controls */
-  --gl-control-hover-bg: var(--gray-3);
-  --gl-control-active-bg: var(--gray-4);
-
-  /* Splitter */
-  --gl-splitter-size: 5px;
-  --gl-splitter-bg: var(--gray-2);
-  --gl-splitter-hover-bg: var(--gray-3);
-  --gl-splitter-active-bg: var(--gray-4);
-  --gl-splitter-handle-color: var(--gray-5);
-
-  /* Component Container */
-  --gl-component-padding: var(--size-3);
-
-  /* Scrollbar */
-  --gl-scrollbar-thumb: var(--gray-4);
-  
-  /* Drop Indicator */
+  --gl-header-bg: #f3f4f6;
+  --gl-header-border: #e5e7eb;
+  --gl-header-color: #111827;
+  --gl-control-hover-bg: #e5e7eb;
+  --gl-control-active-bg: #d1d5db;
+  --gl-control-color: #6b7280;
+  --gl-splitter-bg: #e5e7eb;
+  --gl-splitter-hover-bg: #d1d5db;
+  --gl-splitter-active-bg: #3b82f6;
   --gl-drop-indicator-bg: rgba(59, 130, 246, 0.15);
-  --gl-drop-indicator-border: var(--blue-6);
-  --gl-drop-indicator-radius: var(--radius-2);
-  --gl-drop-indicator-label-bg: var(--blue-6);
-  --gl-drop-indicator-label-color: white;
-  
-  /* Drag Over */
-  --gl-stack-drag-over-border: var(--blue-6);
-  --gl-stack-drag-over-shadow: rgba(59, 130, 246, 0.25);
-  --gl-stack-drag-over-bg: rgba(59, 130, 246, 0.05);
-  --gl-pane-drag-over-border: var(--blue-6);
+  --gl-drop-indicator-border: #3b82f6;
+  --gl-drop-indicator-label-bg: #3b82f6;
+  --gl-drop-indicator-label-color: #ffffff;
+  --gl-pane-drag-over-border: #3b82f6;
   --gl-pane-drag-over-shadow: rgba(59, 130, 246, 0.25);
   --gl-pane-drag-over-bg: rgba(59, 130, 246, 0.05);
 }
 
-/* Dark theme */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --gl-layout-bg: var(--gray-9);
-    --gl-layout-border: var(--gray-7);
-
-    --gl-stack-bg: var(--gray-9);
-    --gl-stack-border: var(--gray-7);
-
-    --gl-header-bg: var(--gray-8);
-    --gl-header-border: var(--gray-7);
-
-    --gl-tab-bg: var(--gray-8);
-    --gl-tab-border: var(--gray-7);
-    --gl-tab-active-bg: var(--gray-9);
-    --gl-tab-hover-bg: var(--gray-7);
-    --gl-tab-close-hover-bg: var(--gray-6);
-    --gl-tab-close-active-bg: var(--gray-5);
-
-    --gl-control-hover-bg: var(--gray-6);
-    --gl-control-active-bg: var(--gray-5);
-
-    --gl-splitter-bg: var(--gray-7);
-    --gl-splitter-hover-bg: var(--gray-6);
-    --gl-splitter-active-bg: var(--gray-5);
-    --gl-splitter-handle-color: var(--gray-5);
-
-    --gl-scrollbar-thumb: var(--gray-6);
-    
-    --gl-drop-indicator-bg: rgba(96, 165, 250, 0.15);
-    --gl-drop-indicator-border: var(--blue-5);
-    --gl-drop-indicator-label-bg: var(--blue-5);
-    
-    --gl-stack-drag-over-border: var(--blue-5);
-    --gl-stack-drag-over-shadow: rgba(96, 165, 250, 0.25);
-    --gl-stack-drag-over-bg: rgba(96, 165, 250, 0.05);
-  }
+/* Custom theme example - High contrast */
+.theme-high-contrast {
+  --gl-layout-bg: #000000;
+  --gl-layout-border: #ffffff;
+  --gl-pane-bg: #000000;
+  --gl-pane-border: #ffffff;
+  --gl-header-bg: #1a1a1a;
+  --gl-header-border: #ffffff;
+  --gl-header-color: #ffffff;
+  --gl-control-hover-bg: #333333;
+  --gl-control-active-bg: #666666;
+  --gl-control-color: #ffffff;
+  --gl-splitter-bg: #ffffff;
+  --gl-splitter-hover-bg: #cccccc;
+  --gl-splitter-active-bg: #ffff00;
+  --gl-drop-indicator-bg: rgba(255, 255, 0, 0.2);
+  --gl-drop-indicator-border: #ffff00;
+  --gl-drop-indicator-label-bg: #ffff00;
+  --gl-drop-indicator-label-color: #000000;
+  --gl-pane-drag-over-border: #ffff00;
+  --gl-pane-drag-over-shadow: rgba(255, 255, 0, 0.5);
+  --gl-pane-drag-over-bg: rgba(255, 255, 0, 0.1);
 }
 
-/* Theme classes */
-.golden-layout-light {
-  --gl-layout-bg: var(--gray-0);
-  --gl-layout-border: var(--gray-3);
-  --gl-stack-bg: var(--gray-0);
-  --gl-stack-border: var(--gray-3);
-  --gl-header-bg: var(--gray-1);
-  --gl-header-border: var(--gray-3);
-  --gl-tab-bg: var(--gray-1);
-  --gl-tab-border: var(--gray-3);
-  --gl-tab-active-bg: var(--gray-0);
-  --gl-tab-hover-bg: var(--gray-2);
+/* GitHub Dark theme */
+.theme-github-dark {
+  --gl-layout-bg: #0d1117;
+  --gl-layout-border: #30363d;
+  --gl-pane-bg: #161b22;
+  --gl-pane-border: #30363d;
+  --gl-header-bg: #21262d;
+  --gl-header-border: #30363d;
+  --gl-header-color: #c9d1d9;
+  --gl-control-hover-bg: #30363d;
+  --gl-control-active-bg: #484f58;
+  --gl-control-color: #8b949e;
+  --gl-splitter-bg: #21262d;
+  --gl-splitter-hover-bg: #30363d;
+  --gl-splitter-active-bg: #58a6ff;
+  --gl-drop-indicator-bg: rgba(88, 166, 255, 0.15);
+  --gl-drop-indicator-border: #58a6ff;
+  --gl-drop-indicator-label-bg: #58a6ff;
+  --gl-drop-indicator-label-color: #0d1117;
+  --gl-pane-drag-over-border: #58a6ff;
+  --gl-pane-drag-over-shadow: rgba(88, 166, 255, 0.25);
+  --gl-pane-drag-over-bg: rgba(88, 166, 255, 0.05);
 }
 
-.golden-layout-dark {
-  --gl-layout-bg: var(--gray-9);
-  --gl-layout-border: var(--gray-7);
-  --gl-stack-bg: var(--gray-9);
-  --gl-stack-border: var(--gray-7);
-  --gl-header-bg: var(--gray-8);
-  --gl-header-border: var(--gray-7);
-  --gl-tab-bg: var(--gray-8);
-  --gl-tab-border: var(--gray-7);
-  --gl-tab-active-bg: var(--gray-9);
-  --gl-tab-hover-bg: var(--gray-7);
+/* Dracula theme */
+.theme-dracula {
+  --gl-layout-bg: #282a36;
+  --gl-layout-border: #44475a;
+  --gl-pane-bg: #282a36;
+  --gl-pane-border: #44475a;
+  --gl-header-bg: #343746;
+  --gl-header-border: #44475a;
+  --gl-header-color: #f8f8f2;
+  --gl-control-hover-bg: #44475a;
+  --gl-control-active-bg: #6272a4;
+  --gl-control-color: #6272a4;
+  --gl-splitter-bg: #44475a;
+  --gl-splitter-hover-bg: #6272a4;
+  --gl-splitter-active-bg: #bd93f9;
+  --gl-drop-indicator-bg: rgba(189, 147, 249, 0.15);
+  --gl-drop-indicator-border: #bd93f9;
+  --gl-drop-indicator-label-bg: #bd93f9;
+  --gl-drop-indicator-label-color: #282a36;
+  --gl-pane-drag-over-border: #bd93f9;
+  --gl-pane-drag-over-shadow: rgba(189, 147, 249, 0.25);
+  --gl-pane-drag-over-bg: rgba(189, 147, 249, 0.05);
+}
+
+/* Night Owl theme */
+.theme-night-owl {
+  --gl-layout-bg: #011627;
+  --gl-layout-border: #1d3b53;
+  --gl-pane-bg: #011627;
+  --gl-pane-border: #1d3b53;
+  --gl-header-bg: #0e293f;
+  --gl-header-border: #1d3b53;
+  --gl-header-color: #d6deeb;
+  --gl-control-hover-bg: #1d3b53;
+  --gl-control-active-bg: #2d5876;
+  --gl-control-color: #637777;
+  --gl-splitter-bg: #0e293f;
+  --gl-splitter-hover-bg: #1d3b53;
+  --gl-splitter-active-bg: #82aaff;
+  --gl-drop-indicator-bg: rgba(130, 170, 255, 0.15);
+  --gl-drop-indicator-border: #82aaff;
+  --gl-drop-indicator-label-bg: #82aaff;
+  --gl-drop-indicator-label-color: #011627;
+  --gl-pane-drag-over-border: #82aaff;
+  --gl-pane-drag-over-shadow: rgba(130, 170, 255, 0.25);
+  --gl-pane-drag-over-bg: rgba(130, 170, 255, 0.05);
+}
+
+/* Monokai Pro theme */
+.theme-monokai-pro {
+  --gl-layout-bg: #2d2a2e;
+  --gl-layout-border: #423f42;
+  --gl-pane-bg: #2d2a2e;
+  --gl-pane-border: #423f42;
+  --gl-header-bg: #3a3639;
+  --gl-header-border: #423f42;
+  --gl-header-color: #fcfcfa;
+  --gl-control-hover-bg: #423f42;
+  --gl-control-active-bg: #524f52;
+  --gl-control-color: #939293;
+  --gl-splitter-bg: #3a3639;
+  --gl-splitter-hover-bg: #423f42;
+  --gl-splitter-active-bg: #ffd866;
+  --gl-drop-indicator-bg: rgba(255, 216, 102, 0.15);
+  --gl-drop-indicator-border: #ffd866;
+  --gl-drop-indicator-label-bg: #ffd866;
+  --gl-drop-indicator-label-color: #2d2a2e;
+  --gl-pane-drag-over-border: #ffd866;
+  --gl-pane-drag-over-shadow: rgba(255, 216, 102, 0.25);
+  --gl-pane-drag-over-bg: rgba(255, 216, 102, 0.05);
+}
+
+/* Cobalt2 theme */
+.theme-cobalt2 {
+  --gl-layout-bg: #193549;
+  --gl-layout-border: #2e5775;
+  --gl-pane-bg: #193549;
+  --gl-pane-border: #2e5775;
+  --gl-header-bg: #1f4662;
+  --gl-header-border: #2e5775;
+  --gl-header-color: #aec2e0;
+  --gl-control-hover-bg: #2e5775;
+  --gl-control-active-bg: #3d6888;
+  --gl-control-color: #9fb7d0;
+  --gl-splitter-bg: #1f4662;
+  --gl-splitter-hover-bg: #2e5775;
+  --gl-splitter-active-bg: #ffc600;
+  --gl-drop-indicator-bg: rgba(255, 198, 0, 0.15);
+  --gl-drop-indicator-border: #ffc600;
+  --gl-drop-indicator-label-bg: #ffc600;
+  --gl-drop-indicator-label-color: #193549;
+  --gl-pane-drag-over-border: #ffc600;
+  --gl-pane-drag-over-shadow: rgba(255, 198, 0, 0.25);
+  --gl-pane-drag-over-bg: rgba(255, 198, 0, 0.05);
+}
+
+/* PowerShell theme */
+.theme-powershell {
+  --gl-layout-bg: #012456;
+  --gl-layout-border: #0250a2;
+  --gl-pane-bg: #012456;
+  --gl-pane-border: #0250a2;
+  --gl-header-bg: #013a7c;
+  --gl-header-border: #0250a2;
+  --gl-header-color: #eeedf0;
+  --gl-control-hover-bg: #0250a2;
+  --gl-control-active-bg: #0366c8;
+  --gl-control-color: #c7c7c7;
+  --gl-splitter-bg: #013a7c;
+  --gl-splitter-hover-bg: #0250a2;
+  --gl-splitter-active-bg: #ffff00;
+  --gl-drop-indicator-bg: rgba(255, 255, 0, 0.15);
+  --gl-drop-indicator-border: #ffff00;
+  --gl-drop-indicator-label-bg: #ffff00;
+  --gl-drop-indicator-label-color: #012456;
+  --gl-pane-drag-over-border: #ffff00;
+  --gl-pane-drag-over-shadow: rgba(255, 255, 0, 0.25);
+  --gl-pane-drag-over-bg: rgba(255, 255, 0, 0.05);
 }
 
 /* Utility classes */
 .gl-no-select {
   user-select: none;
   -webkit-user-select: none;
-}
-
-.gl-drag-proxy {
-  position: fixed;
-  pointer-events: none;
-  z-index: 999;
-  opacity: 0.8;
-  background: var(--gray-1);
-  border: 2px solid var(--blue-5);
-  border-radius: var(--radius-2);
-  padding: var(--size-2);
-  font-size: var(--font-size-1);
 }
