@@ -136,33 +136,7 @@
       overflow: hidden;
     }
     
-    .demo-content {
-      padding: 20px;
-      color: var(--page-fg1);
-      background-color: transparent;
-      min-height: 100px;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    
-    .demo-content h2 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      color: var(--page-fg0);
-      font-size: 18px;
-      font-weight: 600;
-    }
-    
-    .demo-content p {
-      margin: 10px 0;
-      color: var(--page-fg2);
-      line-height: 1.6;
-    }
-    
-    .demo-content strong {
-      color: var(--page-accent);
-      font-weight: 600;
-    }
+    /* Demo content styles removed - now handled by gl-pane component */
     
     .theme-selector {
       margin-bottom: 20px;
@@ -205,54 +179,38 @@
     <gl-layout id="layout" panel-types='["editor", "terminal", "console", "preview", "explorer", "debug", "output"]' pane-prefix="foo">
       <gl-row>
         <gl-pane panel-type="foo">
-          
-            <div class="demo-content">
-              <h2>Component 1</h2>
-              <p>This is a non-modal pane layout.</p>
-              <p>You can drag pane headers to rearrange the layout.</p>
-              <p><strong>Use the dropdown</strong> to change panel types!</p>
-              <p><strong>Click ⋮</strong> in the header to split panes!</p>
-              <p><strong>Drag panes to edges</strong> for smart positioning!</p>
-            </div>
-          
+          <h2>Component 1</h2>
+          <p>This is a non-modal pane layout.</p>
+          <p>You can drag pane headers to rearrange the layout.</p>
+          <p><strong>Use the dropdown</strong> to change panel types!</p>
+          <p><strong>Click ⋮</strong> in the header to split panes!</p>
+          <p><strong>Drag panes to edges</strong> for smart positioning!</p>
         </gl-pane>
         
         <gl-splitter orientation="horizontal"></gl-splitter>
         
         <gl-column>
           <gl-pane panel-type="terminal">
-            
-              <div class="demo-content">
-                <h2>Component 2</h2>
-                <p>Each pane shows its content directly.</p>
-                <p>No tabs - just like Blender, Nuke, or DaVinci Resolve.</p>
-              </div>
-            
+            <h2>Component 2</h2>
+            <p>Each pane shows its content directly.</p>
+            <p>No tabs - just like Blender, Nuke, or DaVinci Resolve.</p>
           </gl-pane>
           
           <gl-splitter orientation="vertical"></gl-splitter>
           
           <gl-pane panel-type="console">
-            
-              <div class="demo-content">
-                <h2>Component 3</h2>
-                <p>Drag splitters to resize panes.</p>
-                <p>Use the ⋮ menu for split, maximize, and close.</p>
-              </div>
-            
+            <h2>Component 3</h2>
+            <p>Drag splitters to resize panes.</p>
+            <p>Use the ⋮ menu for split, maximize, and close.</p>
           </gl-pane>
         </gl-column>
         
         <gl-splitter orientation="horizontal"></gl-splitter>
         
         <gl-pane panel-type="preview">
-          
-            <div class="demo-content">
-              <h2>Component 4</h2>
-              <p>Professional non-modal layout.</p>
-              <p>Perfect for complex applications.</p>
-            </div>
-          
+          <h2>Component 4</h2>
+          <p>Professional non-modal layout.</p>
+          <p>Perfect for complex applications.</p>
         </gl-pane>
       </gl-row>
     </gl-layout>

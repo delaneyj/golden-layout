@@ -160,7 +160,7 @@ export class GlLayout extends BaseElement {
           --gl-splitter-bg: #3c3836;
           --gl-splitter-hover-bg: #665c54;
           --gl-splitter-active-bg: #fe8019;
-          --gl-component-padding: 16px;
+          --gl-component-padding: 20px;
           --gl-drop-indicator-bg: rgba(131, 165, 152, 0.15);
           --gl-drop-indicator-border: #83a598;
           --gl-drop-indicator-radius: 4px;

@@ -300,14 +300,8 @@ export class GlPane extends BaseElement {
           overflow: auto;
           position: relative;
           background: var(--gl-pane-bg, #282828); /* gruvbox bg0 */
-          padding: var(--gl-component-padding, 10px);
+          padding: var(--gl-component-padding, 20px);
           box-sizing: border-box;
-        }
-        
-        ::slotted(*) {
-          display: block;
-          width: 100%;
-          height: 100%;
         }
       </style>
       <div class="header" draggable="true">
