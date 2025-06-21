@@ -1,22 +1,12 @@
 import { BaseElement } from '../core/base-element';
 
 export class GlPane extends BaseElement {
-  private _title = '';
   private _isMaximized = false;
   private _documentClickHandler: (() => void) | null = null;
+  private _panelType = 'default';
 
   static get observedAttributes(): string[] {
-    return ['title'];
-  }
-
-  get title(): string {
-    return this._title;
-  }
-
-  set title(value: string) {
-    this._title = value;
-    this.setAttribute('title', value);
-    this.updateHeader();
+    return ['panel-type'];
   }
 
   get isMaximized(): boolean {
@@ -29,10 +19,20 @@ export class GlPane extends BaseElement {
     this.emit('maximize-changed', { isMaximized: value });
   }
 
+  get panelType(): string {
+    return this._panelType;
+  }
+
+  set panelType(value: string) {
+    this._panelType = value;
+    this.setAttribute('panel-type', value);
+    this.emit('panel-type-changed', { panelType: value });
+  }
+
   attributeChangedCallback(name: string, _oldValue: string | null, newValue: string | null): void {
-    if (name === 'title') {
-      this._title = newValue || '';
-      this.updateHeader();
+    if (name === 'panel-type') {
+      this._panelType = newValue || 'default';
+      this.validatePanelType();
     }
   }
 
@@ -42,15 +42,16 @@ export class GlPane extends BaseElement {
     this.addEventListener('drop', this.handleDrop);
     this.addEventListener('dragleave', this.handleDragLeave);
     
-    // Get title from first child if not set
+    // Set default panel type if not set
     setTimeout(() => {
-      if (!this._title || this._title === '') {
-        const firstChild = this.querySelector('gl-component-container');
-        if (firstChild) {
-          this._title = firstChild.getAttribute('title') || 'Untitled';
-          this.updateHeader();
-        }
+      if (!this.hasAttribute('panel-type')) {
+        const layout = this.closest('gl-layout') as HTMLElement & { panelTypes?: string[] };
+        const panelTypes = layout?.panelTypes || ['default'];
+        this._panelType = panelTypes[0];
       }
+      
+      // Validate panel type
+      this.validatePanelType();
     }, 0);
   }
   
@@ -68,6 +69,10 @@ export class GlPane extends BaseElement {
       console.error('GlPane: No shadow root!');
       return;
     }
+    
+    // Get panel types from parent layout
+    const layout = this.closest('gl-layout') as HTMLElement & { panelTypes?: string[] };
+    const panelTypes = layout?.panelTypes || ['default'];
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -91,6 +96,11 @@ export class GlPane extends BaseElement {
           width: 100vw !important;
           height: 100vh !important;
           z-index: 1000;
+        }
+        
+        :host([invalid-panel-type]) {
+          border-color: #fb4934 !important; /* gruvbox red */
+          box-shadow: 0 0 0 2px rgba(251, 73, 52, 0.25);
         }
         
         :host(.drag-over) {
@@ -121,25 +131,36 @@ export class GlPane extends BaseElement {
           border-bottom: 1px solid var(--gl-header-border, #504945); /* gruvbox bg2 */
           cursor: move;
           user-select: none;
+          gap: 8px;
         }
         
         .header:active {
           cursor: grabbing;
         }
         
-        .title {
-          font-size: 13px;
-          font-weight: 500;
-          color: var(--gl-header-color, #ebdbb2); /* gruvbox fg1 */
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          flex: 1;
+        .panel-type-dropdown {
+          background: var(--gl-control-hover-bg, #504945);
+          border: 1px solid var(--gl-header-border, #504945);
+          border-radius: 4px;
+          color: var(--gl-header-color, #ebdbb2);
+          font-size: 12px;
+          padding: 2px 6px;
+          cursor: pointer;
+          outline: none;
+          min-width: 80px;
+        }
+        
+        .panel-type-dropdown:hover {
+          background: var(--gl-control-active-bg, #665c54);
+        }
+        
+        .panel-type-dropdown:focus {
+          border-color: var(--gl-splitter-active-bg, #fe8019);
         }
         
         .controls {
+          margin-left: auto;
           position: relative;
-          margin-left: 8px;
           display: flex;
           gap: 2px;
         }
@@ -239,7 +260,11 @@ export class GlPane extends BaseElement {
         }
       </style>
       <div class="header" draggable="true">
-        <span class="title">${this._title}</span>
+        <select class="panel-type-dropdown">
+          ${panelTypes.map((type: string) => `
+            <option value="${type}" ${this._panelType === type ? 'selected' : ''}>${type.charAt(0).toUpperCase() + type.slice(1)}</option>
+          `).join('')}
+        </select>
         <div class="controls">
           ${this._isMaximized ? `
             <button class="restore-button" title="Restore">
@@ -303,6 +328,7 @@ export class GlPane extends BaseElement {
       const maximizeBtn = this.shadowRoot?.querySelector('.maximize') as HTMLElement;
       const closeBtn = this.shadowRoot?.querySelector('.close') as HTMLElement;
       const restoreBtn = this.shadowRoot?.querySelector('.restore-button') as HTMLElement;
+      const panelTypeDropdown = this.shadowRoot?.querySelector('.panel-type-dropdown') as HTMLSelectElement;
 
       if (header) {
         header.addEventListener('dragstart', this.handleDragStart);
@@ -363,17 +389,30 @@ export class GlPane extends BaseElement {
           this.handleMaximize();
         });
       }
+      
+      if (panelTypeDropdown) {
+        panelTypeDropdown.addEventListener('change', (e) => {
+          const target = e.target as HTMLSelectElement;
+          this.panelType = target.value;
+        });
+        
+        // Prevent drag when interacting with dropdown
+        panelTypeDropdown.addEventListener('mousedown', (e) => {
+          e.stopPropagation();
+        });
+      }
     }, 0);
   }
 
-  private updateHeader(): void {
-    const titleElement = this.shadowRoot?.querySelector('.title');
-    if (titleElement) {
-      titleElement.textContent = this._title;
-    }
-  }
 
   private handleDragStart = (e: DragEvent): void => {
+    // Don't start drag if clicking on dropdown
+    const target = e.target as HTMLElement;
+    if (target.classList.contains('panel-type-dropdown')) {
+      e.preventDefault();
+      return;
+    }
+    
     if (e.dataTransfer) {
       e.dataTransfer.effectAllowed = 'move';
       
@@ -397,8 +436,6 @@ export class GlPane extends BaseElement {
     this.isMaximized = !this.isMaximized;
     // Re-render to update the restore button visibility
     this.render();
-    // Update title after re-render
-    this.updateHeader();
   };
 
   private handleSplit = (orientation: 'horizontal' | 'vertical'): void => {
@@ -407,13 +444,13 @@ export class GlPane extends BaseElement {
 
     // Create a new pane with a copy of this pane's content
     const newPane = document.createElement('gl-pane');
-    newPane.setAttribute('title', 'New Pane');
+    newPane.setAttribute('panel-type', this._panelType);
     
     // Create a container for the new pane
     const newContainer = document.createElement('gl-component-container');
     const newContent = document.createElement('div');
     newContent.className = 'demo-content';
-    newContent.innerHTML = `<h2>New Pane</h2><p>Split from ${this._title}</p>`;
+    newContent.innerHTML = `<h2>New Pane</h2><p>Panel type: ${this._panelType}</p>`;
     newContainer.appendChild(newContent);
     newPane.appendChild(newContainer);
 
@@ -729,6 +766,23 @@ export class GlPane extends BaseElement {
       if (typeof updateMethod === 'function') {
         updateMethod.call(parent);
       }
+    }
+  }
+  
+  private validatePanelType(): void {
+    const layout = this.closest('gl-layout') as HTMLElement & { panelTypes?: string[] };
+    const panelTypes = layout?.panelTypes || ['default'];
+    
+    if (!panelTypes.includes(this._panelType)) {
+      console.error(`Invalid panel type "${this._panelType}" for gl-pane. Valid options are: ${panelTypes.join(', ')}`);
+      // Add visual indicator
+      this.setAttribute('invalid-panel-type', '');
+      // Set to first valid option
+      this._panelType = panelTypes[0];
+      this.setAttribute('panel-type', this._panelType);
+    } else {
+      // Remove visual indicator if valid
+      this.removeAttribute('invalid-panel-type');
     }
   }
 }

@@ -6,9 +6,10 @@ export class GlLayout extends BaseElement {
   private _config: LayoutConfig | null = null;
   private _draggedElement: HTMLElement | null = null;
   private _dropIndicator: GlDropIndicator | null = null;
+  private _panelTypes: string[] = ['default'];
 
   static get observedAttributes(): string[] {
-    return ['config'];
+    return ['config', 'panel-types'];
   }
 
   get config(): LayoutConfig | null {
@@ -22,6 +23,15 @@ export class GlLayout extends BaseElement {
     }
   }
 
+  get panelTypes(): string[] {
+    return this._panelTypes;
+  }
+
+  set panelTypes(value: string[]) {
+    this._panelTypes = value;
+    this.setAttribute('panel-types', JSON.stringify(value));
+  }
+
   connectedCallback(): void {
     super.connectedCallback();
     this.addEventListener('dragstart', this.handleDragStart);
@@ -32,6 +42,16 @@ export class GlLayout extends BaseElement {
     // Create drop indicator
     this._dropIndicator = document.createElement('gl-drop-indicator') as GlDropIndicator;
     document.body.appendChild(this._dropIndicator);
+    
+    // Parse panel-types attribute if present
+    const panelTypesAttr = this.getAttribute('panel-types');
+    if (panelTypesAttr) {
+      try {
+        this._panelTypes = JSON.parse(panelTypesAttr);
+      } catch {
+        console.warn('Invalid panel-types attribute, using defaults');
+      }
+    }
   }
 
   disconnectedCallback(): void {
@@ -46,6 +66,16 @@ export class GlLayout extends BaseElement {
       this._dropIndicator.remove();
     }
     this._dropIndicator = null;
+  }
+
+  attributeChangedCallback(name: string, _oldValue: string | null, newValue: string | null): void {
+    if (name === 'panel-types' && newValue) {
+      try {
+        this._panelTypes = JSON.parse(newValue);
+      } catch {
+        console.warn('Invalid panel-types attribute, using defaults');
+      }
+    }
   }
 
   protected render(): void {

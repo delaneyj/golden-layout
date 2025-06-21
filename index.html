@@ -202,14 +202,15 @@
   </div>
   
   <div class="demo-container">
-    <gl-layout id="layout">
+    <gl-layout id="layout" panel-types='["editor", "terminal", "console", "preview", "explorer", "debug", "output"]'>
       <gl-row>
-        <gl-pane title="Component 1">
+        <gl-pane panel-type="foo">
           <gl-component-container>
             <div class="demo-content">
               <h2>Component 1</h2>
               <p>This is a non-modal pane layout.</p>
               <p>You can drag pane headers to rearrange the layout.</p>
+              <p><strong>Use the dropdown</strong> to change panel types!</p>
               <p><strong>Click ⋮</strong> in the header to split panes!</p>
               <p><strong>Drag panes to edges</strong> for smart positioning!</p>
             </div>
@@ -219,7 +220,7 @@
         <gl-splitter orientation="horizontal"></gl-splitter>
         
         <gl-column>
-          <gl-pane title="Component 2">
+          <gl-pane panel-type="terminal">
             <gl-component-container>
               <div class="demo-content">
                 <h2>Component 2</h2>
@@ -231,7 +232,7 @@
           
           <gl-splitter orientation="vertical"></gl-splitter>
           
-          <gl-pane title="Component 3">
+          <gl-pane panel-type="console">
             <gl-component-container>
               <div class="demo-content">
                 <h2>Component 3</h2>
@@ -244,7 +245,7 @@
         
         <gl-splitter orientation="horizontal"></gl-splitter>
         
-        <gl-pane title="Component 4">
+        <gl-pane panel-type="preview">
           <gl-component-container>
             <div class="demo-content">
               <h2>Component 4</h2>
@@ -275,6 +276,17 @@
     layoutElement.addEventListener('maximize-changed', (e) => {
       console.log('Maximize state changed:', e.detail);
     });
+    
+    layoutElement.addEventListener('panel-type-changed', (e) => {
+      console.log('Panel type changed:', e.detail);
+    });
+    
+    // Example of dynamically changing panel types
+    // layoutElement.panelTypes = ['code', 'markdown', 'json', 'yaml', 'xml'];
+    
+    // Test invalid panel type (will show error and use first valid type)
+    // const testPane = document.createElement('gl-pane');
+    // testPane.setAttribute('panel-type', 'invalid-type');
     
     // Theme selector
     const themeSelect = document.getElementById('theme-select');
