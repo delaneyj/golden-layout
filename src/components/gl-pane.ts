@@ -135,39 +135,39 @@ export class GlPane extends BaseElement {
           position: relative;
           overflow: hidden;
           box-sizing: border-box;
-        }
-        
-        :host([maximized]) {
-          position: fixed !important;
-          top: 0 !important;
-          left: 0 !important;
-          width: 100vw !important;
-          height: 100vh !important;
-          z-index: 1000;
-        }
-        
-        :host([invalid-panel-type]),
-        :host([invalid-id]) {
-          border-color: #fb4934 !important; /* gruvbox red */
-          box-shadow: 0 0 0 2px rgba(251, 73, 52, 0.25);
-        }
-        
-        :host(.drag-over) {
-          border-color: var(--gl-pane-drag-over-border, #83a598); /* gruvbox blue */
-          box-shadow: 0 0 0 2px var(--gl-pane-drag-over-shadow, rgba(131, 165, 152, 0.25));
-        }
-        
-        :host(.drag-over)::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: var(--gl-pane-drag-over-bg, rgba(131, 165, 152, 0.05));
-          pointer-events: none;
-          z-index: 10;
-          border-radius: inherit;
+          
+          &([maximized]) {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 1000;
+          }
+          
+          &([invalid-panel-type]),
+          &([invalid-id]) {
+            border-color: #fb4934 !important; /* gruvbox red */
+            box-shadow: 0 0 0 2px rgba(251, 73, 52, 0.25);
+          }
+          
+          &(.drag-over) {
+            border-color: var(--gl-pane-drag-over-border, #83a598); /* gruvbox blue */
+            box-shadow: 0 0 0 2px var(--gl-pane-drag-over-shadow, rgba(131, 165, 152, 0.25));
+            
+            &::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background: var(--gl-pane-drag-over-bg, rgba(131, 165, 152, 0.05));
+              pointer-events: none;
+              z-index: 10;
+              border-radius: inherit;
+            }
+          }
         }
         
         .header {
@@ -181,10 +181,10 @@ export class GlPane extends BaseElement {
           cursor: move;
           user-select: none;
           gap: 8px;
-        }
-        
-        .header:active {
-          cursor: grabbing;
+          
+          &:active {
+            cursor: grabbing;
+          }
         }
         
         .panel-type-dropdown {
@@ -197,14 +197,14 @@ export class GlPane extends BaseElement {
           cursor: pointer;
           outline: none;
           min-width: 80px;
-        }
-        
-        .panel-type-dropdown:hover {
-          background: var(--gl-control-active-bg, #665c54);
-        }
-        
-        .panel-type-dropdown:focus {
-          border-color: var(--gl-splitter-active-bg, #fe8019);
+          
+          &:hover {
+            background: var(--gl-control-active-bg, #665c54);
+          }
+          
+          &:focus {
+            border-color: var(--gl-splitter-active-bg, #fe8019);
+          }
         }
         
         .controls {
@@ -228,22 +228,22 @@ export class GlPane extends BaseElement {
           color: var(--gl-control-color, #bdae93); /* gruvbox fg3 */
           opacity: 0.7;
           transition: all 0.2s;
+          
+          &:hover {
+            background: var(--gl-control-hover-bg, #504945); /* gruvbox bg2 */
+            opacity: 1;
+          }
+          
+          &:active,
+          &.active {
+            background: var(--gl-control-active-bg, #665c54); /* gruvbox bg3 */
+          }
         }
         
-        .menu-button:hover,
-        .restore-button:hover {
-          background: var(--gl-control-hover-bg, #504945); /* gruvbox bg2 */
-          opacity: 1;
-        }
-        
-        .menu-button:active,
-        .menu-button.active,
-        .restore-button:active {
-          background: var(--gl-control-active-bg, #665c54); /* gruvbox bg3 */
-        }
-        
-        .restore-button:hover {
-          color: var(--gl-splitter-active-bg, #fe8019); /* gruvbox orange */
+        .restore-button {
+          &:hover {
+            color: var(--gl-splitter-active-bg, #fe8019); /* gruvbox orange */
+          }
         }
         
         .dropdown-menu {
@@ -259,10 +259,10 @@ export class GlPane extends BaseElement {
           display: none;
           z-index: 1000;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-        
-        .dropdown-menu.show {
-          display: block;
+          
+          &.show {
+            display: block;
+          }
         }
         
         .menu-item {
@@ -278,14 +278,14 @@ export class GlPane extends BaseElement {
           text-align: left;
           font-size: 13px;
           transition: background-color 0.2s;
-        }
-        
-        .menu-item:hover {
-          background: var(--gl-control-hover-bg, #504945);
-        }
-        
-        .menu-item svg {
-          flex-shrink: 0;
+          
+          &:hover {
+            background: var(--gl-control-hover-bg, #504945);
+          }
+          
+          & svg {
+            flex-shrink: 0;
+          }
         }
         
         .menu-divider {

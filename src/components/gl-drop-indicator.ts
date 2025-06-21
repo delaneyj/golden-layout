@@ -22,10 +22,10 @@ export class GlDropIndicator extends BaseElement {
           pointer-events: none;
           z-index: 999;
           display: none !important;
-        }
-        
-        :host([data-visible="true"]) {
-          display: block !important;
+          
+          &([data-visible="true"]) {
+            display: block !important;
+          }
         }
         
         .indicator {
@@ -34,49 +34,49 @@ export class GlDropIndicator extends BaseElement {
           border: 2px solid var(--gl-drop-indicator-border, #83a598); /* gruvbox blue */
           border-radius: var(--gl-drop-indicator-radius, 4px);
           transition: all 0.2s ease;
-        }
-        
-        .indicator.center {
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-        }
-        
-        .indicator.top {
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 30%;
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
-        }
-        
-        .indicator.bottom {
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 30%;
-          border-top-left-radius: 0;
-          border-top-right-radius: 0;
-        }
-        
-        .indicator.left {
-          top: 0;
-          left: 0;
-          bottom: 0;
-          width: 30%;
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0;
-        }
-        
-        .indicator.right {
-          top: 0;
-          right: 0;
-          bottom: 0;
-          width: 30%;
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0;
+          
+          &.center {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+          }
+          
+          &.top {
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30%;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+          
+          &.bottom {
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30%;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+          }
+          
+          &.left {
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 30%;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+          
+          &.right {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 30%;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
         }
         
         .label {

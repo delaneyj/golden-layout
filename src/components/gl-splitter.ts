@@ -73,16 +73,15 @@ export class GlSplitter extends BaseElement {
              max-height: var(--gl-splitter-size, 5px);
              width: 100%;`
           }
+          
+          &:hover {
+            background: var(--gl-splitter-hover-bg, #665c54); /* gruvbox bg3 */
+          }
+          
+          &.dragging {
+            background: var(--gl-splitter-active-bg, #fe8019); /* gruvbox orange */
+          }
         }
-        
-        :host(:hover) {
-          background: var(--gl-splitter-hover-bg, #665c54); /* gruvbox bg3 */
-        }
-        
-        :host(.dragging) {
-          background: var(--gl-splitter-active-bg, #fe8019); /* gruvbox orange */
-        }
-        
       </style>
     `;
   }
