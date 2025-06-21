@@ -15,14 +15,14 @@ describe('tabs', () => {
 
   it('creates tabs for each component in stack', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Component 1">
+      <gl-pane>
+        
           <div>Content 1</div>
-        </gl-component-container>
-        <gl-component-container title="Component 2">
+        
+        
           <div>Content 2</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -35,14 +35,14 @@ describe('tabs', () => {
 
   it('marks first tab as active by default', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Component 1">
+      <gl-pane>
+        
           <div>Content 1</div>
-        </gl-component-container>
-        <gl-component-container title="Component 2">
+        
+        
           <div>Content 2</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -54,14 +54,14 @@ describe('tabs', () => {
 
   it('switches active tab on click', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Component 1">
+      <gl-pane>
+        
           <div>Content 1</div>
-        </gl-component-container>
-        <gl-component-container title="Component 2">
+        
+        
           <div>Content 2</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -85,14 +85,14 @@ describe('tabs', () => {
 
   it('all tabs are draggable by default', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Component 1">
+      <gl-pane>
+        
           <div>Content 1</div>
-        </gl-component-container>
-        <gl-component-container title="Component 2">
+        
+        
           <div>Content 2</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -105,11 +105,11 @@ describe('tabs', () => {
 
   it('shows close button when closable', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Closable" closable="true">
+      <gl-pane>
+        
           <div>Content</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -121,11 +121,11 @@ describe('tabs', () => {
 
   it('hides close button when not closable', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Not Closable" closable="false">
+      <gl-pane>
+        
           <div>Content</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -140,19 +140,19 @@ describe('tabs', () => {
     const tabCloseHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Component 1">
+      <gl-pane>
+        
           <div>Content 1</div>
-        </gl-component-container>
-        <gl-component-container title="Component 2">
+        
+        
           <div>Content 2</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
     stack?.addEventListener('tab-close', tabCloseHandler);
 
     const firstTab = container.querySelector('gl-tab');
@@ -183,17 +183,17 @@ describe('tabs', () => {
 
   it('activates next tab when active tab is closed', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Component 1">
+      <gl-pane>
+        
           <div>Content 1</div>
-        </gl-component-container>
-        <gl-component-container title="Component 2">
+        
+        
           <div>Content 2</div>
-        </gl-component-container>
-        <gl-component-container title="Component 3">
+        
+        
           <div>Content 3</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -220,21 +220,21 @@ describe('tabs', () => {
     const components = Array.from(
       { length: 10 },
       (_, i) => `
-      <gl-component-container title="Component ${i + 1}">
+      
         <div>Content ${i + 1}</div>
-      </gl-component-container>
+      
     `,
     ).join('');
 
     container.innerHTML = `
-      <gl-stack style="width: 400px;">
+      <gl-pane style="width: 400px;">
         ${components}
-      </gl-stack>
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
     const header = stack?.shadowRoot?.querySelector('gl-header');
     const tabsContainer = header?.shadowRoot?.querySelector('.tabs') as HTMLElement;
 
@@ -270,11 +270,11 @@ describe('tabs', () => {
 
   it('updates tab slot attribute correctly', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Component 1">
+      <gl-pane>
+        
           <div>Content 1</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));

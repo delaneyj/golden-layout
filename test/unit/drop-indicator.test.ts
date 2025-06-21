@@ -28,11 +28,11 @@ describe('drop indicator', () => {
   it('creates drop indicator when layout is connected', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Component 1">
+        <gl-pane>
+          
             <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -48,17 +48,17 @@ describe('drop indicator', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="source">
-            <gl-component-container title="Component 1">
+          <gl-pane id="source">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="target">
-            <gl-component-container title="Component 2">
+          <gl-pane id="target">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -104,17 +104,17 @@ describe('drop indicator', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="source">
-            <gl-component-container title="Component 1">
+          <gl-pane id="source">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="target">
-            <gl-component-container title="Component 2">
+          <gl-pane id="target">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -159,11 +159,11 @@ describe('drop indicator', () => {
   it('hides drop indicator on drag end', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Component 1">
+        <gl-pane>
+          
             <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -180,7 +180,7 @@ describe('drop indicator', () => {
     tab?.dispatchEvent(dragStartEvent);
 
     // Show drop indicator
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
     if (stack && layout._dropIndicator) {
       layout._dropIndicator.show(stack);
     }
@@ -244,17 +244,17 @@ describe('drop indicator', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="source">
-            <gl-component-container title="Component 1">
+          <gl-pane id="source">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="target">
-            <gl-component-container title="Component 2">
+          <gl-pane id="target">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;

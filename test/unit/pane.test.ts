@@ -27,9 +27,9 @@ describe('gl-pane', () => {
   it('renders with title', () => {
     container.innerHTML = `
       <gl-pane title="Test Pane">
-        <gl-component-container>
+        
           <div>Content</div>
-        </gl-component-container>
+        
       </gl-pane>
     `;
 
@@ -44,9 +44,9 @@ describe('gl-pane', () => {
   it('gets title from child component if not set', async () => {
     container.innerHTML = `
       <gl-pane>
-        <gl-component-container title="Component Title">
+        
           <div>Content</div>
-        </gl-component-container>
+        
       </gl-pane>
     `;
 
@@ -61,9 +61,9 @@ describe('gl-pane', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-pane title="Test Pane">
-          <gl-component-container>
+          
             <div>Content</div>
-          </gl-component-container>
+          
         </gl-pane>
       </gl-layout>
     `;
@@ -85,9 +85,9 @@ describe('gl-pane', () => {
   it('toggles maximize state', () => {
     container.innerHTML = `
       <gl-pane title="Test Pane">
-        <gl-component-container>
+        
           <div>Content</div>
-        </gl-component-container>
+        
       </gl-pane>
     `;
 
@@ -113,15 +113,15 @@ describe('gl-pane', () => {
       <gl-layout>
         <gl-row>
           <gl-pane id="pane1" title="Pane 1">
-            <gl-component-container>
+            
               <div>Content 1</div>
-            </gl-component-container>
+            
           </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
           <gl-pane id="pane2" title="Pane 2">
-            <gl-component-container>
+            
               <div>Content 2</div>
-            </gl-component-container>
+            
           </gl-pane>
         </gl-row>
       </gl-layout>

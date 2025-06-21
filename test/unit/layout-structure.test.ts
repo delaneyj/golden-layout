@@ -17,18 +17,18 @@ describe('layout structure', () => {
     // In our Web Components version, components must be explicitly placed in stacks
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Standalone Component">
+        <gl-pane>
+          
             <div>Content</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const layout = container.querySelector('gl-layout');
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
     const component = container.querySelector('gl-component-container');
 
     // Verify the structure
@@ -46,17 +46,17 @@ describe('layout structure', () => {
       <gl-layout>
         <gl-row>
           <gl-column>
-            <gl-stack>
-              <gl-component-container title="Component 1">
+            <gl-pane>
+              
                 <div>Content 1</div>
-              </gl-component-container>
-            </gl-stack>
+              
+            </gl-pane>
           </gl-column>
-          <gl-stack>
-            <gl-component-container title="Component 2">
+          <gl-pane>
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -67,7 +67,7 @@ describe('layout structure', () => {
     const layout = container.querySelector('gl-layout');
     const row = container.querySelector('gl-row');
     const column = container.querySelector('gl-column');
-    const stacks = container.querySelectorAll('gl-stack');
+    const stacks = container.querySelectorAll('gl-pane');
     const components = container.querySelectorAll('gl-component-container');
 
     expect(layout).toBeTruthy();
@@ -85,23 +85,23 @@ describe('layout structure', () => {
         <gl-row>
           <gl-column>
             <gl-row>
-              <gl-stack>
-                <gl-component-container title="Component 1">
+              <gl-pane>
+                
                   <div>Content 1</div>
-                </gl-component-container>
-              </gl-stack>
-              <gl-stack>
-                <gl-component-container title="Component 2">
+                
+              </gl-pane>
+              <gl-pane>
+                
                   <div>Content 2</div>
-                </gl-component-container>
-              </gl-stack>
+                
+              </gl-pane>
             </gl-row>
           </gl-column>
-          <gl-stack>
-            <gl-component-container title="Component 3">
+          <gl-pane>
+            
               <div>Content 3</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -111,7 +111,7 @@ describe('layout structure', () => {
     const outerRow = container.querySelector('gl-row');
     const column = container.querySelector('gl-column');
     const innerRow = column?.querySelector('gl-row');
-    const stacks = container.querySelectorAll('gl-stack');
+    const stacks = container.querySelectorAll('gl-pane');
 
     expect(outerRow).toBeTruthy();
     expect(column).toBeTruthy();
@@ -126,21 +126,21 @@ describe('layout structure', () => {
   it('single stack at root level', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Component 1">
+        <gl-pane>
+          
             <div>Content 1</div>
-          </gl-component-container>
-          <gl-component-container title="Component 2">
+          
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const layout = container.querySelector('gl-layout');
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
     const components = container.querySelectorAll('gl-component-container');
     const tabs = container.querySelectorAll('gl-tab');
 
@@ -153,17 +153,17 @@ describe('layout structure', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack>
-            <gl-component-container title="Left">
+          <gl-pane>
+            
               <div>Left content</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack>
-            <gl-component-container title="Right">
+          <gl-pane>
+            
               <div>Right content</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -172,7 +172,7 @@ describe('layout structure', () => {
 
     const row = container.querySelector('gl-row');
     const splitter = container.querySelector('gl-splitter');
-    const stacks = container.querySelectorAll('gl-stack');
+    const stacks = container.querySelectorAll('gl-pane');
 
     expect(splitter).toBeTruthy();
     expect(splitter?.getAttribute('orientation')).toBe('horizontal');

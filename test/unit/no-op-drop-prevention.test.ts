@@ -37,17 +37,17 @@ describe('no-op drop prevention', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="stack1">
-            <gl-component-container title="Component 1">
+          <gl-pane id="stack1">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="stack2">
-            <gl-component-container title="Component 2">
+          <gl-pane id="stack2">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -95,17 +95,17 @@ describe('no-op drop prevention', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="stack1">
-            <gl-component-container title="Component 1">
+          <gl-pane id="stack1">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="stack2">
-            <gl-component-container title="Component 2">
+          <gl-pane id="stack2">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -149,17 +149,17 @@ describe('no-op drop prevention', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-column>
-          <gl-stack id="stack1">
-            <gl-component-container title="Component 1">
+          <gl-pane id="stack1">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="vertical"></gl-splitter>
-          <gl-stack id="stack2">
-            <gl-component-container title="Component 2">
+          <gl-pane id="stack2">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-column>
       </gl-layout>
     `;
@@ -203,17 +203,17 @@ describe('no-op drop prevention', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-column>
-          <gl-stack id="stack1">
-            <gl-component-container title="Component 1">
+          <gl-pane id="stack1">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="vertical"></gl-splitter>
-          <gl-stack id="stack2">
-            <gl-component-container title="Component 2">
+          <gl-pane id="stack2">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-column>
       </gl-layout>
     `;
@@ -257,23 +257,23 @@ describe('no-op drop prevention', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="stack1">
-            <gl-component-container title="Component 1">
+          <gl-pane id="stack1">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="stack2">
-            <gl-component-container title="Component 2">
+          <gl-pane id="stack2">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="stack3">
-            <gl-component-container title="Component 3">
+          <gl-pane id="stack3">
+            
               <div>Content 3</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -318,17 +318,17 @@ describe('no-op drop prevention', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="stack1">
-            <gl-component-container title="Component 1">
+          <gl-pane id="stack1">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="stack2">
-            <gl-component-container title="Component 2">
+          <gl-pane id="stack2">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;

@@ -25,11 +25,11 @@ describe('component state', () => {
 
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Stateful Component">
+        <gl-pane>
+          
             <div id="content">Content</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -49,9 +49,9 @@ describe('component state', () => {
     const stateChangedHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-component-container title="Test Component">
+      
         <div>Content</div>
-      </gl-component-container>
+      
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -73,9 +73,9 @@ describe('component state', () => {
 
   it('updates state partially', async () => {
     container.innerHTML = `
-      <gl-component-container title="Test Component">
+      
         <div>Content</div>
-      </gl-component-container>
+      
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -100,14 +100,14 @@ describe('component state', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="stack1">
-            <gl-component-container title="Component" id="stateful">
+          <gl-pane id="stack1">
+            
               <div>Content</div>
-            </gl-component-container>
-          </gl-stack>
-          <gl-stack id="stack2">
+            
+          </gl-pane>
+          <gl-pane id="stack2">
             <!-- Empty stack -->
-          </gl-stack>
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -135,9 +135,9 @@ describe('component state', () => {
 
     const testDiv = document.createElement('div');
     testDiv.innerHTML = `
-      <gl-component-container title="Test Component">
+      
         <div>Content</div>
-      </gl-component-container>
+      
     `;
 
     const component = testDiv.querySelector('gl-component-container') as ComponentWithState;
@@ -169,9 +169,9 @@ describe('component state', () => {
     const destroyedHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-component-container title="Test Component">
+      
         <div>Content</div>
-      </gl-component-container>
+      
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -192,16 +192,16 @@ describe('component state', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack>
-            <gl-component-container title="Component 1" id="comp1">
+          <gl-pane>
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
-          <gl-stack>
-            <gl-component-container title="Component 2" id="comp2">
+            
+          </gl-pane>
+          <gl-pane>
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;

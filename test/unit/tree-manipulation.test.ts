@@ -16,11 +16,11 @@ describe('tree manipulation', () => {
   it('adds components to existing stack', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="target-stack">
-          <gl-component-container title="Component 1">
+        <gl-pane id="target-stack">
+          
             <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -49,20 +49,20 @@ describe('tree manipulation', () => {
   it('removes components from stack', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Component 1" id="comp1">
+        <gl-pane>
+          
             <div>Content 1</div>
-          </gl-component-container>
-          <gl-component-container title="Component 2" id="comp2">
+          
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
     const comp1 = container.querySelector('#comp1');
 
     // Remove first component
@@ -81,17 +81,17 @@ describe('tree manipulation', () => {
   it('replaces component with another', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Original" id="original">
+        <gl-pane>
+          
             <div>Original content</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
     const original = container.querySelector('#original');
 
     // Create replacement
@@ -116,11 +116,11 @@ describe('tree manipulation', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row id="target-row">
-          <gl-stack>
-            <gl-component-container title="Component 1">
+          <gl-pane>
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -135,7 +135,7 @@ describe('tree manipulation', () => {
     row?.appendChild(splitter);
 
     // Add new stack
-    const newStack = document.createElement('gl-stack');
+    const newStack = document.createElement('gl-pane');
     const newComponent = document.createElement('gl-component-container');
     newComponent.setAttribute('title', 'Component 2');
     newComponent.innerHTML = '<div>Content 2</div>';
@@ -144,7 +144,7 @@ describe('tree manipulation', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stacks = row?.querySelectorAll('gl-stack');
+    const stacks = row?.querySelectorAll('gl-pane');
     expect(stacks?.length).toBe(2);
 
     const components = container.querySelectorAll('gl-component-container');
@@ -154,11 +154,11 @@ describe('tree manipulation', () => {
   it('converts stack to row with multiple stacks', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="original-stack">
-          <gl-component-container title="Component 1">
+        <gl-pane id="original-stack">
+          
             <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -181,7 +181,7 @@ describe('tree manipulation', () => {
     row.appendChild(splitter);
 
     // Add second stack
-    const stack2 = document.createElement('gl-stack');
+    const stack2 = document.createElement('gl-pane');
     const comp2 = document.createElement('gl-component-container');
     comp2.setAttribute('title', 'Component 2');
     comp2.innerHTML = '<div>Content 2</div>';
@@ -194,7 +194,7 @@ describe('tree manipulation', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     expect(row.parentElement).toBe(layout);
-    expect(row.querySelectorAll('gl-stack').length).toBe(2);
+    expect(row.querySelectorAll('gl-pane').length).toBe(2);
     expect(container.querySelectorAll('gl-component-container').length).toBe(2);
   });
 
@@ -203,11 +203,11 @@ describe('tree manipulation', () => {
       <gl-layout>
         <gl-row>
           <gl-column>
-            <gl-stack>
-              <gl-component-container title="Component 1">
+            <gl-pane>
+              
                 <div>Content 1</div>
-              </gl-component-container>
-            </gl-stack>
+              
+            </gl-pane>
           </gl-column>
         </gl-row>
       </gl-layout>
@@ -218,7 +218,7 @@ describe('tree manipulation', () => {
     const layout = container.querySelector('gl-layout');
     const row = container.querySelector('gl-row');
     const column = container.querySelector('gl-column');
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
     const component = container.querySelector('gl-component-container');
 
     // Verify hierarchy
@@ -232,17 +232,17 @@ describe('tree manipulation', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="stack1">
-            <gl-component-container title="Component 1">
+          <gl-pane id="stack1">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="stack2">
-            <gl-component-container title="Component 2" id="comp2">
+          <gl-pane id="stack2">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -275,16 +275,16 @@ describe('tree manipulation', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="source">
-            <gl-component-container title="Moving Component" id="moving">
+          <gl-pane id="source">
+            
               <div>I will move</div>
-            </gl-component-container>
-          </gl-stack>
-          <gl-stack id="target">
-            <gl-component-container title="Static Component">
+            
+          </gl-pane>
+          <gl-pane id="target">
+            
               <div>I stay here</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;

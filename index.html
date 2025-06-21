@@ -205,7 +205,7 @@
     <gl-layout id="layout" panel-types='["editor", "terminal", "console", "preview", "explorer", "debug", "output"]' pane-prefix="foo">
       <gl-row>
         <gl-pane panel-type="foo">
-          <gl-component-container>
+          
             <div class="demo-content">
               <h2>Component 1</h2>
               <p>This is a non-modal pane layout.</p>
@@ -214,45 +214,45 @@
               <p><strong>Click ⋮</strong> in the header to split panes!</p>
               <p><strong>Drag panes to edges</strong> for smart positioning!</p>
             </div>
-          </gl-component-container>
+          
         </gl-pane>
         
         <gl-splitter orientation="horizontal"></gl-splitter>
         
         <gl-column>
           <gl-pane panel-type="terminal">
-            <gl-component-container>
+            
               <div class="demo-content">
                 <h2>Component 2</h2>
                 <p>Each pane shows its content directly.</p>
                 <p>No tabs - just like Blender, Nuke, or DaVinci Resolve.</p>
               </div>
-            </gl-component-container>
+            
           </gl-pane>
           
           <gl-splitter orientation="vertical"></gl-splitter>
           
           <gl-pane panel-type="console">
-            <gl-component-container>
+            
               <div class="demo-content">
                 <h2>Component 3</h2>
                 <p>Drag splitters to resize panes.</p>
                 <p>Use the ⋮ menu for split, maximize, and close.</p>
               </div>
-            </gl-component-container>
+            
           </gl-pane>
         </gl-column>
         
         <gl-splitter orientation="horizontal"></gl-splitter>
         
         <gl-pane panel-type="preview">
-          <gl-component-container>
+          
             <div class="demo-content">
               <h2>Component 4</h2>
               <p>Professional non-modal layout.</p>
               <p>Perfect for complex applications.</p>
             </div>
-          </gl-component-container>
+          
         </gl-pane>
       </gl-row>
     </gl-layout>

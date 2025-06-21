@@ -16,14 +16,14 @@ describe('titles', () => {
   it('applies titles from component attributes', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="First Title" id="hasTitle">
+        <gl-pane>
+          
             <div>Content 1</div>
-          </gl-component-container>
-          <gl-component-container id="noTitle">
+          
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -37,11 +37,11 @@ describe('titles', () => {
 
   it('displays title text in tab', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Test Title">
+      <gl-pane>
+        
           <div>Content</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -53,11 +53,11 @@ describe('titles', () => {
 
   it('updates title when component title changes', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Original Title" id="comp">
+      <gl-pane>
+        
           <div>Content</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -76,11 +76,11 @@ describe('titles', () => {
 
   it('handles empty titles', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="">
+      <gl-pane>
+        
           <div>Content</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -92,17 +92,17 @@ describe('titles', () => {
 
   it('handles multiple components with different titles', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Alpha">
+      <gl-pane>
+        
           <div>Content A</div>
-        </gl-component-container>
-        <gl-component-container title="Beta">
+        
+        
           <div>Content B</div>
-        </gl-component-container>
-        <gl-component-container title="Gamma">
+        
+        
           <div>Content C</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -117,14 +117,14 @@ describe('titles', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="stack1">
-            <gl-component-container title="Moving Component" id="moving">
+          <gl-pane id="stack1">
+            
               <div>Content</div>
-            </gl-component-container>
-          </gl-stack>
-          <gl-stack id="stack2">
+            
+          </gl-pane>
+          <gl-pane id="stack2">
             <!-- Empty -->
-          </gl-stack>
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -151,11 +151,11 @@ describe('titles', () => {
       'This is a very long title that should be truncated or handled gracefully in the tab display';
 
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="${longTitle}">
+      <gl-pane>
+        
           <div>Content</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -178,16 +178,16 @@ describe('titles', () => {
 
   it('updates tab count in default titles', async () => {
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container>
+      <gl-pane>
+        
           <div>Content 1</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
     const firstTab = container.querySelector('gl-tab');
     expect(firstTab?.getAttribute('title')).toBe('Tab 1');
 

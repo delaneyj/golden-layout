@@ -20,23 +20,23 @@ describe('space redistribution', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="stack1" data-width="30%">
-            <gl-component-container title="Component 1">
+          <gl-pane id="stack1" data-width="30%">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="stack2" data-width="40%">
-            <gl-component-container title="Component 2">
+          <gl-pane id="stack2" data-width="40%">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="stack3" data-width="30%">
-            <gl-component-container title="Component 3">
+          <gl-pane id="stack3" data-width="30%">
+            
               <div>Content 3</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -78,17 +78,17 @@ describe('space redistribution', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-column>
-          <gl-stack id="stack1" data-height="25%">
-            <gl-component-container title="Component 1">
+          <gl-pane id="stack1" data-height="25%">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="vertical"></gl-splitter>
-          <gl-stack id="stack2" data-height="25%">
-            <gl-component-container title="Component 2">
+          <gl-pane id="stack2" data-height="25%">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-column>
       </gl-layout>
     `;
@@ -120,17 +120,17 @@ describe('space redistribution', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="source" data-width="50%">
-            <gl-component-container title="Component 1">
+          <gl-pane id="source" data-width="50%">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="target" data-width="50%">
-            <gl-component-container title="Component 2">
+          <gl-pane id="target" data-width="50%">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -182,24 +182,24 @@ describe('space redistribution', () => {
       <gl-layout>
         <gl-row>
           <gl-column data-width="50%">
-            <gl-stack id="stack1" data-height="50%">
-              <gl-component-container title="Component 1">
+            <gl-pane id="stack1" data-height="50%">
+              
                 <div>Content 1</div>
-              </gl-component-container>
-            </gl-stack>
+              
+            </gl-pane>
             <gl-splitter orientation="vertical"></gl-splitter>
-            <gl-stack id="stack2" data-height="50%">
-              <gl-component-container title="Component 2">
+            <gl-pane id="stack2" data-height="50%">
+              
                 <div>Content 2</div>
-              </gl-component-container>
-            </gl-stack>
+              
+            </gl-pane>
           </gl-column>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="stack3" data-width="50%">
-            <gl-component-container title="Component 3">
+          <gl-pane id="stack3" data-width="50%">
+            
               <div>Content 3</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;

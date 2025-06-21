@@ -22,20 +22,20 @@ describe('drag and drop tabs between stacks', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="source-stack">
-            <gl-component-container title="Component 1" id="comp1">
+          <gl-pane id="source-stack">
+            
               <div>Content 1</div>
-            </gl-component-container>
-            <gl-component-container title="Component 2" id="comp2">
+            
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="target-stack">
-            <gl-component-container title="Component 3" id="comp3">
+          <gl-pane id="target-stack">
+            
               <div>Content 3</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -104,16 +104,16 @@ describe('drag and drop tabs between stacks', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="source">
-            <gl-component-container title="Draggable">
+          <gl-pane id="source">
+            
               <div>Drag me</div>
-            </gl-component-container>
-          </gl-stack>
-          <gl-stack id="target">
-            <gl-component-container title="Target">
+            
+          </gl-pane>
+          <gl-pane id="target">
+            
               <div>Drop here</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -172,14 +172,14 @@ describe('drag and drop tabs between stacks', () => {
   it('does not move tab when dropped on same stack', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="stack">
-          <gl-component-container title="Component 1" id="comp1">
+        <gl-pane id="stack">
+          
             <div>Content 1</div>
-          </gl-component-container>
-          <gl-component-container title="Component 2" id="comp2">
+          
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 

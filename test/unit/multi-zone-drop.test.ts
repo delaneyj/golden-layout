@@ -40,17 +40,17 @@ describe('multi-zone drop', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="source">
-            <gl-component-container title="Component 1">
+          <gl-pane id="source">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="target">
-            <gl-component-container title="Component 2">
+          <gl-pane id="target">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -103,16 +103,16 @@ describe('multi-zone drop', () => {
   it('detects bottom drop zone', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="source">
-          <gl-component-container title="Component 1">
+        <gl-pane id="source">
+          
             <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
-        <gl-stack id="target">
-          <gl-component-container title="Component 2">
+          
+        </gl-pane>
+        <gl-pane id="target">
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -151,16 +151,16 @@ describe('multi-zone drop', () => {
   it('detects left drop zone', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="source">
-          <gl-component-container title="Component 1">
+        <gl-pane id="source">
+          
             <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
-        <gl-stack id="target">
-          <gl-component-container title="Component 2">
+          
+        </gl-pane>
+        <gl-pane id="target">
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -199,16 +199,16 @@ describe('multi-zone drop', () => {
   it('detects right drop zone', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="source">
-          <gl-component-container title="Component 1">
+        <gl-pane id="source">
+          
             <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
-        <gl-stack id="target">
-          <gl-component-container title="Component 2">
+          
+        </gl-pane>
+        <gl-pane id="target">
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -247,16 +247,16 @@ describe('multi-zone drop', () => {
   it('detects center drop zone', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="source">
-          <gl-component-container title="Component 1">
+        <gl-pane id="source">
+          
             <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
-        <gl-stack id="target">
-          <gl-component-container title="Component 2">
+          
+        </gl-pane>
+        <gl-pane id="target">
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -296,17 +296,17 @@ describe('multi-zone drop', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="source">
-            <gl-component-container title="Component 1">
+          <gl-pane id="source">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="target">
-            <gl-component-container title="Component 2">
+          <gl-pane id="target">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -354,17 +354,17 @@ describe('multi-zone drop', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-column>
-          <gl-stack id="source">
-            <gl-component-container title="Component 1">
+          <gl-pane id="source">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="vertical"></gl-splitter>
-          <gl-stack id="target">
-            <gl-component-container title="Component 2">
+          <gl-pane id="target">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-column>
       </gl-layout>
     `;

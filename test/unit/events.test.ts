@@ -18,16 +18,16 @@ describe('events', () => {
     const tabCloseHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Test Component">
+      <gl-pane>
+        
           <div>Content</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
     const tab = container.querySelector('gl-tab');
 
     // Listen for events
@@ -49,18 +49,18 @@ describe('events', () => {
 
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Test">
+        <gl-pane>
+          
             <div>Content</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const layout = container.querySelector('gl-layout');
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
 
     // Listen at layout level
     layout?.addEventListener('maximize-changed', maximizeHandler);
@@ -84,9 +84,9 @@ describe('events', () => {
     const handler = vi.fn();
 
     container.innerHTML = `
-      <gl-component-container title="Test">
+      
         <div>Content</div>
-      </gl-component-container>
+      
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -122,9 +122,9 @@ describe('events', () => {
     const stateChangedHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-component-container title="Test">
+      
         <div>Content</div>
-      </gl-component-container>
+      
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -154,16 +154,16 @@ describe('events', () => {
     const handler3 = vi.fn();
 
     container.innerHTML = `
-      <gl-stack>
-        <gl-component-container title="Test">
+      <gl-pane>
+        
           <div>Content</div>
-        </gl-component-container>
-      </gl-stack>
+        
+      </gl-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
 
     // Add multiple listeners
     stack?.addEventListener('tab-changed', handler1);
@@ -200,18 +200,18 @@ describe('events', () => {
 
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Test">
+        <gl-pane>
+          
             <div>Content</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const layout = container.querySelector('gl-layout');
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
 
     // Listen on both elements
     layout?.addEventListener('tab-clicked', parentHandler);

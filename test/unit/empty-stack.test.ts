@@ -17,15 +17,15 @@ describe('empty stack', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-component-container title="Component 1">
+          
             <div>Component 1</div>
-          </gl-component-container>
-          <gl-component-container title="Component 2">
+          
+          
             <div>Component 2</div>
-          </gl-component-container>
-          <gl-stack>
+          
+          <gl-pane>
             <!-- Empty stack -->
-          </gl-stack>
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -36,7 +36,7 @@ describe('empty stack', () => {
     expect(row).toBeTruthy();
     expect(row?.children.length).toBe(3);
 
-    const stack = container.querySelector('gl-stack');
+    const stack = container.querySelector('gl-pane');
     expect(stack).toBeTruthy();
 
     // Check that stack has no content children (only tabs in slot)
@@ -50,9 +50,9 @@ describe('empty stack', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="empty-stack">
+          <gl-pane id="empty-stack">
             <!-- Empty stack -->
-          </gl-stack>
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -85,9 +85,9 @@ describe('empty stack', () => {
   it('handles multiple components added to empty stack', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="empty-stack">
+        <gl-pane id="empty-stack">
           <!-- Empty stack -->
-        </gl-stack>
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -126,18 +126,18 @@ describe('empty stack', () => {
   it('removes empty stack when all components are removed', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Component 1">
+        <gl-pane>
+          
             <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const layout = container.querySelector('gl-layout');
-    const _stack = container.querySelector('gl-stack');
+    const _stack = container.querySelector('gl-pane');
     const tab = container.querySelector('gl-tab');
 
     // Close the tab
@@ -148,7 +148,7 @@ describe('empty stack', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Stack should be removed due to auto-cleanup
-    expect(container.querySelector('gl-stack')).toBeNull();
+    expect(container.querySelector('gl-pane')).toBeNull();
 
     // Layout should be empty
     expect(layout?.children.length).toBe(0);

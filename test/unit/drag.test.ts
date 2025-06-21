@@ -35,11 +35,11 @@ describe('drag and drop', () => {
 
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Component 1">
+        <gl-pane>
+          
             <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -72,16 +72,16 @@ describe('drag and drop', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack>
-            <gl-component-container title="Component 1">
+          <gl-pane>
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
-          <gl-stack>
-            <gl-component-container title="Component 2">
+            
+          </gl-pane>
+          <gl-pane>
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -129,14 +129,14 @@ describe('drag and drop', () => {
 
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Component 1">
+        <gl-pane>
+          
             <div>Content 1</div>
-          </gl-component-container>
-          <gl-component-container title="Component 2">
+          
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -193,11 +193,11 @@ describe('drag and drop', () => {
 
     container.innerHTML = `
       <gl-layout>
-        <gl-stack>
-          <gl-component-container title="Component 1">
+        <gl-pane>
+          
             <div>Content 1</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 

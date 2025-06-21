@@ -25,17 +25,17 @@ describe('splitter consistency', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack>
-            <gl-component-container title="Component 1">
+          <gl-pane>
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack>
-            <gl-component-container title="Component 2">
+          <gl-pane>
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -61,17 +61,17 @@ describe('splitter consistency', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-column>
-          <gl-stack>
-            <gl-component-container title="Component 1">
+          <gl-pane>
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="vertical"></gl-splitter>
-          <gl-stack>
-            <gl-component-container title="Component 2">
+          <gl-pane>
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-column>
       </gl-layout>
     `;
@@ -98,24 +98,24 @@ describe('splitter consistency', () => {
       <gl-layout>
         <gl-row>
           <gl-column>
-            <gl-stack>
-              <gl-component-container title="Component 1">
+            <gl-pane>
+              
                 <div>Content 1</div>
-              </gl-component-container>
-            </gl-stack>
+              
+            </gl-pane>
             <gl-splitter orientation="vertical"></gl-splitter>
-            <gl-stack id="remove-me">
-              <gl-component-container title="Component 2">
+            <gl-pane id="remove-me">
+              
                 <div>Content 2</div>
-              </gl-component-container>
-            </gl-stack>
+              
+            </gl-pane>
           </gl-column>
           <gl-splitter orientation="horizontal" id="main-splitter"></gl-splitter>
-          <gl-stack>
-            <gl-component-container title="Component 3">
+          <gl-pane>
+            
               <div>Content 3</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -148,31 +148,31 @@ describe('splitter consistency', () => {
       <gl-layout>
         <gl-row>
           <gl-column>
-            <gl-stack>
-              <gl-component-container title="Component 1">
+            <gl-pane>
+              
                 <div>Content 1</div>
-              </gl-component-container>
-            </gl-stack>
+              
+            </gl-pane>
             <gl-splitter orientation="vertical" class="v-splitter"></gl-splitter>
-            <gl-stack>
-              <gl-component-container title="Component 2">
+            <gl-pane>
+              
                 <div>Content 2</div>
-              </gl-component-container>
-            </gl-stack>
+              
+            </gl-pane>
           </gl-column>
           <gl-splitter orientation="horizontal" class="h-splitter"></gl-splitter>
           <gl-column>
-            <gl-stack>
-              <gl-component-container title="Component 3">
+            <gl-pane>
+              
                 <div>Content 3</div>
-              </gl-component-container>
-            </gl-stack>
+              
+            </gl-pane>
             <gl-splitter orientation="vertical" class="v-splitter"></gl-splitter>
-            <gl-stack>
-              <gl-component-container title="Component 4">
+            <gl-pane>
+              
                 <div>Content 4</div>
-              </gl-component-container>
-            </gl-stack>
+              
+            </gl-pane>
           </gl-column>
         </gl-row>
       </gl-layout>
@@ -203,23 +203,23 @@ describe('splitter consistency', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row id="test-row">
-          <gl-stack>
-            <gl-component-container title="Component 1">
+          <gl-pane>
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack>
-            <gl-component-container title="Component 2">
+          <gl-pane>
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack>
-            <gl-component-container title="Component 3">
+          <gl-pane>
+            
               <div>Content 3</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -227,7 +227,7 @@ describe('splitter consistency', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const row = container.querySelector('#test-row') as GlRowElement;
-    const stacks = container.querySelectorAll('gl-stack');
+    const stacks = container.querySelectorAll('gl-pane');
     const splitters = container.querySelectorAll('gl-splitter') as NodeListOf<GlSplitter>;
 
     // Should have 3 stacks and 2 splitters

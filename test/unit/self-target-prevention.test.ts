@@ -45,14 +45,14 @@ describe('self-target prevention', () => {
   it('prevents center drop on same stack', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="stack1">
-          <gl-component-container title="Component 1">
+        <gl-pane id="stack1">
+          
             <div>Content 1</div>
-          </gl-component-container>
-          <gl-component-container title="Component 2">
+          
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -102,14 +102,14 @@ describe('self-target prevention', () => {
   it('prevents edge drop on same stack', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="stack1">
-          <gl-component-container title="Component 1">
+        <gl-pane id="stack1">
+          
             <div>Content 1</div>
-          </gl-component-container>
-          <gl-component-container title="Component 2">
+          
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 
@@ -156,17 +156,17 @@ describe('self-target prevention', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-row>
-          <gl-stack id="stack1">
-            <gl-component-container title="Component 1">
+          <gl-pane id="stack1">
+            
               <div>Content 1</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
           <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-stack id="stack2">
-            <gl-component-container title="Component 2">
+          <gl-pane id="stack2">
+            
               <div>Content 2</div>
-            </gl-component-container>
-          </gl-stack>
+            
+          </gl-pane>
         </gl-row>
       </gl-layout>
     `;
@@ -215,14 +215,14 @@ describe('self-target prevention', () => {
   it('prevents any drop position on same stack', async () => {
     container.innerHTML = `
       <gl-layout>
-        <gl-stack id="stack1">
-          <gl-component-container title="Component 1">
+        <gl-pane id="stack1">
+          
             <div>Content 1</div>
-          </gl-component-container>
-          <gl-component-container title="Component 2">
+          
+          
             <div>Content 2</div>
-          </gl-component-container>
-        </gl-stack>
+          
+        </gl-pane>
       </gl-layout>
     `;
 

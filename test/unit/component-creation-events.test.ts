@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/components/gl-layout';
-import '@/components/gl-stack';
+import '@/components/gl-pane';
 import '@/components/gl-column';
 import '@/components/gl-component-container';
 
@@ -28,8 +28,8 @@ describe('component creation events', () => {
     container.innerHTML = `
       <gl-layout>
         <gl-column>
-          <gl-stack id="target-stack">
-          </gl-stack>
+          <gl-pane id="target-stack">
+          </gl-pane>
         </gl-column>
       </gl-layout>
     `;
@@ -69,9 +69,9 @@ describe('component creation events', () => {
     const componentDestroyedHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-component-container title="Test Component">
+      
         <span>content</span>
-      </gl-component-container>
+      
     `;
 
     const component = container.querySelector('gl-component-container');

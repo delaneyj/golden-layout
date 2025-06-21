@@ -5,9 +5,11 @@ export class GlPane extends BaseElement {
   private _documentClickHandler: (() => void) | null = null;
   private _panelType = 'default';
   private _id = '';
+  private _componentState: Record<string, unknown> = {};
+  private _title = '';
 
   static get observedAttributes(): string[] {
-    return ['panel-type', 'id'];
+    return ['panel-type', 'id', 'title'];
   }
 
   get isMaximized(): boolean {
@@ -40,6 +42,24 @@ export class GlPane extends BaseElement {
     this.setAttribute('id', value);
   }
 
+  get componentState(): Record<string, unknown> {
+    return this._componentState;
+  }
+
+  set componentState(value: Record<string, unknown>) {
+    this._componentState = value;
+    this.emit('state-changed', { state: value });
+  }
+
+  get title(): string {
+    return this._title;
+  }
+
+  set title(value: string) {
+    this._title = value;
+    this.setAttribute('title', value);
+  }
+
   attributeChangedCallback(name: string, _oldValue: string | null, newValue: string | null): void {
     if (name === 'panel-type') {
       this._panelType = newValue || 'default';
@@ -47,6 +67,8 @@ export class GlPane extends BaseElement {
     } else if (name === 'id') {
       this._id = newValue || '';
       this.validateId();
+    } else if (name === 'title') {
+      this._title = newValue || '';
     }
   }
 
@@ -55,6 +77,13 @@ export class GlPane extends BaseElement {
     this.addEventListener('dragover', this.handleDragOver);
     this.addEventListener('drop', this.handleDrop);
     this.addEventListener('dragleave', this.handleDragLeave);
+
+    // Emit component lifecycle event
+    this.emit('component-created', {
+      title: this._title,
+      state: this._componentState,
+      panelType: this._panelType,
+    });
 
     // Set default panel type if not set
     setTimeout(() => {
@@ -79,6 +108,8 @@ export class GlPane extends BaseElement {
       document.removeEventListener('click', this._documentClickHandler);
       this._documentClickHandler = null;
     }
+    // Emit component lifecycle event
+    this.emit('component-destroyed');
   }
 
   protected render(): void {
@@ -269,6 +300,8 @@ export class GlPane extends BaseElement {
           overflow: auto;
           position: relative;
           background: var(--gl-pane-bg, #282828); /* gruvbox bg0 */
+          padding: var(--gl-component-padding, 10px);
+          box-sizing: border-box;
         }
         
         ::slotted(*) {
@@ -873,6 +906,15 @@ export class GlPane extends BaseElement {
       // Use setTimeout to ensure DOM is updated
       setTimeout(() => emitLayoutChange.call(layout), 0);
     }
+  }
+
+  // Component state management methods (from gl-component-container)
+  updateState(state: Record<string, unknown>): void {
+    this.componentState = { ...this._componentState, ...state };
+  }
+
+  getState(): Record<string, unknown> {
+    return { ...this._componentState };
   }
 }
 
