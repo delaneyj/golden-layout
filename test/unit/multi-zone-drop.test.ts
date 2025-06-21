@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
-import type { GlStack } from '@/components/gl-stack';
+import type { GlPaneElement } from '@/types/elements';
+import type { GlDropIndicatorElement, GlLayoutElement } from '@/types/elements';
 
 describe('multi-zone drop', () => {
   let container: HTMLElement;
@@ -15,14 +16,14 @@ describe('multi-zone drop', () => {
       height,
       x,
       y,
-      toJSON: () => {}
+      toJSON: () => {},
     });
   };
 
   beforeEach(() => {
     // Set CSS custom properties
     document.documentElement.style.setProperty('--gl-splitter-size', '5px');
-    
+
     container = document.createElement('div');
     container.style.width = '800px';
     container.style.height = '600px';
@@ -32,7 +33,7 @@ describe('multi-zone drop', () => {
   afterEach(() => {
     container.remove();
     // Clean up any drop indicators
-    document.querySelectorAll('gl-drop-indicator').forEach(el => el.remove());
+    document.querySelectorAll('gl-drop-indicator').forEach((el) => el.remove());
   });
 
   it('detects top drop zone', async () => {
@@ -56,7 +57,7 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const sourceTab = container.querySelector('#source gl-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
@@ -89,12 +90,12 @@ describe('multi-zone drop', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Check drop indicator shows top position
-    const dropIndicator = document.querySelector('gl-drop-indicator') as any;
+    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
     expect(dropIndicator?.position).toBe('top');
-    
+
     const indicator = dropIndicator?.shadowRoot?.querySelector('.indicator');
     expect(indicator?.classList.contains('top')).toBe(true);
-    
+
     const label = indicator?.querySelector('.label');
     expect(label?.textContent).toBe('Drop to add above');
   });
@@ -117,7 +118,7 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const sourceTab = container.querySelector('#source gl-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
@@ -143,7 +144,7 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const dropIndicator = document.querySelector('gl-drop-indicator') as any;
+    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
     expect(dropIndicator?.position).toBe('bottom');
   });
 
@@ -165,7 +166,7 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const sourceTab = container.querySelector('#source gl-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
@@ -191,7 +192,7 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const dropIndicator = document.querySelector('gl-drop-indicator') as any;
+    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
     expect(dropIndicator?.position).toBe('left');
   });
 
@@ -213,7 +214,7 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const sourceTab = container.querySelector('#source gl-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
@@ -239,7 +240,7 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const dropIndicator = document.querySelector('gl-drop-indicator') as any;
+    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
     expect(dropIndicator?.position).toBe('right');
   });
 
@@ -261,7 +262,7 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const sourceTab = container.querySelector('#source gl-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
@@ -287,7 +288,7 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const dropIndicator = document.querySelector('gl-drop-indicator') as any;
+    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
     expect(dropIndicator?.position).toBe('center');
   });
 
@@ -312,16 +313,16 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const sourceTab = container.querySelector('#source gl-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
     // Setup drag
     layout._draggedElement = sourceTab;
-    layout._dropIndicator = { 
-      hide: () => {}, 
+    layout._dropIndicator = {
+      hide: () => {},
       position: 'top',
-      show: () => {}
+      show: () => {},
     };
 
     // Perform drop
@@ -336,14 +337,14 @@ describe('multi-zone drop', () => {
     // Check that a column was created
     const column = container.querySelector('gl-column');
     expect(column).toBeTruthy();
-    
+
     // Check order: new stack, splitter, original stack
-    const columnChildren = Array.from(column!.children);
+    const columnChildren = Array.from(column?.children);
     expect(columnChildren.length).toBe(3);
     expect(columnChildren[0].tagName).toBe('GL-STACK');
     expect(columnChildren[1].tagName).toBe('GL-SPLITTER');
     expect(columnChildren[2].tagName).toBe('GL-STACK');
-    
+
     // Check splitter orientation
     const splitter = columnChildren[1] as HTMLElement;
     expect(splitter.getAttribute('orientation')).toBe('vertical');
@@ -370,16 +371,16 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const sourceTab = container.querySelector('#source gl-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
     // Setup drag
     layout._draggedElement = sourceTab;
-    layout._dropIndicator = { 
-      hide: () => {}, 
+    layout._dropIndicator = {
+      hide: () => {},
       position: 'left',
-      show: () => {}
+      show: () => {},
     };
 
     // Perform drop
@@ -394,14 +395,14 @@ describe('multi-zone drop', () => {
     // Check that a row was created
     const row = container.querySelector('gl-row');
     expect(row).toBeTruthy();
-    
+
     // Check order: new stack, splitter, original stack
-    const rowChildren = Array.from(row!.children);
+    const rowChildren = Array.from(row?.children);
     expect(rowChildren.length).toBe(3);
     expect(rowChildren[0].tagName).toBe('GL-STACK');
     expect(rowChildren[1].tagName).toBe('GL-SPLITTER');
     expect(rowChildren[2].tagName).toBe('GL-STACK');
-    
+
     // Check splitter orientation
     const splitter = rowChildren[1] as HTMLElement;
     expect(splitter.getAttribute('orientation')).toBe('horizontal');

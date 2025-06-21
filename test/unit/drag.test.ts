@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/index';
+import type { GlLayoutElement } from '@/types/elements';
+
+// Test-specific interface to access private properties
+interface GlLayoutTestElement extends GlLayoutElement {
+  _draggedElement: HTMLElement | null;
+}
 
 describe('drag and drop', () => {
   let container: HTMLElement;
@@ -136,7 +142,7 @@ describe('drag and drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
     layout?.addEventListener('item-dropped', itemDroppedHandler);
 
     const tabs = container.querySelectorAll('gl-tab');
@@ -161,14 +167,14 @@ describe('drag and drop', () => {
       bubbles: true,
       dataTransfer,
     });
-    
+
     // Create a mock target element
     const mockTarget = document.createElement('div');
     Object.defineProperty(dropEvent, 'target', {
       value: mockTarget,
       writable: false,
     });
-    
+
     layout?.dispatchEvent(dropEvent);
 
     expect(itemDroppedHandler).toHaveBeenCalledTimes(1);

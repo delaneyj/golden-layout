@@ -1,4 +1,4 @@
-import { BaseElement } from '../core/base-element';
+import { BaseElement } from '@/core/base-element';
 
 export class GlComponentContainer extends BaseElement {
   private _title = '';

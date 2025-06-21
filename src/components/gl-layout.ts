@@ -1,6 +1,6 @@
-import { BaseElement } from '../core/base-element';
-import type { LayoutConfig } from '../types/config';
-import type { GlDropIndicator } from './gl-drop-indicator';
+import type { GlDropIndicator } from '@/components/gl-drop-indicator';
+import { BaseElement } from '@/core/base-element';
+import type { LayoutConfig } from '@/types/config';
 
 interface LayoutNode {
   type: 'pane' | 'row' | 'column';
@@ -10,49 +10,65 @@ interface LayoutNode {
 }
 
 export class GlLayout extends BaseElement {
-  private _config: LayoutConfig | null = null;
-  private _draggedElement: HTMLElement | null = null;
-  private _dropIndicator: GlDropIndicator | null = null;
-  private _panelTypes: string[] = ['default'];
-  private _panePrefix = 'pane';
-  private _paneCounter = 0;
+  #config: LayoutConfig | null = null;
+  #draggedElement: HTMLElement | null = null;
+  #dropIndicator: GlDropIndicator | null = null;
+  #panelTypes: string[] = ['default'];
+  #panePrefix = 'pane';
+  #paneCounter = 0;
 
   static get observedAttributes(): string[] {
     return ['config', 'panel-types', 'pane-prefix'];
   }
 
   get config(): LayoutConfig | null {
-    return this._config;
+    return this.#config;
   }
 
   set config(value: LayoutConfig | null) {
-    this._config = value;
+    this.#config = value;
     if (this._isConnected) {
       this.render();
     }
   }
 
   get panelTypes(): string[] {
-    return this._panelTypes;
+    return this.#panelTypes;
   }
 
   set panelTypes(value: string[]) {
-    this._panelTypes = value;
+    this.#panelTypes = value;
     this.setAttribute('panel-types', JSON.stringify(value));
   }
 
   get panePrefix(): string {
-    return this._panePrefix;
+    return this.#panePrefix;
   }
 
   set panePrefix(value: string) {
-    this._panePrefix = value;
+    this.#panePrefix = value;
     this.setAttribute('pane-prefix', value);
   }
-  
+
   generatePaneId(): string {
-    this._paneCounter++;
-    return `${this._panePrefix}-${this._paneCounter}`;
+    this.#paneCounter++;
+    return `${this.#panePrefix}-${this.#paneCounter}`;
+  }
+
+  get draggedElement(): HTMLElement | null {
+    return this.#draggedElement;
+  }
+
+  set draggedElement(value: HTMLElement | null) {
+    this.#draggedElement = value;
+  }
+
+  get dropIndicator(): GlDropIndicator | null {
+    return this.#dropIndicator;
+  }
+
+  set dropIndicator(value: GlDropIndicator | null) {
+    this.#dropIndicator = value;
   }
 
   connectedCallback(): void {
@@ -61,27 +77,27 @@ export class GlLayout extends BaseElement {
     this.addEventListener('dragover', this.handleDragOver);
     this.addEventListener('drop', this.handleDrop);
     this.addEventListener('dragend', this.handleDragEnd);
-    
+
     // Create drop indicator
-    this._dropIndicator = document.createElement('gl-drop-indicator') as GlDropIndicator;
-    document.body.appendChild(this._dropIndicator);
-    
+    this.#dropIndicator = document.createElement('gl-drop-indicator') as GlDropIndicator;
+    document.body.appendChild(this.#dropIndicator);
+
     // Parse panel-types attribute if present
     const panelTypesAttr = this.getAttribute('panel-types');
     if (panelTypesAttr) {
       try {
-        this._panelTypes = JSON.parse(panelTypesAttr);
+        this.#panelTypes = JSON.parse(panelTypesAttr);
       } catch {
         console.warn('Invalid panel-types attribute, using defaults');
       }
     }
-    
+
     // Parse pane-prefix attribute if present
     const panePrefixAttr = this.getAttribute('pane-prefix');
     if (panePrefixAttr) {
-      this._panePrefix = panePrefixAttr;
+      this.#panePrefix = panePrefixAttr;
     }
-    
+
     // Auto-generate IDs for panes without IDs
     setTimeout(() => {
       this.assignPaneIds();
@@ -95,23 +111,23 @@ export class GlLayout extends BaseElement {
     this.removeEventListener('dragover', this.handleDragOver);
     this.removeEventListener('drop', this.handleDrop);
     this.removeEventListener('dragend', this.handleDragEnd);
-    
+
     // Remove drop indicator
-    if (this._dropIndicator && typeof this._dropIndicator.remove === 'function') {
-      this._dropIndicator.remove();
+    if (this.#dropIndicator && typeof this.#dropIndicator.remove === 'function') {
+      this.#dropIndicator.remove();
     }
-    this._dropIndicator = null;
+    this.#dropIndicator = null;
   }
 
   attributeChangedCallback(name: string, _oldValue: string | null, newValue: string | null): void {
     if (name === 'panel-types' && newValue) {
       try {
-        this._panelTypes = JSON.parse(newValue);
+        this.#panelTypes = JSON.parse(newValue);
       } catch {
         console.warn('Invalid panel-types attribute, using defaults');
       }
     } else if (name === 'pane-prefix' && newValue) {
-      this._panePrefix = newValue;
+      this.#panePrefix = newValue;
     }
   }
 
@@ -167,16 +183,16 @@ export class GlLayout extends BaseElement {
     // Check if it's a pane header being dragged
     const target = e.target as HTMLElement;
     const pane = target.closest('gl-pane');
-    
+
     if (pane && target.classList.contains('header')) {
-      this._draggedElement = pane as HTMLElement;
+      this.#draggedElement = pane as HTMLElement;
       if (e.dataTransfer) {
         e.dataTransfer.effectAllowed = 'move';
       }
       this.emit('item-drag-start', { element: pane });
     } else if (target.hasAttribute('draggable')) {
       // Legacy support for other draggable elements
-      this._draggedElement = target;
+      this.#draggedElement = target;
       if (e.dataTransfer) {
         e.dataTransfer.effectAllowed = 'move';
       }
@@ -195,9 +211,9 @@ export class GlLayout extends BaseElement {
 
   private handleDrop = (e: DragEvent): void => {
     e.preventDefault();
-    if (this._draggedElement && e.target instanceof HTMLElement) {
+    if (this.#draggedElement && e.target instanceof HTMLElement) {
       this.emit('item-dropped', {
-        draggedElement: this._draggedElement,
+        draggedElement: this.#draggedElement,
         targetElement: e.target,
       });
     }
@@ -205,70 +221,72 @@ export class GlLayout extends BaseElement {
 
   private handleDragEnd = (): void => {
     // Clean up any drag-over classes
-    this.querySelectorAll('.drag-over').forEach(el => {
+    this.querySelectorAll('.drag-over').forEach((el) => {
       el.classList.remove('drag-over');
     });
-    
+
     // Hide drop indicator
-    this._dropIndicator?.hide();
-    
-    this._draggedElement = null;
+    this.#dropIndicator?.hide();
+
+    this.#draggedElement = null;
     this.emit('item-drag-end');
-    
+
     // Emit layout change event
     this.emitLayoutChange();
   };
-  
+
   private getLayoutStructure(): LayoutNode | null {
     const serializeElement = (element: Element): LayoutNode | null => {
       if (element.tagName === 'GL-PANE') {
         return {
           type: 'pane',
           id: element.getAttribute('id') || undefined,
-          panelType: element.getAttribute('panel-type') || 'default'
+          panelType: element.getAttribute('panel-type') || 'default',
         };
-      } else if (element.tagName === 'GL-ROW') {
+      }
+      if (element.tagName === 'GL-ROW') {
         return {
           type: 'row',
           children: Array.from(element.children)
-            .filter(child => child.tagName !== 'GL-SPLITTER')
-            .map(child => serializeElement(child))
-            .filter((child): child is LayoutNode => child !== null)
+            .filter((child) => child.tagName !== 'GL-SPLITTER')
+            .map((child) => serializeElement(child))
+            .filter((child): child is LayoutNode => child !== null),
         };
-      } else if (element.tagName === 'GL-COLUMN') {
+      }
+      if (element.tagName === 'GL-COLUMN') {
         return {
           type: 'column',
           children: Array.from(element.children)
-            .filter(child => child.tagName !== 'GL-SPLITTER')
-            .map(child => serializeElement(child))
-            .filter((child): child is LayoutNode => child !== null)
+            .filter((child) => child.tagName !== 'GL-SPLITTER')
+            .map((child) => serializeElement(child))
+            .filter((child): child is LayoutNode => child !== null),
         };
       }
       return null;
     };
-    
+
     // Find the root container (first child that's not a slot)
-    const rootContainer = Array.from(this.children).find(
-      child => ['GL-ROW', 'GL-COLUMN', 'GL-PANE'].includes(child.tagName)
+    const rootContainer = Array.from(this.children).find((child) =>
+      ['GL-ROW', 'GL-COLUMN', 'GL-PANE'].includes(child.tagName),
     );
-    
+
     return rootContainer ? serializeElement(rootContainer) : null;
   }
-  
+
   public emitLayoutChange(): void {
     const layout = this.getLayoutStructure();
     const maximizedId = this.getMaximizedPaneId();
     this.emit('layout-change', { maximizedId, layout });
   }
-  
+
   private getMaximizedPaneId(): string | null {
     const maximizedPane = this.querySelector('gl-pane[maximized]');
     return maximizedPane ? maximizedPane.getAttribute('id') : null;
   }
-  
+
   private assignPaneIds(): void {
     const allPanes = this.querySelectorAll('gl-pane');
-    allPanes.forEach(pane => {
+    allPanes.forEach((pane) => {
       if (!pane.hasAttribute('id') || pane.getAttribute('id') === '') {
         pane.setAttribute('id', this.generatePaneId());
       }

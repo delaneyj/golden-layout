@@ -1,14 +1,32 @@
-import type { GlTab } from '../components/gl-tab';
-import type { GlStack } from '../components/gl-stack';
+import type { GlColumn } from '@/components/gl-column';
+import type { GlComponentContainer } from '@/components/gl-component-container';
+import type { GlDropIndicator } from '@/components/gl-drop-indicator';
+import type { GlLayout } from '@/components/gl-layout';
+import type { GlPane } from '@/components/gl-pane';
+import type { GlRow } from '@/components/gl-row';
+import type { GlSplitter } from '@/components/gl-splitter';
 
 // Define the custom element interfaces
-export interface GlTabElement extends GlTab, HTMLElement {}
-export interface GlStackElement extends GlStack, HTMLElement {}
+export interface GlLayoutElement extends GlLayout, HTMLElement {
+  draggedElement: HTMLElement | null;
+  dropIndicator: GlDropIndicator | null;
+}
+export interface GlPaneElement extends GlPane, HTMLElement {}
+export interface GlRowElement extends GlRow, HTMLElement {}
+export interface GlColumnElement extends GlColumn, HTMLElement {}
+export interface GlDropIndicatorElement extends GlDropIndicator, HTMLElement {}
+export interface GlSplitterElement extends GlSplitter, HTMLElement {}
+export interface GlComponentContainerElement extends GlComponentContainer, HTMLElement {}
 
 // Declare the custom element types for TypeScript
 declare global {
   interface HTMLElementTagNameMap {
-    'gl-tab': GlTabElement;
-    'gl-stack': GlStackElement;
+    'gl-layout': GlLayoutElement;
+    'gl-pane': GlPaneElement;
+    'gl-row': GlRowElement;
+    'gl-column': GlColumnElement;
+    'gl-drop-indicator': GlDropIndicatorElement;
+    'gl-splitter': GlSplitterElement;
+    'gl-component-container': GlComponentContainerElement;
   }
 }

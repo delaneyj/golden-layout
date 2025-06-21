@@ -261,10 +261,10 @@ describe('tree manipulation', () => {
 
     // Stack2 should be removed due to auto-cleanup
     expect(container.querySelector('#stack2')).toBeNull();
-    
+
     // Splitter should also be removed
     expect(container.querySelectorAll('gl-splitter').length).toBe(0);
-    
+
     // Only stack1 should remain
     const layout = container.querySelector('gl-layout');
     expect(layout?.children.length).toBe(1);

@@ -1,6 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
+import type { GlDropIndicator } from '@/components/gl-drop-indicator';
 import type { GlPane } from '@/components/gl-pane';
+import type { GlLayoutElement } from '@/types/elements';
+
+// Test-specific interface to access private properties
+interface GlLayoutTestElement extends GlLayoutElement {
+  _draggedElement: HTMLElement | null;
+  _dropIndicator: GlDropIndicator | null;
+}
 
 describe('gl-pane', () => {
   let container: HTMLElement;
@@ -28,7 +36,7 @@ describe('gl-pane', () => {
     const pane = container.querySelector('gl-pane') as GlPane;
     expect(pane).toBeTruthy();
     expect(pane.title).toBe('Test Pane');
-    
+
     const titleElement = pane.shadowRoot?.querySelector('.title');
     expect(titleElement?.textContent).toBe('Test Pane');
   });
@@ -42,7 +50,7 @@ describe('gl-pane', () => {
       </gl-pane>
     `;
 
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     const pane = container.querySelector('gl-pane') as GlPane;
     const titleElement = pane.shadowRoot?.querySelector('.title');
@@ -62,7 +70,7 @@ describe('gl-pane', () => {
 
     const pane = container.querySelector('gl-pane') as GlPane;
     let closeEmitted = false;
-    
+
     pane.addEventListener('pane-close', () => {
       closeEmitted = true;
     });
@@ -119,9 +127,9 @@ describe('gl-pane', () => {
       </gl-layout>
     `;
 
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
     const pane1 = container.querySelector('#pane1') as HTMLElement;
     const pane2 = container.querySelector('#pane2') as HTMLElement;
 
@@ -138,7 +146,7 @@ describe('gl-pane', () => {
       height: 200,
       x: 0,
       y: 0,
-      toJSON: () => {}
+      toJSON: () => {},
     });
 
     // Simulate dragover on top edge
@@ -154,7 +162,7 @@ describe('gl-pane', () => {
       value: 5, // Top edge
       writable: false,
     });
-    
+
     pane2.dispatchEvent(dragOverEvent);
 
     // Should show drag-over class
@@ -168,13 +176,13 @@ describe('gl-pane', () => {
     });
     pane2.dispatchEvent(dropEvent);
 
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should create a column with pane1 on top
     const column = container.querySelector('gl-column');
     expect(column).toBeTruthy();
-    
-    const columnChildren = Array.from(column!.children);
+
+    const columnChildren = Array.from(column?.children);
     expect(columnChildren.length).toBe(3);
     expect(columnChildren[0].id).toBe('pane1');
     expect(columnChildren[1].tagName).toBe('GL-SPLITTER');

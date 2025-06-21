@@ -1,4 +1,4 @@
-import { BaseElement } from '../core/base-element';
+import { BaseElement } from '@/core/base-element';
 
 export class GlPane extends BaseElement {
   private _isMaximized = false;
@@ -55,7 +55,7 @@ export class GlPane extends BaseElement {
     this.addEventListener('dragover', this.handleDragOver);
     this.addEventListener('drop', this.handleDrop);
     this.addEventListener('dragleave', this.handleDragLeave);
-    
+
     // Set default panel type if not set
     setTimeout(() => {
       if (!this.hasAttribute('panel-type')) {
@@ -63,15 +63,15 @@ export class GlPane extends BaseElement {
         const panelTypes = layout?.panelTypes || ['default'];
         this._panelType = panelTypes[0];
       }
-      
+
       // Validate panel type
       this.validatePanelType();
-      
+
       // Validate id
       this.validateId();
     }, 0);
   }
-  
+
   disconnectedCallback(): void {
     super.disconnectedCallback();
     // Clean up document event listener
@@ -86,7 +86,7 @@ export class GlPane extends BaseElement {
       console.error('GlPane: No shadow root!');
       return;
     }
-    
+
     // Get panel types from parent layout
     const layout = this.closest('gl-layout') as HTMLElement & { panelTypes?: string[] };
     const panelTypes = layout?.panelTypes || ['default'];
@@ -279,19 +279,27 @@ export class GlPane extends BaseElement {
       </style>
       <div class="header" draggable="true">
         <select class="panel-type-dropdown">
-          ${panelTypes.map((type: string) => `
+          ${panelTypes
+            .map(
+              (type: string) => `
             <option value="${type}" ${this._panelType === type ? 'selected' : ''}>${type.charAt(0).toUpperCase() + type.slice(1)}</option>
-          `).join('')}
+          `,
+            )
+            .join('')}
         </select>
         <div class="controls">
-          ${this._isMaximized ? `
+          ${
+            this._isMaximized
+              ? `
             <button class="restore-button" title="Restore">
               <svg width="12" height="12" viewBox="0 0 12 12">
                 <rect x="3" y="3" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M2 2h5v1M2 2v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </button>
-          ` : ''}
+          `
+              : ''
+          }
           <button class="menu-button" title="Pane Options">
             <svg width="12" height="12" viewBox="0 0 12 12">
               <circle cx="6" cy="2" r="1" fill="currentColor"/>
@@ -346,33 +354,35 @@ export class GlPane extends BaseElement {
       const maximizeBtn = this.shadowRoot?.querySelector('.maximize') as HTMLElement;
       const closeBtn = this.shadowRoot?.querySelector('.close') as HTMLElement;
       const restoreBtn = this.shadowRoot?.querySelector('.restore-button') as HTMLElement;
-      const panelTypeDropdown = this.shadowRoot?.querySelector('.panel-type-dropdown') as HTMLSelectElement;
+      const panelTypeDropdown = this.shadowRoot?.querySelector(
+        '.panel-type-dropdown',
+      ) as HTMLSelectElement;
 
       if (header) {
         header.addEventListener('dragstart', this.handleDragStart);
         header.addEventListener('dragend', this.handleDragEnd);
       }
-      
+
       if (menuButton && dropdownMenu) {
         menuButton.addEventListener('click', (e) => {
           e.stopPropagation();
           dropdownMenu.classList.toggle('show');
           menuButton.classList.toggle('active');
         });
-        
+
         // Close dropdown when clicking outside
         this._documentClickHandler = () => {
           dropdownMenu.classList.remove('show');
           menuButton.classList.remove('active');
         };
         document.addEventListener('click', this._documentClickHandler);
-        
+
         // Prevent dropdown from closing when clicking inside
         dropdownMenu.addEventListener('click', (e) => {
           e.stopPropagation();
         });
       }
-      
+
       if (splitHorizontalBtn) {
         splitHorizontalBtn.addEventListener('click', () => {
           this.handleSplit('horizontal');
@@ -401,19 +411,19 @@ export class GlPane extends BaseElement {
           menuButton?.classList.remove('active');
         });
       }
-      
+
       if (restoreBtn) {
         restoreBtn.addEventListener('click', () => {
           this.handleMaximize();
         });
       }
-      
+
       if (panelTypeDropdown) {
         panelTypeDropdown.addEventListener('change', (e) => {
           const target = e.target as HTMLSelectElement;
           this.panelType = target.value;
         });
-        
+
         // Prevent drag when interacting with dropdown
         panelTypeDropdown.addEventListener('mousedown', (e) => {
           e.stopPropagation();
@@ -422,7 +432,6 @@ export class GlPane extends BaseElement {
     }, 0);
   }
 
-
   private handleDragStart = (e: DragEvent): void => {
     // Don't start drag if clicking on dropdown
     const target = e.target as HTMLElement;
@@ -430,18 +439,18 @@ export class GlPane extends BaseElement {
       e.preventDefault();
       return;
     }
-    
+
     if (e.dataTransfer) {
       e.dataTransfer.effectAllowed = 'move';
-      
+
       // Store reference to this pane in the layout
       const layout = this.closest('gl-layout') as HTMLElement & {
-        _draggedElement?: HTMLElement;
+        draggedElement?: HTMLElement;
       };
       if (layout) {
-        layout._draggedElement = this;
+        layout.draggedElement = this;
       }
-      
+
       this.emit('pane-drag-start', { pane: this });
     }
   };
@@ -465,13 +474,13 @@ export class GlPane extends BaseElement {
     // Create a new pane with a copy of this pane's content
     const newPane = document.createElement('gl-pane');
     newPane.setAttribute('panel-type', this._panelType);
-    
+
     // Get layout to generate ID
     const layout = this.closest('gl-layout') as HTMLElement & { generatePaneId?: () => string };
-    if (layout && layout.generatePaneId) {
+    if (layout?.generatePaneId) {
       newPane.setAttribute('id', layout.generatePaneId());
     }
-    
+
     // Create a container for the new pane
     const newContainer = document.createElement('gl-component-container');
     const newContent = document.createElement('div');
@@ -500,23 +509,23 @@ export class GlPane extends BaseElement {
     this.emit('pane-split', {
       pane: this,
       orientation,
-      newPane
+      newPane,
     });
-    
+
     // Notify layout of change
     this.notifyLayoutChange();
   };
 
   private handleClose = (): void => {
     this.emit('pane-close', { pane: this });
-    
+
     // Get layout reference before removing from DOM
     const layout = this.closest('gl-layout') as HTMLElement & { emitLayoutChange?: () => void };
-    
+
     // Check if parent needs cleanup
     const parent = this.parentElement;
     this.remove();
-    
+
     if (parent) {
       this.checkAndCleanupParent(parent);
       // Also clean up splitters next to where this pane was
@@ -524,40 +533,41 @@ export class GlPane extends BaseElement {
       // Trigger resize to redistribute space
       this.triggerParentResize(parent);
     }
-    
+
     // Notify layout of change
-    if (layout && layout.emitLayoutChange) {
-      setTimeout(() => layout.emitLayoutChange(), 0);
+    const emitLayoutChange = layout?.emitLayoutChange;
+    if (emitLayoutChange) {
+      setTimeout(() => emitLayoutChange.call(layout), 0);
     }
   };
 
   private handleDragOver = (e: DragEvent): void => {
-    const layout = this.closest('gl-layout') as HTMLElement & { 
-      _draggedElement?: HTMLElement;
-      _dropIndicator?: { show(target: HTMLElement, position?: string): void; hide(): void };
+    const layout = this.closest('gl-layout') as HTMLElement & {
+      draggedElement?: HTMLElement;
+      dropIndicator?: { show(target: HTMLElement, position?: string): void; hide(): void };
     };
-    
-    if (layout?._draggedElement?.tagName === 'GL-PANE') {
-      const draggedPane = layout._draggedElement;
-      
+
+    if (layout?.draggedElement?.tagName === 'GL-PANE') {
+      const draggedPane = layout.draggedElement;
+
       // Don't allow dropping on itself
       if (draggedPane === this) {
         if (e.dataTransfer) {
           e.dataTransfer.dropEffect = 'none';
         }
         this.classList.remove('drag-over');
-        if (layout._dropIndicator) {
-          layout._dropIndicator.hide();
+        if (layout.dropIndicator) {
+          layout.dropIndicator.hide();
         }
         return;
       }
-      
+
       e.preventDefault();
       e.stopPropagation();
-      
+
       // Add visual feedback
       this.classList.add('drag-over');
-      
+
       // Determine drop position based on cursor location
       const rect = this.getBoundingClientRect();
       const clientX = e.clientX || 0;
@@ -566,12 +576,12 @@ export class GlPane extends BaseElement {
       const y = clientY - rect.top;
       const xRatio = rect.width > 0 ? x / rect.width : 0.5;
       const yRatio = rect.height > 0 ? y / rect.height : 0.5;
-      
+
       let position: 'top' | 'right' | 'bottom' | 'left' = 'top';
-      
+
       // Determine which edge is closest to the cursor
       const edgeThreshold = 0.3; // 30% from edge
-      
+
       if (yRatio < edgeThreshold) {
         position = 'top';
       } else if (yRatio > 1 - edgeThreshold) {
@@ -581,22 +591,22 @@ export class GlPane extends BaseElement {
       } else if (xRatio > 1 - edgeThreshold) {
         position = 'right';
       }
-      
+
       // Check if this drop would result in no layout change
       if (this.isNoOpDrop(draggedPane as GlPane, position)) {
         if (e.dataTransfer) {
           e.dataTransfer.dropEffect = 'none';
         }
         this.classList.remove('drag-over');
-        if (layout._dropIndicator) {
-          layout._dropIndicator.hide();
+        if (layout.dropIndicator) {
+          layout.dropIndicator.hide();
         }
         return;
       }
-      
+
       // Show drop indicator with position
-      if (layout._dropIndicator) {
-        layout._dropIndicator.show(this, position);
+      if (layout.dropIndicator) {
+        layout.dropIndicator.show(this, position);
       }
     }
   };
@@ -604,12 +614,12 @@ export class GlPane extends BaseElement {
   private handleDragLeave = (e: DragEvent): void => {
     if (e.target === this) {
       this.classList.remove('drag-over');
-      
-      const layout = this.closest('gl-layout') as HTMLElement & { 
-        _dropIndicator?: { hide(): void };
+
+      const layout = this.closest('gl-layout') as HTMLElement & {
+        dropIndicator?: { hide(): void };
       };
-      if (layout?._dropIndicator) {
-        layout._dropIndicator.hide();
+      if (layout?.dropIndicator) {
+        layout.dropIndicator.hide();
       }
     }
   };
@@ -617,57 +627,63 @@ export class GlPane extends BaseElement {
   private handleDrop = (e: DragEvent): void => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     this.classList.remove('drag-over');
-    
-    const layout = this.closest('gl-layout') as HTMLElement & { 
-      _draggedElement?: HTMLElement;
-      _dropIndicator?: { hide(): void; position?: string };
+
+    const layout = this.closest('gl-layout') as HTMLElement & {
+      draggedElement?: HTMLElement;
+      dropIndicator?: { hide(): void; position?: string };
     };
-    
-    const position = layout?._dropIndicator?.position || 'left';
-    
+
+    const position = layout?.dropIndicator?.position || 'left';
+
     // Hide drop indicator
-    if (layout?._dropIndicator) {
-      layout._dropIndicator.hide();
+    if (layout?.dropIndicator) {
+      layout.dropIndicator.hide();
     }
-    
-    const draggedPane = layout?._draggedElement;
-    
+
+    const draggedPane = layout?.draggedElement;
+
     if (draggedPane?.tagName === 'GL-PANE' && draggedPane !== this) {
-      this.createSplitLayout(draggedPane as GlPane, position as 'top' | 'right' | 'bottom' | 'left');
-      
+      this.createSplitLayout(
+        draggedPane as GlPane,
+        position as 'top' | 'right' | 'bottom' | 'left',
+      );
+
       // Emit event
       this.emit('pane-moved', {
         pane: draggedPane,
         target: this,
-        position
+        position,
       });
     }
   };
 
-  private createSplitLayout(draggedPane: GlPane, position: 'top' | 'right' | 'bottom' | 'left'): void {
+  private createSplitLayout(
+    draggedPane: GlPane,
+    position: 'top' | 'right' | 'bottom' | 'left',
+  ): void {
     const parent = this.parentElement;
     if (!parent) return;
-    
+
     // Determine if we need a row or column
     const isHorizontalSplit = position === 'left' || position === 'right';
     const containerType = isHorizontalSplit ? 'gl-row' : 'gl-column';
-    
+
     // Create new container
     const newContainer = document.createElement(containerType);
-    
+
     // Create splitter
     const splitter = document.createElement('gl-splitter');
     splitter.setAttribute('orientation', isHorizontalSplit ? 'horizontal' : 'vertical');
-    
+
     // Remove dragged pane from its current location
     const draggedParent = draggedPane.parentElement;
     draggedPane.remove();
-    
+
     // Replace current pane with new container
     parent.replaceChild(newContainer, this);
-    
+
     // Add elements in correct order
     if (position === 'left' || position === 'top') {
       newContainer.appendChild(draggedPane);
@@ -678,31 +694,32 @@ export class GlPane extends BaseElement {
       newContainer.appendChild(splitter);
       newContainer.appendChild(draggedPane);
     }
-    
+
     // Check if dragged pane's parent needs cleanup
     if (draggedParent) {
       this.checkAndCleanupParent(draggedParent);
       // Trigger resize on the old parent to redistribute space
       this.triggerParentResize(draggedParent);
     }
-    
+
     // Trigger resize on the new container
     this.triggerParentResize(newContainer);
   }
 
   private checkAndCleanupParent(parent: Element): void {
-    const children = Array.from(parent.children).filter(
-      child => child.tagName !== 'GL-SPLITTER'
-    );
-    
+    const children = Array.from(parent.children).filter((child) => child.tagName !== 'GL-SPLITTER');
+
     if (children.length === 0 && parent.parentElement) {
       // Parent is empty, remove it
       const grandParent = parent.parentElement;
       parent.remove();
       this.cleanupSplitters(grandParent);
       this.triggerParentResize(grandParent);
-    } else if (children.length === 1 && parent.parentElement && 
-               (parent.tagName === 'GL-ROW' || parent.tagName === 'GL-COLUMN')) {
+    } else if (
+      children.length === 1 &&
+      parent.parentElement &&
+      (parent.tagName === 'GL-ROW' || parent.tagName === 'GL-COLUMN')
+    ) {
       // Parent has only one child, replace parent with that child
       const onlyChild = children[0];
       const grandParent = parent.parentElement;
@@ -719,31 +736,31 @@ export class GlPane extends BaseElement {
   private cleanupSplitters(container: Element): void {
     const children = Array.from(container.children);
     let i = 0;
-    
+
     while (i < children.length) {
       const child = children[i];
-      
+
       // Remove splitter if it's at the start
       if (i === 0 && child.tagName === 'GL-SPLITTER') {
         child.remove();
         children.splice(i, 1);
         continue;
       }
-      
+
       // Remove splitter if it's at the end
       if (i === children.length - 1 && child.tagName === 'GL-SPLITTER') {
         child.remove();
         children.splice(i, 1);
         continue;
       }
-      
+
       // Remove splitter if it's adjacent to another splitter
       if (i > 0 && child.tagName === 'GL-SPLITTER' && children[i - 1].tagName === 'GL-SPLITTER') {
         child.remove();
         children.splice(i, 1);
         continue;
       }
-      
+
       i++;
     }
   }
@@ -751,18 +768,18 @@ export class GlPane extends BaseElement {
   private isNoOpDrop(sourcePane: GlPane, dropPosition: string): boolean {
     const sourceParent = sourcePane.parentElement;
     const targetParent = this.parentElement;
-    
+
     if (sourceParent !== targetParent) {
       return false;
     }
-    
+
     const siblings = Array.from(sourceParent?.children || []);
     const sourcePos = this.getPanePosition(sourcePane, siblings);
     const targetPos = this.getPanePosition(this, siblings);
-    
+
     const isRow = sourceParent?.tagName === 'GL-ROW';
     const isColumn = sourceParent?.tagName === 'GL-COLUMN';
-    
+
     if (isRow) {
       if (dropPosition === 'left' && targetPos === sourcePos + 1) {
         return true;
@@ -778,7 +795,7 @@ export class GlPane extends BaseElement {
         return true;
       }
     }
-    
+
     return false;
   }
 
@@ -794,7 +811,7 @@ export class GlPane extends BaseElement {
     }
     return -1;
   }
-  
+
   private triggerParentResize(parent: Element): void {
     // Dispatch a resize event to trigger the parent's resize observer
     if (parent && (parent.tagName === 'GL-ROW' || parent.tagName === 'GL-COLUMN')) {
@@ -805,13 +822,15 @@ export class GlPane extends BaseElement {
       }
     }
   }
-  
+
   private validatePanelType(): void {
     const layout = this.closest('gl-layout') as HTMLElement & { panelTypes?: string[] };
     const panelTypes = layout?.panelTypes || ['default'];
-    
+
     if (!panelTypes.includes(this._panelType)) {
-      console.error(`Invalid panel type "${this._panelType}" for gl-pane. Valid options are: ${panelTypes.join(', ')}`);
+      console.error(
+        `Invalid panel type "${this._panelType}" for gl-pane. Valid options are: ${panelTypes.join(', ')}`,
+      );
       // Add visual indicator
       this.setAttribute('invalid-panel-type', '');
       // Set to first valid option
@@ -822,22 +841,22 @@ export class GlPane extends BaseElement {
       this.removeAttribute('invalid-panel-type');
     }
   }
-  
+
   private validateId(): void {
     if (!this._id) {
       // ID will be auto-generated by layout, so just remove invalid indicator
       this.removeAttribute('invalid-id');
       return;
     }
-    
+
     // Check for duplicate ids within the layout
     const layout = this.closest('gl-layout');
     if (layout) {
       const allPanes = layout.querySelectorAll('gl-pane');
       const duplicates = Array.from(allPanes).filter(
-        pane => pane !== this && pane.getAttribute('id') === this._id
+        (pane) => pane !== this && pane.getAttribute('id') === this._id,
       );
-      
+
       if (duplicates.length > 0) {
         console.error(`Duplicate pane id "${this._id}" found. Each pane must have a unique id.`);
         this.setAttribute('invalid-id', '');
@@ -846,12 +865,13 @@ export class GlPane extends BaseElement {
       }
     }
   }
-  
+
   private notifyLayoutChange(): void {
     const layout = this.closest('gl-layout') as HTMLElement & { emitLayoutChange?: () => void };
-    if (layout && layout.emitLayoutChange) {
+    const emitLayoutChange = layout?.emitLayoutChange;
+    if (emitLayoutChange) {
       // Use setTimeout to ensure DOM is updated
-      setTimeout(() => layout.emitLayoutChange(), 0);
+      setTimeout(() => emitLayoutChange.call(layout), 0);
     }
   }
 }

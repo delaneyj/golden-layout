@@ -1,6 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/index';
 import type { GlDropIndicator } from '@/components/gl-drop-indicator';
+import type { GlLayoutElement } from '@/types/elements';
+
+// Test-specific interface to access private properties
+interface GlLayoutTestElement extends GlLayoutElement {
+  _draggedElement: HTMLElement | null;
+  _dropIndicator: GlDropIndicator | null;
+}
 
 describe('drop indicator', () => {
   let container: HTMLElement;
@@ -15,7 +22,7 @@ describe('drop indicator', () => {
   afterEach(() => {
     container.remove();
     // Clean up any drop indicators
-    document.querySelectorAll('gl-drop-indicator').forEach(el => el.remove());
+    document.querySelectorAll('gl-drop-indicator').forEach((el) => el.remove());
   });
 
   it('creates drop indicator when layout is connected', async () => {
@@ -58,7 +65,7 @@ describe('drop indicator', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
     const sourceTab = container.querySelector('#source gl-tab');
     const targetStack = container.querySelector('#target');
 
@@ -82,7 +89,7 @@ describe('drop indicator', () => {
     // Drop indicator should be visible
     const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicator;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
-    
+
     // Drop indicator should be positioned over target
     const targetRect = targetStack?.getBoundingClientRect();
     if (targetRect) {
@@ -114,7 +121,7 @@ describe('drop indicator', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
     const tab = container.querySelector('#source gl-tab');
     const stack = container.querySelector('#target');
 
@@ -162,7 +169,7 @@ describe('drop indicator', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
     const tab = container.querySelector('gl-tab');
 
     // Start drag
@@ -173,7 +180,10 @@ describe('drop indicator', () => {
     tab?.dispatchEvent(dragStartEvent);
 
     // Show drop indicator
-    layout._dropIndicator?.show(container.querySelector('gl-stack')!);
+    const stack = container.querySelector('gl-stack');
+    if (stack && layout._dropIndicator) {
+      layout._dropIndicator.show(stack);
+    }
 
     const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicator;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
@@ -251,7 +261,7 @@ describe('drop indicator', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
     const sourceTab = container.querySelector('#source gl-tab');
     const targetStack = container.querySelector('#target');
 

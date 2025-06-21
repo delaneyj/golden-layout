@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/index';
+import type { GlLayoutElement } from '@/types/elements';
 
 describe('drag and drop tabs between stacks', () => {
   let container: HTMLElement;
@@ -41,7 +42,7 @@ describe('drag and drop tabs between stacks', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const sourceStack = container.querySelector('#source-stack');
     const targetStack = container.querySelector('#target-stack');
     targetStack?.addEventListener('component-moved', componentMovedHandler);
@@ -58,7 +59,7 @@ describe('drag and drop tabs between stacks', () => {
     firstTab?.dispatchEvent(dragStartEvent);
 
     // Set the dragged element on layout
-    layout._draggedElement = firstTab;
+    layout.draggedElement = firstTab as HTMLElement;
 
     // Simulate drag over target stack
     const dragOverEvent = new DragEvent('dragover', {
@@ -119,7 +120,7 @@ describe('drag and drop tabs between stacks', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const sourceStack = container.querySelector('#source');
     const targetStack = container.querySelector('#target');
     const tab = sourceStack?.querySelector('gl-tab');
@@ -130,7 +131,7 @@ describe('drag and drop tabs between stacks', () => {
       dataTransfer: new DataTransfer(),
     });
     tab?.dispatchEvent(dragStartEvent);
-    layout._draggedElement = tab;
+    layout.draggedElement = tab as HTMLElement;
 
     // Verify tab has dragging class
     expect(tab?.classList.contains('dragging')).toBe(true);
@@ -184,7 +185,7 @@ describe('drag and drop tabs between stacks', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const stack = container.querySelector('#stack');
     const firstTab = stack?.querySelector('gl-tab');
 
@@ -194,7 +195,7 @@ describe('drag and drop tabs between stacks', () => {
       dataTransfer: new DataTransfer(),
     });
     firstTab?.dispatchEvent(dragStartEvent);
-    layout._draggedElement = firstTab;
+    layout.draggedElement = firstTab as HTMLElement;
 
     const dropEvent = new DragEvent('drop', {
       bubbles: true,

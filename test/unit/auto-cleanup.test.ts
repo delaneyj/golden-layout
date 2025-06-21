@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
+import type { GlLayoutElement } from '@/types/elements';
+
+// Test-specific interface to access private properties
+interface GlLayoutTestElement extends GlLayoutElement {
+  _draggedElement: HTMLElement | null;
+}
 
 describe('auto cleanup empty containers', () => {
   let container: HTMLElement;
@@ -35,7 +41,7 @@ describe('auto cleanup empty containers', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const stack1 = container.querySelector('#stack1');
-    const row = container.querySelector('gl-row');
+    const _row = container.querySelector('gl-row');
     const tab = stack1?.querySelector('gl-tab');
 
     // Close the only tab in stack1
@@ -46,11 +52,11 @@ describe('auto cleanup empty containers', () => {
 
     // Stack1 should be removed
     expect(container.querySelector('#stack1')).toBeNull();
-    
+
     // Check if row still exists
     const rowAfter = container.querySelector('gl-row');
     const layoutChildren = container.querySelector('gl-layout')?.children;
-    
+
     if (rowAfter) {
       // Row still exists
       expect(rowAfter.querySelectorAll('gl-splitter').length).toBe(0);
@@ -89,7 +95,7 @@ describe('auto cleanup empty containers', () => {
 
     // Stack should be removed
     expect(container.querySelector('gl-stack')).toBeNull();
-    
+
     // Row should also be removed since it's empty
     expect(container.querySelector('#main-row')).toBeNull();
   });
@@ -152,8 +158,8 @@ describe('auto cleanup empty containers', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
-    const sourceStack = container.querySelector('#source') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const sourceStack = container.querySelector('#source') as HTMLElement;
     const targetStack = container.querySelector('#target');
     const tab = sourceStack?.querySelector('gl-tab');
 
@@ -175,10 +181,10 @@ describe('auto cleanup empty containers', () => {
 
     // Source stack should be removed
     expect(container.querySelector('#source')).toBeNull();
-    
+
     // Splitter should be removed
     expect(container.querySelectorAll('gl-splitter').length).toBe(0);
-    
+
     // Only target stack should remain
     expect(layout?.children.length).toBe(1);
     expect(layout?.children[0].id).toBe('target');
@@ -218,14 +224,14 @@ describe('auto cleanup empty containers', () => {
 
     // Nested stack should be removed
     expect(container.querySelector('#nested-stack')).toBeNull();
-    
+
     // Column should be removed
     expect(container.querySelector('gl-column')).toBeNull();
-    
+
     // Check the final structure
     const layout = container.querySelector('gl-layout');
     const remainingRow = container.querySelector('gl-row');
-    
+
     if (remainingRow) {
       // Row still exists with only other-stack
       expect(remainingRow.querySelectorAll('gl-splitter').length).toBe(0);

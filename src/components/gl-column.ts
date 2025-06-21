@@ -1,4 +1,4 @@
-import { BaseElement } from '../core/base-element';
+import { BaseElement } from '@/core/base-element';
 
 export class GlColumn extends BaseElement {
   private resizeObserver: ResizeObserver | null = null;
@@ -58,12 +58,12 @@ export class GlColumn extends BaseElement {
   public updateLayout(): void {
     this.updateChildSizes();
   }
-  
+
   private updateChildSizes(): void {
     const children = Array.from(this.children).filter(
-      child => child.tagName !== 'GL-SPLITTER'
+      (child) => child.tagName !== 'GL-SPLITTER',
     ) as HTMLElement[];
-    
+
     // Reset all children to use flexbox
     children.forEach((child) => {
       child.style.flex = '1 1 auto';

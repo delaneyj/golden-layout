@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
+import type { GlLayoutElement, GlPaneElement } from '@/types/elements';
 
 describe('space redistribution', () => {
   let container: HTMLElement;
@@ -49,7 +50,7 @@ describe('space redistribution', () => {
     // Check initial sizes
     const stack1Before = container.querySelector('#stack1') as HTMLElement;
     const stack3Before = container.querySelector('#stack3') as HTMLElement;
-    
+
     expect(stack1Before.getAttribute('data-width')).toBe('30%');
     expect(stack3Before.getAttribute('data-width')).toBe('30%');
 
@@ -61,14 +62,14 @@ describe('space redistribution', () => {
 
     // Stack2 should be removed
     expect(container.querySelector('#stack2')).toBeNull();
-    
+
     // Remaining stacks should have their data-width attributes removed
     const stack1After = container.querySelector('#stack1') as HTMLElement;
     const stack3After = container.querySelector('#stack3') as HTMLElement;
-    
+
     expect(stack1After.getAttribute('data-width')).toBeNull();
     expect(stack3After.getAttribute('data-width')).toBeNull();
-    
+
     // There should be only one splitter left
     expect(row?.querySelectorAll('gl-splitter').length).toBe(1);
   });
@@ -106,11 +107,11 @@ describe('space redistribution', () => {
 
     // Stack1 should be removed
     expect(container.querySelector('#stack1')).toBeNull();
-    
+
     // Stack2 should have its data-height attribute removed
     const stack2 = container.querySelector('#stack2') as HTMLElement;
     expect(stack2.getAttribute('data-height')).toBeNull();
-    
+
     // No splitters should remain
     expect(column?.querySelectorAll('gl-splitter').length).toBe(0);
   });
@@ -136,8 +137,8 @@ describe('space redistribution', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
-    const sourceStack = container.querySelector('#source') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
+    const sourceStack = container.querySelector('#source') as GlPaneElement;
     const targetStack = container.querySelector('#target');
     const tab = sourceStack?.querySelector('gl-tab');
 
@@ -159,11 +160,11 @@ describe('space redistribution', () => {
 
     // Source stack should be removed
     expect(container.querySelector('#source')).toBeNull();
-    
+
     // Check if row still exists or was replaced
     const row = container.querySelector('gl-row');
     const layout2 = container.querySelector('gl-layout');
-    
+
     if (row) {
       // Row still exists
       const remainingStack = container.querySelector('#target') as HTMLElement;
@@ -216,12 +217,12 @@ describe('space redistribution', () => {
 
     // Stack1 should be removed
     expect(container.querySelector('#stack1')).toBeNull();
-    
+
     // Check structure after cleanup
     const column = container.querySelector('gl-column');
     const row = container.querySelector('gl-row');
     const stack2 = container.querySelector('#stack2') as HTMLElement;
-    
+
     if (column) {
       // Column still exists
       expect(stack2.getAttribute('data-height')).toBeNull();
@@ -230,7 +231,7 @@ describe('space redistribution', () => {
       // Column was replaced by stack2, but row still exists
       expect(stack2.parentElement).toBe(row);
       // Stack2 should now be a direct child of row
-      const rowChildren = Array.from(row.children).filter(c => c.tagName !== 'GL-SPLITTER');
+      const rowChildren = Array.from(row.children).filter((c) => c.tagName !== 'GL-SPLITTER');
       expect(rowChildren.length).toBe(2); // stack2 and stack3
     }
   });

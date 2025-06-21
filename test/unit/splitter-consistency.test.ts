@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
 import type { GlSplitter } from '@/components/gl-splitter';
+import type { GlRowElement } from '@/types/elements';
 
 describe('splitter consistency', () => {
   let container: HTMLElement;
@@ -8,7 +9,7 @@ describe('splitter consistency', () => {
   beforeEach(() => {
     // Set CSS custom properties that would normally come from golden-layout.css
     document.documentElement.style.setProperty('--gl-splitter-size', '5px');
-    
+
     container = document.createElement('div');
     container.style.width = '800px';
     container.style.height = '600px';
@@ -42,11 +43,11 @@ describe('splitter consistency', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const splitter = container.querySelector('gl-splitter') as GlSplitter;
-    
+
     // Check splitter exists and has correct orientation
     expect(splitter).toBeTruthy();
     expect(splitter.orientation).toBe('horizontal');
-    
+
     // Check shadow DOM styles are applied
     const shadowStyles = splitter.shadowRoot?.querySelector('style')?.textContent || '';
     expect(shadowStyles).toContain('width: var(--gl-splitter-size, 5px)');
@@ -78,11 +79,11 @@ describe('splitter consistency', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const splitter = container.querySelector('gl-splitter') as GlSplitter;
-    
+
     // Check splitter exists and has correct orientation
     expect(splitter).toBeTruthy();
     expect(splitter.orientation).toBe('vertical');
-    
+
     // Check shadow DOM styles are applied
     const shadowStyles = splitter.shadowRoot?.querySelector('style')?.textContent || '';
     expect(shadowStyles).toContain('height: var(--gl-splitter-size, 5px)');
@@ -122,7 +123,7 @@ describe('splitter consistency', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const mainSplitter = container.querySelector('#main-splitter') as GlSplitter;
-    
+
     // Check initial splitter has correct styles
     const initialStyles = mainSplitter.shadowRoot?.querySelector('style')?.textContent || '';
     expect(initialStyles).toContain('width: var(--gl-splitter-size, 5px)');
@@ -183,14 +184,14 @@ describe('splitter consistency', () => {
     const hSplitters = container.querySelectorAll('.h-splitter') as NodeListOf<GlSplitter>;
     const vSplitters = container.querySelectorAll('.v-splitter') as NodeListOf<GlSplitter>;
 
-    hSplitters.forEach(splitter => {
+    hSplitters.forEach((splitter) => {
       expect(splitter.orientation).toBe('horizontal');
       const styles = splitter.shadowRoot?.querySelector('style')?.textContent || '';
       expect(styles).toContain('width: var(--gl-splitter-size, 5px)');
       expect(styles).toContain('flex-shrink: 0');
     });
 
-    vSplitters.forEach(splitter => {
+    vSplitters.forEach((splitter) => {
       expect(splitter.orientation).toBe('vertical');
       const styles = splitter.shadowRoot?.querySelector('style')?.textContent || '';
       expect(styles).toContain('height: var(--gl-splitter-size, 5px)');
@@ -225,7 +226,7 @@ describe('splitter consistency', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const row = container.querySelector('#test-row') as any;
+    const row = container.querySelector('#test-row') as GlRowElement;
     const stacks = container.querySelectorAll('gl-stack');
     const splitters = container.querySelectorAll('gl-splitter') as NodeListOf<GlSplitter>;
 
@@ -234,7 +235,7 @@ describe('splitter consistency', () => {
     expect(splitters.length).toBe(2);
 
     // Each splitter should have fixed size styles
-    splitters.forEach(splitter => {
+    splitters.forEach((splitter) => {
       const styles = splitter.shadowRoot?.querySelector('style')?.textContent || '';
       expect(styles).toContain('width: var(--gl-splitter-size, 5px)');
       expect(styles).toContain('flex-shrink: 0');

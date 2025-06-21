@@ -1,9 +1,9 @@
-import { BaseElement } from '../core/base-element';
+import { BaseElement } from '@/core/base-element';
 
 export class GlDropIndicator extends BaseElement {
   private _targetElement: HTMLElement | null = null;
   private _position: 'center' | 'top' | 'right' | 'bottom' | 'left' = 'center';
-  
+
   get position(): string {
     return this._position;
   }
@@ -100,21 +100,24 @@ export class GlDropIndicator extends BaseElement {
     `;
   }
 
-  show(target: HTMLElement, position: 'center' | 'top' | 'right' | 'bottom' | 'left' = 'center'): void {
+  show(
+    target: HTMLElement,
+    position: 'center' | 'top' | 'right' | 'bottom' | 'left' = 'center',
+  ): void {
     this._targetElement = target;
     this._position = position;
-    
+
     const rect = target.getBoundingClientRect();
     this.setAttribute('data-visible', 'true');
     this.style.left = `${rect.left}px`;
     this.style.top = `${rect.top}px`;
     this.style.width = `${rect.width}px`;
     this.style.height = `${rect.height}px`;
-    
+
     const indicator = this.shadowRoot?.querySelector('.indicator');
     if (indicator) {
       indicator.className = `indicator ${position}`;
-      
+
       // Update label based on position
       const label = indicator.querySelector('.label') as HTMLElement;
       if (label) {

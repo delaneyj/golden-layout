@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
+import type { GlDropIndicatorElement, GlLayoutElement } from '@/types/elements';
 
 describe('no-op drop prevention', () => {
   let container: HTMLElement;
@@ -14,13 +15,13 @@ describe('no-op drop prevention', () => {
       height,
       x,
       y,
-      toJSON: () => {}
+      toJSON: () => {},
     });
   };
 
   beforeEach(() => {
     document.documentElement.style.setProperty('--gl-splitter-size', '5px');
-    
+
     container = document.createElement('div');
     container.style.width = '800px';
     container.style.height = '600px';
@@ -29,7 +30,7 @@ describe('no-op drop prevention', () => {
 
   afterEach(() => {
     container.remove();
-    document.querySelectorAll('gl-drop-indicator').forEach(el => el.remove());
+    document.querySelectorAll('gl-drop-indicator').forEach((el) => el.remove());
   });
 
   it('prevents drop on left edge of next sibling in row', async () => {
@@ -53,7 +54,7 @@ describe('no-op drop prevention', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
     const tab1 = stack1.querySelector('gl-tab');
@@ -79,7 +80,7 @@ describe('no-op drop prevention', () => {
       value: { dropEffect: 'move' },
       writable: false,
     });
-    
+
     stack2.dispatchEvent(dragOverEvent);
 
     await new Promise((resolve) => setTimeout(resolve, 10));
@@ -111,7 +112,7 @@ describe('no-op drop prevention', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
     const tab2 = stack2.querySelector('gl-tab');
@@ -133,7 +134,7 @@ describe('no-op drop prevention', () => {
       value: 100,
       writable: false,
     });
-    
+
     stack1.dispatchEvent(dragOverEvent);
 
     await new Promise((resolve) => setTimeout(resolve, 10));
@@ -165,7 +166,7 @@ describe('no-op drop prevention', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
     const tab1 = stack1.querySelector('gl-tab');
@@ -187,7 +188,7 @@ describe('no-op drop prevention', () => {
       value: 5, // Top edge
       writable: false,
     });
-    
+
     stack2.dispatchEvent(dragOverEvent);
 
     await new Promise((resolve) => setTimeout(resolve, 10));
@@ -219,7 +220,7 @@ describe('no-op drop prevention', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
     const tab2 = stack2.querySelector('gl-tab');
@@ -241,7 +242,7 @@ describe('no-op drop prevention', () => {
       value: 195, // Bottom edge
       writable: false,
     });
-    
+
     stack1.dispatchEvent(dragOverEvent);
 
     await new Promise((resolve) => setTimeout(resolve, 10));
@@ -279,7 +280,7 @@ describe('no-op drop prevention', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack3 = container.querySelector('#stack3') as HTMLElement;
     const tab1 = stack1.querySelector('gl-tab');
@@ -301,13 +302,13 @@ describe('no-op drop prevention', () => {
       value: 100,
       writable: false,
     });
-    
+
     stack3.dispatchEvent(dragOverEvent);
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should show drop indicator (meaningful change)
-    const dropIndicator = document.querySelector('gl-drop-indicator') as any;
+    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
     expect(dropIndicator?.position).toBe('left');
     expect(stack3.classList.contains('drag-over')).toBe(true);
@@ -334,7 +335,7 @@ describe('no-op drop prevention', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
     const tab1 = stack1.querySelector('gl-tab');
@@ -356,13 +357,13 @@ describe('no-op drop prevention', () => {
       value: 100, // Center
       writable: false,
     });
-    
+
     stack2.dispatchEvent(dragOverEvent);
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should show drop indicator (center drops always allowed between different stacks)
-    const dropIndicator = document.querySelector('gl-drop-indicator') as any;
+    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
     expect(dropIndicator?.position).toBe('center');
     expect(stack2.classList.contains('drag-over')).toBe(true);

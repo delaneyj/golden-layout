@@ -1,5 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
+import type { GlLayoutElement } from '@/types/elements';
+
+// Test-specific interfaces to access private properties
+interface GlLayoutTestElement extends GlLayoutElement {
+  _draggedElement: HTMLElement | null;
+}
+
+interface GlDropIndicatorTestElement extends HTMLElement {
+  position: string;
+}
 
 describe('self-target prevention', () => {
   let container: HTMLElement;
@@ -14,13 +24,13 @@ describe('self-target prevention', () => {
       height,
       x,
       y,
-      toJSON: () => {}
+      toJSON: () => {},
     });
   };
 
   beforeEach(() => {
     document.documentElement.style.setProperty('--gl-splitter-size', '5px');
-    
+
     container = document.createElement('div');
     container.style.width = '800px';
     container.style.height = '600px';
@@ -29,7 +39,7 @@ describe('self-target prevention', () => {
 
   afterEach(() => {
     container.remove();
-    document.querySelectorAll('gl-drop-indicator').forEach(el => el.remove());
+    document.querySelectorAll('gl-drop-indicator').forEach((el) => el.remove());
   });
 
   it('prevents center drop on same stack', async () => {
@@ -48,7 +58,7 @@ describe('self-target prevention', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
     const stack = container.querySelector('#stack1') as HTMLElement;
     const tab = stack.querySelector('gl-tab');
 
@@ -76,7 +86,7 @@ describe('self-target prevention', () => {
       value: { dropEffect: 'move' },
       writable: false,
     });
-    
+
     stack.dispatchEvent(dragOverEvent);
 
     await new Promise((resolve) => setTimeout(resolve, 10));
@@ -84,7 +94,7 @@ describe('self-target prevention', () => {
     // Drop indicator should not be visible
     const dropIndicator = document.querySelector('gl-drop-indicator');
     expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
-    
+
     // Stack should not have drag-over class
     expect(stack.classList.contains('drag-over')).toBe(false);
   });
@@ -105,7 +115,7 @@ describe('self-target prevention', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
     const stack = container.querySelector('#stack1') as HTMLElement;
     const tab = stack.querySelector('gl-tab');
 
@@ -129,15 +139,15 @@ describe('self-target prevention', () => {
       value: rect.top + 5, // Near top edge
       writable: false,
     });
-    
+
     stack.dispatchEvent(dragOverEvent);
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Drop indicator should not be visible
-    const dropIndicator = document.querySelector('gl-drop-indicator') as any;
+    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorTestElement;
     expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
-    
+
     // Stack should not have drag-over class
     expect(stack.classList.contains('drag-over')).toBe(false);
   });
@@ -163,7 +173,7 @@ describe('self-target prevention', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
     const tab = stack1.querySelector('gl-tab');
@@ -188,16 +198,16 @@ describe('self-target prevention', () => {
       value: rect.top + rect.height / 2,
       writable: false,
     });
-    
+
     stack2.dispatchEvent(dragOverEvent);
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Drop indicator should be visible with center position
-    const dropIndicator = document.querySelector('gl-drop-indicator') as any;
+    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorTestElement;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
     expect(dropIndicator?.position).toBe('center');
-    
+
     // Stack should have drag-over class
     expect(stack2.classList.contains('drag-over')).toBe(true);
   });
@@ -218,7 +228,7 @@ describe('self-target prevention', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as any;
+    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
     const stack = container.querySelector('#stack1') as HTMLElement;
     const tab = stack.querySelector('gl-tab');
 
@@ -228,11 +238,11 @@ describe('self-target prevention', () => {
 
     // Test all drop positions
     const positions = [
-      { x: 100, y: 5, name: 'top' },     // Top edge
-      { x: 195, y: 100, name: 'right' }, // Right edge  
-      { x: 100, y: 195, name: 'bottom' },// Bottom edge
-      { x: 5, y: 100, name: 'left' },    // Left edge
-      { x: 100, y: 100, name: 'center' } // Center
+      { x: 100, y: 5, name: 'top' }, // Top edge
+      { x: 195, y: 100, name: 'right' }, // Right edge
+      { x: 100, y: 195, name: 'bottom' }, // Bottom edge
+      { x: 5, y: 100, name: 'left' }, // Left edge
+      { x: 100, y: 100, name: 'center' }, // Center
     ];
 
     for (const pos of positions) {
@@ -252,14 +262,14 @@ describe('self-target prevention', () => {
         value: { dropEffect: 'move' },
         writable: false,
       });
-      
+
       stack.dispatchEvent(dragOverEvent);
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       // Drop indicator should never be visible for same stack
       const dropIndicator = document.querySelector('gl-drop-indicator');
       expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
-      
+
       // Stack should never have drag-over class for same stack
       expect(stack.classList.contains('drag-over')).toBe(false);
     }

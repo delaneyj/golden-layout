@@ -1,4 +1,4 @@
-import { BaseElement } from '../core/base-element';
+import { BaseElement } from '@/core/base-element';
 
 export class GlSplitter extends BaseElement {
   private _orientation: 'horizontal' | 'vertical' = 'vertical';
@@ -62,12 +62,13 @@ export class GlSplitter extends BaseElement {
           touch-action: none;
           flex-shrink: 0;
           ${isHorizontal ? 'cursor: ew-resize;' : 'cursor: ns-resize;'}
-          ${isHorizontal ? 
-            `width: var(--gl-splitter-size, 5px);
+          ${
+            isHorizontal
+              ? `width: var(--gl-splitter-size, 5px);
              min-width: var(--gl-splitter-size, 5px);
              max-width: var(--gl-splitter-size, 5px);
-             height: 100%;` : 
-            `height: var(--gl-splitter-size, 5px);
+             height: 100%;`
+              : `height: var(--gl-splitter-size, 5px);
              min-height: var(--gl-splitter-size, 5px);
              max-height: var(--gl-splitter-size, 5px);
              width: 100%;`
@@ -188,14 +189,14 @@ export class GlSplitter extends BaseElement {
     document.removeEventListener('touchend', this.handleTouchEnd);
 
     this.emit('splitter-drag-end');
-    
+
     // Notify layout of change
     this.notifyLayoutChange();
   }
-  
+
   private notifyLayoutChange(): void {
     const layout = this.closest('gl-layout') as HTMLElement & { emitLayoutChange?: () => void };
-    if (layout && layout.emitLayoutChange) {
+    if (layout?.emitLayoutChange) {
       // Use setTimeout to ensure DOM is updated
       setTimeout(() => layout.emitLayoutChange(), 0);
     }
