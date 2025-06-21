@@ -2,14 +2,23 @@ import { BaseElement } from '../core/base-element';
 import type { LayoutConfig } from '../types/config';
 import type { GlDropIndicator } from './gl-drop-indicator';
 
+interface LayoutNode {
+  type: 'pane' | 'row' | 'column';
+  id?: string;
+  panelType?: string;
+  children?: LayoutNode[];
+}
+
 export class GlLayout extends BaseElement {
   private _config: LayoutConfig | null = null;
   private _draggedElement: HTMLElement | null = null;
   private _dropIndicator: GlDropIndicator | null = null;
   private _panelTypes: string[] = ['default'];
+  private _panePrefix = 'pane';
+  private _paneCounter = 0;
 
   static get observedAttributes(): string[] {
-    return ['config', 'panel-types'];
+    return ['config', 'panel-types', 'pane-prefix'];
   }
 
   get config(): LayoutConfig | null {
@@ -32,6 +41,20 @@ export class GlLayout extends BaseElement {
     this.setAttribute('panel-types', JSON.stringify(value));
   }
 
+  get panePrefix(): string {
+    return this._panePrefix;
+  }
+
+  set panePrefix(value: string) {
+    this._panePrefix = value;
+    this.setAttribute('pane-prefix', value);
+  }
+  
+  generatePaneId(): string {
+    this._paneCounter++;
+    return `${this._panePrefix}-${this._paneCounter}`;
+  }
+
   connectedCallback(): void {
     super.connectedCallback();
     this.addEventListener('dragstart', this.handleDragStart);
@@ -52,6 +75,18 @@ export class GlLayout extends BaseElement {
         console.warn('Invalid panel-types attribute, using defaults');
       }
     }
+    
+    // Parse pane-prefix attribute if present
+    const panePrefixAttr = this.getAttribute('pane-prefix');
+    if (panePrefixAttr) {
+      this._panePrefix = panePrefixAttr;
+    }
+    
+    // Auto-generate IDs for panes without IDs
+    setTimeout(() => {
+      this.assignPaneIds();
+      this.emitLayoutChange();
+    }, 0);
   }
 
   disconnectedCallback(): void {
@@ -75,6 +110,8 @@ export class GlLayout extends BaseElement {
       } catch {
         console.warn('Invalid panel-types attribute, using defaults');
       }
+    } else if (name === 'pane-prefix' && newValue) {
+      this._panePrefix = newValue;
     }
   }
 
@@ -177,7 +214,66 @@ export class GlLayout extends BaseElement {
     
     this._draggedElement = null;
     this.emit('item-drag-end');
+    
+    // Emit layout change event
+    this.emitLayoutChange();
   };
+  
+  private getLayoutStructure(): LayoutNode | null {
+    const serializeElement = (element: Element): LayoutNode | null => {
+      if (element.tagName === 'GL-PANE') {
+        return {
+          type: 'pane',
+          id: element.getAttribute('id') || undefined,
+          panelType: element.getAttribute('panel-type') || 'default'
+        };
+      } else if (element.tagName === 'GL-ROW') {
+        return {
+          type: 'row',
+          children: Array.from(element.children)
+            .filter(child => child.tagName !== 'GL-SPLITTER')
+            .map(child => serializeElement(child))
+            .filter((child): child is LayoutNode => child !== null)
+        };
+      } else if (element.tagName === 'GL-COLUMN') {
+        return {
+          type: 'column',
+          children: Array.from(element.children)
+            .filter(child => child.tagName !== 'GL-SPLITTER')
+            .map(child => serializeElement(child))
+            .filter((child): child is LayoutNode => child !== null)
+        };
+      }
+      return null;
+    };
+    
+    // Find the root container (first child that's not a slot)
+    const rootContainer = Array.from(this.children).find(
+      child => ['GL-ROW', 'GL-COLUMN', 'GL-PANE'].includes(child.tagName)
+    );
+    
+    return rootContainer ? serializeElement(rootContainer) : null;
+  }
+  
+  public emitLayoutChange(): void {
+    const layout = this.getLayoutStructure();
+    const maximizedId = this.getMaximizedPaneId();
+    this.emit('layout-change', { maximizedId, layout });
+  }
+  
+  private getMaximizedPaneId(): string | null {
+    const maximizedPane = this.querySelector('gl-pane[maximized]');
+    return maximizedPane ? maximizedPane.getAttribute('id') : null;
+  }
+  
+  private assignPaneIds(): void {
+    const allPanes = this.querySelectorAll('gl-pane');
+    allPanes.forEach(pane => {
+      if (!pane.hasAttribute('id') || pane.getAttribute('id') === '') {
+        pane.setAttribute('id', this.generatePaneId());
+      }
+    });
+  }
 }
 
 customElements.define('gl-layout', GlLayout);

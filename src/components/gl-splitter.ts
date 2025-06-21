@@ -188,6 +188,17 @@ export class GlSplitter extends BaseElement {
     document.removeEventListener('touchend', this.handleTouchEnd);
 
     this.emit('splitter-drag-end');
+    
+    // Notify layout of change
+    this.notifyLayoutChange();
+  }
+  
+  private notifyLayoutChange(): void {
+    const layout = this.closest('gl-layout') as HTMLElement & { emitLayoutChange?: () => void };
+    if (layout && layout.emitLayoutChange) {
+      // Use setTimeout to ensure DOM is updated
+      setTimeout(() => layout.emitLayoutChange(), 0);
+    }
   }
 }
 

@@ -202,7 +202,7 @@
   </div>
   
   <div class="demo-container">
-    <gl-layout id="layout" panel-types='["editor", "terminal", "console", "preview", "explorer", "debug", "output"]'>
+    <gl-layout id="layout" panel-types='["editor", "terminal", "console", "preview", "explorer", "debug", "output"]' pane-prefix="foo">
       <gl-row>
         <gl-pane panel-type="foo">
           <gl-component-container>
@@ -281,12 +281,22 @@
       console.log('Panel type changed:', e.detail);
     });
     
+    layoutElement.addEventListener('layout-change', (e) => {
+      console.log('Layout changed:', JSON.stringify(e.detail, null, 2));
+    });
+    
     // Example of dynamically changing panel types
     // layoutElement.panelTypes = ['code', 'markdown', 'json', 'yaml', 'xml'];
     
     // Test invalid panel type (will show error and use first valid type)
     // const testPane = document.createElement('gl-pane');
     // testPane.setAttribute('panel-type', 'invalid-type');
+    
+    // Test auto-generated id (will be assigned automatically)
+    // const testPaneNoId = document.createElement('gl-pane');
+    // testPaneNoId.setAttribute('panel-type', 'editor');
+    // layoutElement.querySelector('gl-row').appendChild(testPaneNoId);
+    // setTimeout(() => console.log('Auto-generated ID:', testPaneNoId.id), 100);
     
     // Theme selector
     const themeSelect = document.getElementById('theme-select');
