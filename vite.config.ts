@@ -15,8 +15,20 @@ export default defineConfig({
         globals: {
           'open-props': 'OpenProps',
         },
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'style.css') return 'styles.css';
+          return assetInfo.name;
+        },
       },
     },
+    // Optimize for library
+    minify: 'esbuild',
+    cssMinify: 'esbuild',
+    sourcemap: true,
+    // Report compressed size
+    reportCompressedSize: true,
+    // Inline assets smaller than 4kb
+    assetsInlineLimit: 4096,
   },
   resolve: {
     alias: {
