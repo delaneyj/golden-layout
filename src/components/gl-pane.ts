@@ -3,6 +3,7 @@ import { BaseElement } from '../core/base-element';
 export class GlPane extends BaseElement {
   private _title = '';
   private _isMaximized = false;
+  private _documentClickHandler: (() => void) | null = null;
 
   static get observedAttributes(): string[] {
     return ['title'];
@@ -51,6 +52,15 @@ export class GlPane extends BaseElement {
         }
       }
     }, 0);
+  }
+  
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    // Clean up document event listener
+    if (this._documentClickHandler) {
+      document.removeEventListener('click', this._documentClickHandler);
+      this._documentClickHandler = null;
+    }
   }
 
   protected render(): void {
@@ -128,12 +138,14 @@ export class GlPane extends BaseElement {
         }
         
         .controls {
+          position: relative;
+          margin-left: 8px;
           display: flex;
           gap: 2px;
-          margin-left: 8px;
         }
         
-        .control {
+        .menu-button,
+        .restore-button {
           width: 20px;
           height: 20px;
           display: flex;
@@ -148,13 +160,68 @@ export class GlPane extends BaseElement {
           transition: all 0.2s;
         }
         
-        .control:hover {
+        .menu-button:hover,
+        .restore-button:hover {
           background: var(--gl-control-hover-bg, #504945); /* gruvbox bg2 */
           opacity: 1;
         }
         
-        .control:active {
+        .menu-button:active,
+        .menu-button.active,
+        .restore-button:active {
           background: var(--gl-control-active-bg, #665c54); /* gruvbox bg3 */
+        }
+        
+        .restore-button:hover {
+          color: var(--gl-splitter-active-bg, #fe8019); /* gruvbox orange */
+        }
+        
+        .dropdown-menu {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          margin-top: 4px;
+          background: var(--gl-header-bg, #3c3836);
+          border: 1px solid var(--gl-header-border, #504945);
+          border-radius: 4px;
+          padding: 4px 0;
+          min-width: 160px;
+          display: none;
+          z-index: 1000;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dropdown-menu.show {
+          display: block;
+        }
+        
+        .menu-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 6px 12px;
+          border: none;
+          background: none;
+          color: var(--gl-header-color, #ebdbb2);
+          cursor: pointer;
+          width: 100%;
+          text-align: left;
+          font-size: 13px;
+          transition: background-color 0.2s;
+        }
+        
+        .menu-item:hover {
+          background: var(--gl-control-hover-bg, #504945);
+        }
+        
+        .menu-item svg {
+          flex-shrink: 0;
+        }
+        
+        .menu-divider {
+          height: 1px;
+          background: var(--gl-header-border, #504945);
+          margin: 4px 0;
         }
         
         .content {
@@ -174,16 +241,51 @@ export class GlPane extends BaseElement {
       <div class="header" draggable="true">
         <span class="title">${this._title}</span>
         <div class="controls">
-          <button class="control maximize" title="Maximize">
+          ${this._isMaximized ? `
+            <button class="restore-button" title="Restore">
+              <svg width="12" height="12" viewBox="0 0 12 12">
+                <rect x="3" y="3" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M2 2h5v1M2 2v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          ` : ''}
+          <button class="menu-button" title="Pane Options">
             <svg width="12" height="12" viewBox="0 0 12 12">
-              <rect x="1" y="1" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="6" cy="2" r="1" fill="currentColor"/>
+              <circle cx="6" cy="6" r="1" fill="currentColor"/>
+              <circle cx="6" cy="10" r="1" fill="currentColor"/>
             </svg>
           </button>
-          <button class="control close" title="Close">
-            <svg width="12" height="12" viewBox="0 0 12 12">
-              <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </button>
+          <div class="dropdown-menu">
+            <button class="menu-item split-horizontal">
+              <svg width="12" height="12" viewBox="0 0 12 12">
+                <rect x="1" y="1" width="4" height="10" fill="none" stroke="currentColor" stroke-width="1"/>
+                <rect x="7" y="1" width="4" height="10" fill="none" stroke="currentColor" stroke-width="1"/>
+              </svg>
+              Split Horizontal
+            </button>
+            <button class="menu-item split-vertical">
+              <svg width="12" height="12" viewBox="0 0 12 12">
+                <rect x="1" y="1" width="10" height="4" fill="none" stroke="currentColor" stroke-width="1"/>
+                <rect x="1" y="7" width="10" height="4" fill="none" stroke="currentColor" stroke-width="1"/>
+              </svg>
+              Split Vertical
+            </button>
+            <div class="menu-divider"></div>
+            <button class="menu-item maximize">
+              <svg width="12" height="12" viewBox="0 0 12 12">
+                <rect x="1" y="1" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              ${this._isMaximized ? 'Restore' : 'Maximize'}
+            </button>
+            <div class="menu-divider"></div>
+            <button class="menu-item close">
+              <svg width="12" height="12" viewBox="0 0 12 12">
+                <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              Close Pane
+            </button>
+          </div>
         </div>
       </div>
       <div class="content">
@@ -194,18 +296,72 @@ export class GlPane extends BaseElement {
     // Add event listeners after a microtask to ensure DOM is ready
     setTimeout(() => {
       const header = this.shadowRoot?.querySelector('.header') as HTMLElement;
+      const menuButton = this.shadowRoot?.querySelector('.menu-button') as HTMLElement;
+      const dropdownMenu = this.shadowRoot?.querySelector('.dropdown-menu') as HTMLElement;
+      const splitHorizontalBtn = this.shadowRoot?.querySelector('.split-horizontal') as HTMLElement;
+      const splitVerticalBtn = this.shadowRoot?.querySelector('.split-vertical') as HTMLElement;
       const maximizeBtn = this.shadowRoot?.querySelector('.maximize') as HTMLElement;
       const closeBtn = this.shadowRoot?.querySelector('.close') as HTMLElement;
+      const restoreBtn = this.shadowRoot?.querySelector('.restore-button') as HTMLElement;
 
       if (header) {
         header.addEventListener('dragstart', this.handleDragStart);
         header.addEventListener('dragend', this.handleDragEnd);
       }
+      
+      if (menuButton && dropdownMenu) {
+        menuButton.addEventListener('click', (e) => {
+          e.stopPropagation();
+          dropdownMenu.classList.toggle('show');
+          menuButton.classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking outside
+        this._documentClickHandler = () => {
+          dropdownMenu.classList.remove('show');
+          menuButton.classList.remove('active');
+        };
+        document.addEventListener('click', this._documentClickHandler);
+        
+        // Prevent dropdown from closing when clicking inside
+        dropdownMenu.addEventListener('click', (e) => {
+          e.stopPropagation();
+        });
+      }
+      
+      if (splitHorizontalBtn) {
+        splitHorizontalBtn.addEventListener('click', () => {
+          this.handleSplit('horizontal');
+          dropdownMenu?.classList.remove('show');
+          menuButton?.classList.remove('active');
+        });
+      }
+      if (splitVerticalBtn) {
+        splitVerticalBtn.addEventListener('click', () => {
+          this.handleSplit('vertical');
+          dropdownMenu?.classList.remove('show');
+          menuButton?.classList.remove('active');
+        });
+      }
       if (maximizeBtn) {
-        maximizeBtn.addEventListener('click', this.handleMaximize);
+        maximizeBtn.addEventListener('click', () => {
+          this.handleMaximize();
+          dropdownMenu?.classList.remove('show');
+          menuButton?.classList.remove('active');
+        });
       }
       if (closeBtn) {
-        closeBtn.addEventListener('click', this.handleClose);
+        closeBtn.addEventListener('click', () => {
+          this.handleClose();
+          dropdownMenu?.classList.remove('show');
+          menuButton?.classList.remove('active');
+        });
+      }
+      
+      if (restoreBtn) {
+        restoreBtn.addEventListener('click', () => {
+          this.handleMaximize();
+        });
       }
     }, 0);
   }
@@ -239,6 +395,50 @@ export class GlPane extends BaseElement {
 
   private handleMaximize = (): void => {
     this.isMaximized = !this.isMaximized;
+    // Re-render to update the restore button visibility
+    this.render();
+    // Update title after re-render
+    this.updateHeader();
+  };
+
+  private handleSplit = (orientation: 'horizontal' | 'vertical'): void => {
+    const parent = this.parentElement;
+    if (!parent) return;
+
+    // Create a new pane with a copy of this pane's content
+    const newPane = document.createElement('gl-pane');
+    newPane.setAttribute('title', 'New Pane');
+    
+    // Create a container for the new pane
+    const newContainer = document.createElement('gl-component-container');
+    const newContent = document.createElement('div');
+    newContent.className = 'demo-content';
+    newContent.innerHTML = `<h2>New Pane</h2><p>Split from ${this._title}</p>`;
+    newContainer.appendChild(newContent);
+    newPane.appendChild(newContainer);
+
+    // Create the appropriate container (row or column)
+    const containerType = orientation === 'horizontal' ? 'gl-row' : 'gl-column';
+    const container = document.createElement(containerType);
+
+    // Create a splitter
+    const splitter = document.createElement('gl-splitter');
+    splitter.setAttribute('orientation', orientation);
+
+    // Replace this pane with the new container
+    parent.replaceChild(container, this);
+
+    // Add elements in order
+    container.appendChild(this);
+    container.appendChild(splitter);
+    container.appendChild(newPane);
+
+    // Emit event
+    this.emit('pane-split', {
+      pane: this,
+      orientation,
+      newPane
+    });
   };
 
   private handleClose = (): void => {
