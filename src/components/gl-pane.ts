@@ -8,6 +8,8 @@ export class GlPane extends BaseElement {
   private _id = '';
   private _componentState: Record<string, unknown> = {};
   private _title = '';
+  private _originalParent: Element | null = null;
+  private _originalNextSibling: Element | null = null;
 
   static get observedAttributes(): string[] {
     return ['panel-type', 'id', 'title'];
@@ -21,6 +23,7 @@ export class GlPane extends BaseElement {
     this._isMaximized = value;
     this.toggleAttribute('maximized', value);
     this.emit('maximize-changed', { isMaximized: value });
+    this.updateMaximizeUI();
   }
 
   get panelType(): string {
@@ -146,6 +149,8 @@ export class GlPane extends BaseElement {
           width: 100% !important;
           height: 100% !important;
           z-index: 1000;
+          max-width: none !important;
+          max-height: none !important;
         }
         
         :host([invalid-panel-type]),
@@ -317,18 +322,12 @@ export class GlPane extends BaseElement {
             .join('')}
         </select>
         <div class="controls">
-          ${
-            this._isMaximized
-              ? `
-            <button class="restore-button" title="Restore">
-              <svg width="12" height="12" viewBox="0 0 12 12">
-                <rect x="3" y="3" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M2 2h5v1M2 2v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-            </button>
-          `
-              : ''
-          }
+          <button class="restore-button" title="Restore" style="display: ${this._isMaximized ? 'flex' : 'none'}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+              <!-- Icon from Material Symbols by Google - https://github.com/google/material-design-icons/blob/master/LICENSE -->
+              <path fill="currentColor" d="M7 13q-.425 0-.712-.288T6 12t.288-.712T7 11h10q.425 0 .713.288T18 12t-.288.713T17 13z"/>
+            </svg>
+          </button>
           <button class="menu-button" title="Pane Options">
             <svg width="12" height="12" viewBox="0 0 12 12">
               <circle cx="6" cy="2" r="1" fill="currentColor"/>
@@ -489,9 +488,64 @@ export class GlPane extends BaseElement {
   };
 
   private handleMaximize = (): void => {
-    this.isMaximized = !this.isMaximized;
-    // Re-render to update the restore button visibility
-    this.render();
+    const layout = this.closest('gl-layout');
+    if (!layout) return;
+
+    if (!this.isMaximized) {
+      // Store original parent and next sibling for restoration
+      this._originalParent = this.parentElement;
+      this._originalNextSibling = this.nextElementSibling;
+
+      // Move to be a direct child of the layout's slot content
+      const layoutRoot = layout.shadowRoot?.querySelector('slot');
+      if (layoutRoot) {
+        // Move the pane to be a direct child of gl-layout (light DOM)
+        layout.appendChild(this);
+      }
+      this.isMaximized = true;
+    } else {
+      // Restore to original position
+      if (this._originalParent?.isConnected) {
+        if (this._originalNextSibling?.isConnected) {
+          this._originalParent.insertBefore(this, this._originalNextSibling);
+        } else {
+          this._originalParent.appendChild(this);
+        }
+        this.isMaximized = false;
+      } else {
+        // If original parent is gone, try to find a suitable container
+        const firstContainer = layout.querySelector('gl-row, gl-column');
+        if (firstContainer) {
+          // Find the last pane in the container
+          const lastPane = Array.from(firstContainer.children)
+            .filter((child) => child.tagName === 'GL-PANE')
+            .pop();
+
+          if (lastPane) {
+            // Insert after the last pane with a splitter
+            const splitter = document.createElement('gl-splitter');
+            const isRow = firstContainer.tagName === 'GL-ROW';
+            splitter.setAttribute('orientation', isRow ? 'horizontal' : 'vertical');
+
+            lastPane.insertAdjacentElement('afterend', splitter);
+            splitter.insertAdjacentElement('afterend', this);
+          } else {
+            // No panes, just append
+            firstContainer.appendChild(this);
+          }
+          this.isMaximized = false;
+        } else {
+          // No container found, can't restore - stay maximized
+          console.warn('Unable to restore pane: no suitable container found');
+          return;
+        }
+      }
+
+      // Clear the original parent references after restore
+      this._originalParent = null;
+      this._originalNextSibling = null;
+    }
+
     // Notify layout of change
     this.notifyLayoutChange();
   };
@@ -928,6 +982,29 @@ export class GlPane extends BaseElement {
 
   getState(): Record<string, unknown> {
     return { ...this._componentState };
+  }
+
+  private updateMaximizeUI(): void {
+    if (!this.shadowRoot) return;
+
+    const restoreBtn = this.shadowRoot.querySelector('.restore-button') as HTMLElement;
+    const maximizeMenuItem = this.shadowRoot.querySelector('.menu-item.maximize') as HTMLElement;
+
+    if (restoreBtn) {
+      restoreBtn.style.display = this._isMaximized ? 'flex' : 'none';
+    }
+
+    if (maximizeMenuItem) {
+      maximizeMenuItem.textContent = this._isMaximized ? 'Restore' : 'Maximize';
+      // Re-add the icon
+      const icon = document.createElement('svg');
+      icon.setAttribute('width', '12');
+      icon.setAttribute('height', '12');
+      icon.setAttribute('viewBox', '0 0 12 12');
+      icon.innerHTML =
+        '<rect x="1" y="1" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5"/>';
+      maximizeMenuItem.insertBefore(icon, maximizeMenuItem.firstChild);
+    }
   }
 }
 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Restore Functionality</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: system-ui, -apple-system, sans-serif;
+      height: 100vh;
+      background: #282828;
+      color: #ebdbb2;
+    }
+    
+    .container {
+      height: 500px;
+      border: 1px solid #504945;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .instructions {
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #3c3836;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="instructions">
+    <h2>Test Instructions:</h2>
+    <ol>
+      <li>Click the ⋮ menu on any pane and select "Maximize"</li>
+      <li>The pane should expand to fill the entire layout</li>
+      <li>Click the restore button (—) that appears in the header</li>
+      <li>The pane should return to its original position</li>
+    </ol>
+  </div>
+  
+  <div class="container">
+    <gl-layout>
+      <gl-row>
+        <gl-pane panel-type="editor">
+          <h2>Pane 1</h2>
+          <p>Test maximize and restore on this pane</p>
+        </gl-pane>
+        
+        <gl-splitter orientation="horizontal"></gl-splitter>
+        
+        <gl-pane panel-type="terminal">
+          <h2>Pane 2</h2>
+          <p>Or test on this pane</p>
+        </gl-pane>
+      </gl-row>
+    </gl-layout>
+  </div>
+  
+  <script type="module">
+    import './src/index.ts';
+    
+    // Log maximize/restore events
+    const layout = document.querySelector('gl-layout');
+    layout.addEventListener('maximize-changed', (e) => {
+      console.log('Maximize state changed:', e.detail);
+    });
+  </script>
+</body>
+</html>

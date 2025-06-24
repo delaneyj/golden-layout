@@ -174,6 +174,16 @@ export class GlLayout extends BaseElement {
           width: 100%;
           height: 100%;
         }
+        
+        /* Ensure maximized panes fill the entire layout */
+        ::slotted(gl-pane[maximized]) {
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
+          z-index: 1000 !important;
+        }
       </style>
       <slot></slot>
     `;
