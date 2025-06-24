@@ -2,7 +2,7 @@ import { BaseElement } from '@/core/base-element';
 
 export class GlDropIndicator extends BaseElement {
   private _targetElement: HTMLElement | null = null;
-  private _position: 'center' | 'top' | 'right' | 'bottom' | 'left' = 'center';
+  private _position: 'top' | 'right' | 'bottom' | 'left' = 'top';
 
   get position(): string {
     return this._position;
@@ -35,13 +35,6 @@ export class GlDropIndicator extends BaseElement {
           border-radius: var(--gl-drop-indicator-radius, 4px);
           transition: all 0.2s ease;
           
-        }
-        
-        .indicator.center {
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
         }
         
         .indicator.top {
@@ -95,16 +88,13 @@ export class GlDropIndicator extends BaseElement {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
       </style>
-      <div class="indicator center">
-        <div class="label">Drop here</div>
+      <div class="indicator top">
+        <div class="label">Drop to add above</div>
       </div>
     `;
   }
 
-  show(
-    target: HTMLElement,
-    position: 'center' | 'top' | 'right' | 'bottom' | 'left' = 'center',
-  ): void {
+  show(target: HTMLElement, position: 'top' | 'right' | 'bottom' | 'left' = 'top'): void {
     this._targetElement = target;
     this._position = position;
 
@@ -136,8 +126,6 @@ export class GlDropIndicator extends BaseElement {
           case 'right':
             label.textContent = 'Drop to add right';
             break;
-          default:
-            label.textContent = 'Drop here';
         }
       }
     }

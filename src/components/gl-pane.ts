@@ -602,19 +602,44 @@ export class GlPane extends BaseElement {
       const xRatio = rect.width > 0 ? x / rect.width : 0.5;
       const yRatio = rect.height > 0 ? y / rect.height : 0.5;
 
-      let position: 'center' | 'top' | 'right' | 'bottom' | 'left' = 'center';
-
       // Determine which edge is closest to the cursor
       const edgeThreshold = 0.3; // 30% from edge
+      let position: 'top' | 'right' | 'bottom' | 'left';
 
-      if (yRatio < edgeThreshold) {
+      // Calculate distances to each edge
+      const distances = {
+        top: yRatio,
+        bottom: 1 - yRatio,
+        left: xRatio,
+        right: 1 - xRatio,
+      };
+
+      // Find the closest edge
+      if (distances.top <= edgeThreshold && distances.top <= distances.bottom) {
         position = 'top';
-      } else if (yRatio > 1 - edgeThreshold) {
+      } else if (distances.bottom <= edgeThreshold && distances.bottom < distances.top) {
         position = 'bottom';
-      } else if (xRatio < edgeThreshold) {
+      } else if (distances.left <= edgeThreshold && distances.left <= distances.right) {
         position = 'left';
-      } else if (xRatio > 1 - edgeThreshold) {
+      } else if (distances.right <= edgeThreshold && distances.right < distances.left) {
         position = 'right';
+      } else {
+        // If cursor is not near any edge, find the closest one
+        const minDistance = Math.min(
+          distances.top,
+          distances.bottom,
+          distances.left,
+          distances.right,
+        );
+        if (minDistance === distances.top) {
+          position = 'top';
+        } else if (minDistance === distances.bottom) {
+          position = 'bottom';
+        } else if (minDistance === distances.left) {
+          position = 'left';
+        } else {
+          position = 'right';
+        }
       }
 
       // Check if this drop would result in no layout change
@@ -665,29 +690,10 @@ export class GlPane extends BaseElement {
     const draggedPane = layout?.draggedElement;
 
     if (draggedPane?.tagName === 'GL-PANE' && draggedPane !== this) {
-      if (position === 'center') {
-        // For center position, replace the target pane with the dragged pane
-        const parent = this.parentElement;
-        if (parent) {
-          const draggedParent = draggedPane.parentElement;
-          draggedPane.remove();
-          parent.replaceChild(draggedPane, this);
-
-          // Clean up the dragged pane's original parent
-          if (draggedParent) {
-            this.checkAndCleanupParent(draggedParent);
-            this.triggerParentResize(draggedParent);
-          }
-
-          // Trigger resize on the new parent
-          this.triggerParentResize(parent);
-        }
-      } else {
-        this.createSplitLayout(
-          draggedPane as GlPane,
-          position as 'top' | 'right' | 'bottom' | 'left',
-        );
-      }
+      this.createSplitLayout(
+        draggedPane as GlPane,
+        position as 'top' | 'right' | 'bottom' | 'left',
+      );
 
       // Emit event
       this.emit('pane-moved', {
