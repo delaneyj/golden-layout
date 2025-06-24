@@ -21,62 +21,63 @@ export class GlDropIndicator extends BaseElement {
           position: fixed;
           pointer-events: none;
           z-index: 999;
-          display: none !important;
-          
-          &([data-visible="true"]) {
-            display: block !important;
-          }
+          display: none;
+        }
+        
+        :host([data-visible="true"]) {
+          display: block !important;
         }
         
         .indicator {
           position: absolute;
-          background: var(--gl-drop-indicator-bg, rgba(131, 165, 152, 0.15)); /* gruvbox blue with transparency */
-          border: 2px solid var(--gl-drop-indicator-border, #83a598); /* gruvbox blue */
+          background: var(--gl-drop-indicator-bg, rgba(131, 165, 152, 0.3)); /* gruvbox blue with transparency */
+          border: 3px solid var(--gl-drop-indicator-border, #83a598); /* gruvbox blue */
           border-radius: var(--gl-drop-indicator-radius, 4px);
           transition: all 0.2s ease;
           
-          &.center {
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-          }
-          
-          &.top {
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 30%;
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-          }
-          
-          &.bottom {
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 30%;
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
-          }
-          
-          &.left {
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 30%;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-          }
-          
-          &.right {
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 30%;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-          }
+        }
+        
+        .indicator.center {
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+        
+        .indicator.top {
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 30%;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+        
+        .indicator.bottom {
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 30%;
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+        }
+        
+        .indicator.left {
+          top: 0;
+          left: 0;
+          bottom: 0;
+          width: 30%;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+        
+        .indicator.right {
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 30%;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
         }
         
         .label {
@@ -113,6 +114,7 @@ export class GlDropIndicator extends BaseElement {
     this.style.top = `${rect.top}px`;
     this.style.width = `${rect.width}px`;
     this.style.height = `${rect.height}px`;
+    this.style.zIndex = '9999';
 
     const indicator = this.shadowRoot?.querySelector('.indicator');
     if (indicator) {

@@ -1,3 +1,4 @@
+import type { GlLayout } from '@/components/gl-layout';
 import { BaseElement } from '@/core/base-element';
 
 export class GlPane extends BaseElement {
@@ -569,10 +570,7 @@ export class GlPane extends BaseElement {
   };
 
   private handleDragOver = (e: DragEvent): void => {
-    const layout = this.closest('gl-layout') as HTMLElement & {
-      draggedElement?: HTMLElement;
-      dropIndicator?: { show(target: HTMLElement, position?: string): void; hide(): void };
-    };
+    const layout = this.closest('gl-layout') as GlLayout;
 
     if (layout?.draggedElement?.tagName === 'GL-PANE') {
       const draggedPane = layout.draggedElement;
@@ -604,7 +602,7 @@ export class GlPane extends BaseElement {
       const xRatio = rect.width > 0 ? x / rect.width : 0.5;
       const yRatio = rect.height > 0 ? y / rect.height : 0.5;
 
-      let position: 'top' | 'right' | 'bottom' | 'left' = 'top';
+      let position: 'center' | 'top' | 'right' | 'bottom' | 'left' = 'center';
 
       // Determine which edge is closest to the cursor
       const edgeThreshold = 0.3; // 30% from edge
@@ -642,9 +640,7 @@ export class GlPane extends BaseElement {
     if (e.target === this) {
       this.classList.remove('drag-over');
 
-      const layout = this.closest('gl-layout') as HTMLElement & {
-        dropIndicator?: { hide(): void };
-      };
+      const layout = this.closest('gl-layout') as GlLayout;
       if (layout?.dropIndicator) {
         layout.dropIndicator.hide();
       }
@@ -657,10 +653,7 @@ export class GlPane extends BaseElement {
 
     this.classList.remove('drag-over');
 
-    const layout = this.closest('gl-layout') as HTMLElement & {
-      draggedElement?: HTMLElement;
-      dropIndicator?: { hide(): void; position?: string };
-    };
+    const layout = this.closest('gl-layout') as GlLayout;
 
     const position = layout?.dropIndicator?.position || 'left';
 
@@ -672,10 +665,29 @@ export class GlPane extends BaseElement {
     const draggedPane = layout?.draggedElement;
 
     if (draggedPane?.tagName === 'GL-PANE' && draggedPane !== this) {
-      this.createSplitLayout(
-        draggedPane as GlPane,
-        position as 'top' | 'right' | 'bottom' | 'left',
-      );
+      if (position === 'center') {
+        // For center position, replace the target pane with the dragged pane
+        const parent = this.parentElement;
+        if (parent) {
+          const draggedParent = draggedPane.parentElement;
+          draggedPane.remove();
+          parent.replaceChild(draggedPane, this);
+
+          // Clean up the dragged pane's original parent
+          if (draggedParent) {
+            this.checkAndCleanupParent(draggedParent);
+            this.triggerParentResize(draggedParent);
+          }
+
+          // Trigger resize on the new parent
+          this.triggerParentResize(parent);
+        }
+      } else {
+        this.createSplitLayout(
+          draggedPane as GlPane,
+          position as 'top' | 'right' | 'bottom' | 'left',
+        );
+      }
 
       // Emit event
       this.emit('pane-moved', {
