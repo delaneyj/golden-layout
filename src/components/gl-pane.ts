@@ -137,38 +137,39 @@ export class GlPane extends BaseElement {
           overflow: hidden;
           box-sizing: border-box;
           
-          &([maximized]) {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            z-index: 1000;
-          }
-          
-          &([invalid-panel-type]),
-          &([invalid-id]) {
-            border-color: #fb4934 !important; /* gruvbox red */
-            box-shadow: 0 0 0 2px rgba(251, 73, 52, 0.25);
-          }
-          
-          &(.drag-over) {
-            border-color: var(--gl-pane-drag-over-border, #83a598); /* gruvbox blue */
-            box-shadow: 0 0 0 2px var(--gl-pane-drag-over-shadow, rgba(131, 165, 152, 0.25));
-            
-            &::before {
-              content: '';
-              position: absolute;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              background: var(--gl-pane-drag-over-bg, rgba(131, 165, 152, 0.05));
-              pointer-events: none;
-              z-index: 10;
-              border-radius: inherit;
-            }
-          }
+        }
+        
+        :host([maximized]) {
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
+          z-index: 1000;
+        }
+        
+        :host([invalid-panel-type]),
+        :host([invalid-id]) {
+          border-color: #fb4934 !important; /* gruvbox red */
+          box-shadow: 0 0 0 2px rgba(251, 73, 52, 0.25);
+        }
+        
+        :host(.drag-over) {
+          border-color: var(--gl-pane-drag-over-border, #83a598); /* gruvbox blue */
+          box-shadow: 0 0 0 2px var(--gl-pane-drag-over-shadow, rgba(131, 165, 152, 0.25));
+        }
+        
+        :host(.drag-over)::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: var(--gl-pane-drag-over-bg, rgba(131, 165, 152, 0.05));
+          pointer-events: none;
+          z-index: 10;
+          border-radius: inherit;
         }
         
         .header {
