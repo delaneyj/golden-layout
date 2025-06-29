@@ -5,7 +5,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'GoldenLayout',
+      name: 'Tilex',
       fileName: 'index',
       formats: ['es'],
     },
@@ -17,7 +17,7 @@ export default defineConfig({
         },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === 'style.css') return 'styles.css';
-          return assetInfo.name;
+          return assetInfo.name || '[name][extname]';
         },
       },
     },

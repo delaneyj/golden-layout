@@ -1,7 +1,6 @@
 import { BaseElement } from '@/core/base-element';
 
-export class GlDropIndicator extends BaseElement {
-  private _targetElement: HTMLElement | null = null;
+export class TilexDropIndicator extends BaseElement {
   private _position: 'top' | 'right' | 'bottom' | 'left' = 'top';
 
   get position(): string {
@@ -30,9 +29,9 @@ export class GlDropIndicator extends BaseElement {
         
         .indicator {
           position: absolute;
-          background: var(--gl-drop-indicator-bg, rgba(131, 165, 152, 0.3)); /* gruvbox blue with transparency */
-          border: 3px solid var(--gl-drop-indicator-border, #83a598); /* gruvbox blue */
-          border-radius: var(--gl-drop-indicator-radius, 4px);
+          background: var(--tx-drop-indicator-bg, rgba(131, 165, 152, 0.3)); /* gruvbox blue with transparency */
+          border: 3px solid var(--tx-drop-indicator-border, #83a598); /* gruvbox blue */
+          border-radius: var(--tx-drop-indicator-radius, 4px);
           transition: all 0.2s ease;
           
         }
@@ -78,8 +77,8 @@ export class GlDropIndicator extends BaseElement {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          background: var(--gl-drop-indicator-label-bg, #83a598); /* gruvbox blue */
-          color: var(--gl-drop-indicator-label-color, #282828); /* gruvbox bg0 */
+          background: var(--tx-drop-indicator-label-bg, #83a598); /* gruvbox blue */
+          color: var(--tx-drop-indicator-label-color, #282828); /* gruvbox bg0 */
           padding: 4px 12px;
           border-radius: 4px;
           font-size: 12px;
@@ -95,7 +94,6 @@ export class GlDropIndicator extends BaseElement {
   }
 
   show(target: HTMLElement, position: 'top' | 'right' | 'bottom' | 'left' = 'top'): void {
-    this._targetElement = target;
     this._position = position;
 
     const rect = target.getBoundingClientRect();
@@ -133,8 +131,7 @@ export class GlDropIndicator extends BaseElement {
 
   hide(): void {
     this.removeAttribute('data-visible');
-    this._targetElement = null;
   }
 }
 
-customElements.define('gl-drop-indicator', GlDropIndicator);
+customElements.define('tx-drop-indicator', TilexDropIndicator);

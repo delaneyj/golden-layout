@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
-import type { GlLayoutElement } from '@/types/elements';
+import type { TilexLayoutElement } from '@/types/elements';
 
 // Test-specific interface to access private properties
-interface GlLayoutTestElement extends GlLayoutElement {
+interface TilexLayoutTestElement extends TilexLayoutElement {
   _draggedElement: HTMLElement | null;
 }
 
@@ -23,32 +23,32 @@ describe('complete self-target prevention', () => {
 
   it('prevents all self-targeting but allows other stack targeting', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content 1A</div>
             
             
               <div>Content 1B</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
-    const tab1A = stack1.querySelector('gl-tab'); // First tab in stack1
+    const tab1A = stack1.querySelector('tx-tab'); // First tab in stack1
 
     // Test 1: Dragging from stack1 to stack1 (self-target) - should not show drag-over
     layout._draggedElement = tab1A;
@@ -80,7 +80,7 @@ describe('complete self-target prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Should still have 2 components in stack1
-    const stack1Components = stack1.querySelectorAll('gl-component-container');
+    const stack1Components = stack1.querySelectorAll('tx-component-container');
     expect(stack1Components.length).toBe(2);
     expect(stack1Components[0].getAttribute('title')).toBe('Component 1A');
     expect(stack1Components[1].getAttribute('title')).toBe('Component 1B');
@@ -95,8 +95,8 @@ describe('complete self-target prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Should now have 1 component in stack1 and 2 in stack2
-    const stack1ComponentsAfter = stack1.querySelectorAll('gl-component-container');
-    const stack2ComponentsAfter = stack2.querySelectorAll('gl-component-container');
+    const stack1ComponentsAfter = stack1.querySelectorAll('tx-component-container');
+    const stack2ComponentsAfter = stack2.querySelectorAll('tx-component-container');
 
     expect(stack1ComponentsAfter.length).toBe(1);
     expect(stack1ComponentsAfter[0].getAttribute('title')).toBe('Component 1B');

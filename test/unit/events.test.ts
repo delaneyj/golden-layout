@@ -18,17 +18,17 @@ describe('events', () => {
     const tabCloseHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-pane>
+      <tx-pane>
         
           <div>Content</div>
         
-      </gl-pane>
+      </tx-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-pane');
-    const tab = container.querySelector('gl-tab');
+    const stack = container.querySelector('tx-pane');
+    const tab = container.querySelector('tx-tab');
 
     // Listen for events
     stack?.addEventListener('tab-clicked', tabClickedHandler);
@@ -48,26 +48,26 @@ describe('events', () => {
     const maximizeHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Content</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout');
-    const stack = container.querySelector('gl-pane');
+    const layout = container.querySelector('tx-layout');
+    const stack = container.querySelector('tx-pane');
 
     // Listen at layout level
     layout?.addEventListener('maximize-changed', maximizeHandler);
 
     // Click maximize button in header (inside shadow DOM)
     const maximizeBtn = stack?.shadowRoot
-      ?.querySelector('gl-header')
+      ?.querySelector('tx-header')
       ?.shadowRoot?.querySelector('.maximize') as HTMLElement;
     maximizeBtn?.click();
 
@@ -91,7 +91,7 @@ describe('events', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const component = container.querySelector('gl-component-container');
+    const component = container.querySelector('tx-component-container');
 
     // Add listener
     component?.addEventListener('component-created', handler);
@@ -129,7 +129,7 @@ describe('events', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const component = container.querySelector('gl-component-container') as HTMLElement & {
+    const component = container.querySelector('tx-component-container') as HTMLElement & {
       componentState: Record<string, unknown>;
     };
     component?.addEventListener('state-changed', stateChangedHandler);
@@ -154,16 +154,16 @@ describe('events', () => {
     const handler3 = vi.fn();
 
     container.innerHTML = `
-      <gl-pane>
+      <tx-pane>
         
           <div>Content</div>
         
-      </gl-pane>
+      </tx-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-pane');
+    const stack = container.querySelector('tx-pane');
 
     // Add multiple listeners
     stack?.addEventListener('tab-changed', handler1);
@@ -171,13 +171,13 @@ describe('events', () => {
     stack?.addEventListener('tab-changed', handler3);
 
     // Add another tab and switch to it
-    const newComponent = document.createElement('gl-component-container');
+    const newComponent = document.createElement('tx-component-container');
     newComponent.setAttribute('title', 'New Tab');
     stack?.appendChild(newComponent);
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const tabs = stack?.querySelectorAll('gl-tab');
+    const tabs = stack?.querySelectorAll('tx-tab');
     (tabs?.[1] as HTMLElement)?.click();
 
     // All handlers should be called
@@ -199,26 +199,26 @@ describe('events', () => {
     });
 
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Content</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout');
-    const stack = container.querySelector('gl-pane');
+    const layout = container.querySelector('tx-layout');
+    const stack = container.querySelector('tx-pane');
 
     // Listen on both elements
     layout?.addEventListener('tab-clicked', parentHandler);
     stack?.addEventListener('tab-clicked', childHandler);
 
     // Click tab
-    const tab = container.querySelector('gl-tab') as HTMLElement;
+    const tab = container.querySelector('tx-tab') as HTMLElement;
     tab?.click();
 
     // Child handler should be called but not parent

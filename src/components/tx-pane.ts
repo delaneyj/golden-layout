@@ -1,7 +1,7 @@
-import type { GlLayout } from '@/components/gl-layout';
+import type { TilexLayout } from '@/components/tx-layout';
 import { BaseElement } from '@/core/base-element';
 
-export class GlPane extends BaseElement {
+export class TilexPane extends BaseElement {
   private _isMaximized = false;
   private _documentClickHandler: (() => void) | null = null;
   private _panelType = 'default';
@@ -92,7 +92,7 @@ export class GlPane extends BaseElement {
     // Set default panel type if not set
     setTimeout(() => {
       if (!this.hasAttribute('panel-type')) {
-        const layout = this.closest('gl-layout') as HTMLElement & { panelTypes?: string[] };
+        const layout = this.closest('tx-layout') as HTMLElement & { panelTypes?: string[] };
         const panelTypes = layout?.panelTypes || ['default'];
         this._panelType = panelTypes[0];
       }
@@ -118,7 +118,7 @@ export class GlPane extends BaseElement {
 
   protected render(): void {
     if (!this.shadowRoot) {
-      console.error('GlPane: No shadow root!');
+      console.error('TilexPane: No shadow root!');
       return;
     }
 
@@ -134,8 +134,8 @@ export class GlPane extends BaseElement {
           width: 100%;
           height: 100%;
           min-height: 0;
-          background: var(--gl-pane-bg, #282828); /* gruvbox bg0 */
-          border: 1px solid var(--gl-pane-border, #504945); /* gruvbox bg2 */
+          background: var(--tx-pane-bg, #282828); /* gruvbox bg0 */
+          border: 1px solid var(--tx-pane-border, #504945); /* gruvbox bg2 */
           position: relative;
           overflow: hidden;
           box-sizing: border-box;
@@ -160,8 +160,8 @@ export class GlPane extends BaseElement {
         }
         
         :host(.drag-over) {
-          border-color: var(--gl-pane-drag-over-border, #83a598); /* gruvbox blue */
-          box-shadow: 0 0 0 2px var(--gl-pane-drag-over-shadow, rgba(131, 165, 152, 0.25));
+          border-color: var(--tx-pane-drag-over-border, #83a598); /* gruvbox blue */
+          box-shadow: 0 0 0 2px var(--tx-pane-drag-over-shadow, rgba(131, 165, 152, 0.25));
         }
         
         :host(.drag-over)::before {
@@ -171,7 +171,7 @@ export class GlPane extends BaseElement {
           left: 0;
           right: 0;
           bottom: 0;
-          background: var(--gl-pane-drag-over-bg, rgba(131, 165, 152, 0.05));
+          background: var(--tx-pane-drag-over-bg, rgba(131, 165, 152, 0.05));
           pointer-events: none;
           z-index: 10;
           border-radius: inherit;
@@ -182,10 +182,10 @@ export class GlPane extends BaseElement {
           align-items: center;
           justify-content: space-between;
           flex-wrap: wrap;
-          min-height: var(--gl-header-height, 30px);
+          min-height: var(--tx-header-height, 30px);
           padding: 4px 8px;
-          background: var(--gl-header-bg, #3c3836); /* gruvbox bg1 */
-          border-bottom: 1px solid var(--gl-header-border, #504945); /* gruvbox bg2 */
+          background: var(--tx-header-bg, #3c3836); /* gruvbox bg1 */
+          border-bottom: 1px solid var(--tx-header-border, #504945); /* gruvbox bg2 */
           cursor: move;
           user-select: none;
           gap: 2px;
@@ -196,10 +196,10 @@ export class GlPane extends BaseElement {
         }
         
         .panel-type-dropdown {
-          background: var(--gl-control-hover-bg, #504945);
-          border: 1px solid var(--gl-header-border, #504945);
+          background: var(--tx-control-hover-bg, #504945);
+          border: 1px solid var(--tx-header-border, #504945);
           border-radius: 4px;
-          color: var(--gl-header-color, #ebdbb2);
+          color: var(--tx-header-color, #ebdbb2);
           font-size: 12px;
           padding: 2px 6px;
           cursor: pointer;
@@ -207,11 +207,11 @@ export class GlPane extends BaseElement {
           min-width: 80px;
           
           &:hover {
-            background: var(--gl-control-active-bg, #665c54);
+            background: var(--tx-control-active-bg, #665c54);
           }
           
           &:focus {
-            border-color: var(--gl-splitter-active-bg, #fe8019);
+            border-color: var(--tx-splitter-active-bg, #fe8019);
           }
         }
         
@@ -221,7 +221,7 @@ export class GlPane extends BaseElement {
           align-items: center;
           justify-content: center;
           font-size: 12px;
-          color: var(--gl-header-color, #ebdbb2);
+          color: var(--tx-header-color, #ebdbb2);
           min-width: 0;
           text-align: center;
         }
@@ -243,24 +243,24 @@ export class GlPane extends BaseElement {
           border: none;
           border-radius: 2px;
           cursor: pointer;
-          color: var(--gl-control-color, #bdae93); /* gruvbox fg3 */
+          color: var(--tx-control-color, #bdae93); /* gruvbox fg3 */
           opacity: 0.7;
           transition: all 0.2s;
           
           &:hover {
-            background: var(--gl-control-hover-bg, #504945); /* gruvbox bg2 */
+            background: var(--tx-control-hover-bg, #504945); /* gruvbox bg2 */
             opacity: 1;
           }
           
           &:active,
           &.active {
-            background: var(--gl-control-active-bg, #665c54); /* gruvbox bg3 */
+            background: var(--tx-control-active-bg, #665c54); /* gruvbox bg3 */
           }
         }
         
         .restore-button {
           &:hover {
-            color: var(--gl-splitter-active-bg, #fe8019); /* gruvbox orange */
+            color: var(--tx-splitter-active-bg, #fe8019); /* gruvbox orange */
           }
         }
         
@@ -269,8 +269,8 @@ export class GlPane extends BaseElement {
           top: 100%;
           right: 0;
           margin-top: 4px;
-          background: var(--gl-header-bg, #3c3836);
-          border: 1px solid var(--gl-header-border, #504945);
+          background: var(--tx-header-bg, #3c3836);
+          border: 1px solid var(--tx-header-border, #504945);
           border-radius: 4px;
           padding: 4px 0;
           min-width: 160px;
@@ -290,7 +290,7 @@ export class GlPane extends BaseElement {
           padding: 6px 12px;
           border: none;
           background: none;
-          color: var(--gl-header-color, #ebdbb2);
+          color: var(--tx-header-color, #ebdbb2);
           cursor: pointer;
           width: 100%;
           text-align: left;
@@ -298,7 +298,7 @@ export class GlPane extends BaseElement {
           transition: background-color 0.2s;
           
           &:hover {
-            background: var(--gl-control-hover-bg, #504945);
+            background: var(--tx-control-hover-bg, #504945);
           }
           
           & svg {
@@ -308,7 +308,7 @@ export class GlPane extends BaseElement {
         
         .menu-divider {
           height: 1px;
-          background: var(--gl-header-border, #504945);
+          background: var(--tx-header-border, #504945);
           margin: 4px 0;
         }
         
@@ -317,8 +317,8 @@ export class GlPane extends BaseElement {
           min-height: 0;
           overflow: auto;
           position: relative;
-          background: var(--gl-pane-bg, #282828); /* gruvbox bg0 */
-          padding: var(--gl-component-padding, 20px);
+          background: var(--tx-pane-bg, #282828); /* gruvbox bg0 */
+          padding: var(--tx-component-padding, 20px);
           box-sizing: border-box;
           
           /* Custom scrollbar styling */
@@ -328,33 +328,33 @@ export class GlPane extends BaseElement {
           }
           
           &::-webkit-scrollbar-track {
-            background: var(--gl-scrollbar-track, var(--gl-header-bg, #3c3836));
+            background: var(--tx-scrollbar-track, var(--tx-header-bg, #3c3836));
             border-radius: 6px;
           }
           
           &::-webkit-scrollbar-thumb {
-            background: var(--gl-scrollbar-thumb, var(--gl-header-border, #504945));
+            background: var(--tx-scrollbar-thumb, var(--tx-header-border, #504945));
             border-radius: 6px;
-            border: 2px solid var(--gl-scrollbar-track, var(--gl-header-bg, #3c3836));
+            border: 2px solid var(--tx-scrollbar-track, var(--tx-header-bg, #3c3836));
             
             &:hover {
-              background: var(--gl-scrollbar-thumb-hover, var(--gl-control-hover-bg, #665c54));
+              background: var(--tx-scrollbar-thumb-hover, var(--tx-control-hover-bg, #665c54));
             }
             
             &:active {
-              background: var(--gl-scrollbar-thumb-active, var(--gl-control-active-bg, #7c6f64));
+              background: var(--tx-scrollbar-thumb-active, var(--tx-control-active-bg, #7c6f64));
             }
           }
           
           /* Firefox scrollbar styling */
           scrollbar-width: thin;
-          scrollbar-color: var(--gl-scrollbar-thumb, #504945) var(--gl-scrollbar-track, #3c3836);
+          scrollbar-color: var(--tx-scrollbar-thumb, #504945) var(--tx-scrollbar-track, #3c3836);
         }
         
         .pane-footer {
-          background: var(--gl-footer-bg, var(--gl-pane-bg, #282828)); /* matches content background */
-          border-top: 1px solid var(--gl-footer-border, var(--gl-header-border, #504945));
-          color: var(--gl-footer-color, var(--gl-pane-color, #ebdbb2)); /* matches content color */
+          background: var(--tx-footer-bg, var(--tx-pane-bg, #282828)); /* matches content background */
+          border-top: 1px solid var(--tx-footer-border, var(--tx-header-border, #504945));
+          color: var(--tx-footer-color, var(--tx-pane-color, #ebdbb2)); /* matches content color */
           font-size: 12px;
           padding: 8px;
           display: none; /* Hidden by default, JS will show if content exists */
@@ -549,7 +549,7 @@ export class GlPane extends BaseElement {
       e.dataTransfer.effectAllowed = 'move';
 
       // Store reference to this pane in the layout
-      const layout = this.closest('gl-layout') as HTMLElement & {
+      const layout = this.closest('tx-layout') as HTMLElement & {
         draggedElement?: HTMLElement;
       };
       if (layout) {
@@ -565,7 +565,7 @@ export class GlPane extends BaseElement {
   };
 
   private handleMaximize = (): void => {
-    const layout = this.closest('gl-layout');
+    const layout = this.closest('tx-layout');
     if (!layout) return;
 
     if (!this.isMaximized) {
@@ -591,17 +591,17 @@ export class GlPane extends BaseElement {
         this.isMaximized = false;
       } else {
         // If original parent is gone, try to find a suitable container
-        const firstContainer = layout.querySelector('gl-row, gl-column');
+        const firstContainer = layout.querySelector('tx-row, tx-column');
         if (firstContainer) {
           // Find the last pane in the container
           const lastPane = Array.from(firstContainer.children)
-            .filter((child) => child.tagName === 'GL-PANE')
+            .filter((child) => child.tagName === 'TX-PANE')
             .pop();
 
           if (lastPane) {
             // Insert after the last pane with a splitter
-            const splitter = document.createElement('gl-splitter');
-            const isRow = firstContainer.tagName === 'GL-ROW';
+            const splitter = document.createElement('tx-splitter');
+            const isRow = firstContainer.tagName === 'TX-ROW';
             splitter.setAttribute('orientation', isRow ? 'horizontal' : 'vertical');
 
             lastPane.insertAdjacentElement('afterend', splitter);
@@ -632,17 +632,17 @@ export class GlPane extends BaseElement {
     if (!parent) return;
 
     // Create a new pane with a copy of this pane's content
-    const newPane = document.createElement('gl-pane');
+    const newPane = document.createElement('tx-pane');
     newPane.setAttribute('panel-type', this._panelType);
 
     // Get layout to generate ID
-    const layout = this.closest('gl-layout') as HTMLElement & { generatePaneId?: () => string };
+    const layout = this.closest('tx-layout') as HTMLElement & { generatePaneId?: () => string };
     if (layout?.generatePaneId) {
       newPane.setAttribute('id', layout.generatePaneId());
     }
 
     // Create a container for the new pane
-    const newContainer = document.createElement('gl-component-container');
+    const newContainer = document.createElement('tx-component-container');
     const newContent = document.createElement('div');
     newContent.className = 'demo-content';
     newContent.innerHTML = `<h2>New Pane</h2><p>Panel type: ${this._panelType}</p>`;
@@ -650,11 +650,11 @@ export class GlPane extends BaseElement {
     newPane.appendChild(newContainer);
 
     // Create the appropriate container (row or column)
-    const containerType = orientation === 'horizontal' ? 'gl-row' : 'gl-column';
+    const containerType = orientation === 'horizontal' ? 'tx-row' : 'tx-column';
     const container = document.createElement(containerType);
 
     // Create a splitter
-    const splitter = document.createElement('gl-splitter');
+    const splitter = document.createElement('tx-splitter');
     splitter.setAttribute('orientation', orientation);
 
     // Replace this pane with the new container
@@ -680,7 +680,7 @@ export class GlPane extends BaseElement {
     this.emit('pane-close', { pane: this });
 
     // Get layout reference before removing from DOM
-    const layout = this.closest('gl-layout') as HTMLElement & { emitLayoutChange?: () => void };
+    const layout = this.closest('tx-layout') as HTMLElement & { emitLayoutChange?: () => void };
 
     // Check if parent needs cleanup
     const parent = this.parentElement;
@@ -702,9 +702,9 @@ export class GlPane extends BaseElement {
   };
 
   private handleDragOver = (e: DragEvent): void => {
-    const layout = this.closest('gl-layout') as GlLayout;
+    const layout = this.closest('tx-layout') as TilexLayout;
 
-    if (layout?.draggedElement?.tagName === 'GL-PANE') {
+    if (layout?.draggedElement?.tagName === 'TX-PANE') {
       const draggedPane = layout.draggedElement;
 
       // Don't allow dropping on itself
@@ -775,7 +775,7 @@ export class GlPane extends BaseElement {
       }
 
       // Check if this drop would result in no layout change
-      if (this.isNoOpDrop(draggedPane as GlPane, position)) {
+      if (this.isNoOpDrop(draggedPane as TilexPane, position)) {
         if (e.dataTransfer) {
           e.dataTransfer.dropEffect = 'none';
         }
@@ -797,7 +797,7 @@ export class GlPane extends BaseElement {
     if (e.target === this) {
       this.classList.remove('drag-over');
 
-      const layout = this.closest('gl-layout') as GlLayout;
+      const layout = this.closest('tx-layout') as TilexLayout;
       if (layout?.dropIndicator) {
         layout.dropIndicator.hide();
       }
@@ -810,7 +810,7 @@ export class GlPane extends BaseElement {
 
     this.classList.remove('drag-over');
 
-    const layout = this.closest('gl-layout') as GlLayout;
+    const layout = this.closest('tx-layout') as TilexLayout;
 
     const position = layout?.dropIndicator?.position || 'left';
 
@@ -821,9 +821,9 @@ export class GlPane extends BaseElement {
 
     const draggedPane = layout?.draggedElement;
 
-    if (draggedPane?.tagName === 'GL-PANE' && draggedPane !== this) {
+    if (draggedPane?.tagName === 'TX-PANE' && draggedPane !== this) {
       this.createSplitLayout(
-        draggedPane as GlPane,
+        draggedPane as TilexPane,
         position as 'top' | 'right' | 'bottom' | 'left',
       );
 
@@ -837,7 +837,7 @@ export class GlPane extends BaseElement {
   };
 
   private createSplitLayout(
-    draggedPane: GlPane,
+    draggedPane: TilexPane,
     position: 'top' | 'right' | 'bottom' | 'left',
   ): void {
     const parent = this.parentElement;
@@ -845,13 +845,13 @@ export class GlPane extends BaseElement {
 
     // Determine if we need a row or column
     const isHorizontalSplit = position === 'left' || position === 'right';
-    const containerType = isHorizontalSplit ? 'gl-row' : 'gl-column';
+    const containerType = isHorizontalSplit ? 'tx-row' : 'tx-column';
 
     // Create new container
     const newContainer = document.createElement(containerType);
 
     // Create splitter
-    const splitter = document.createElement('gl-splitter');
+    const splitter = document.createElement('tx-splitter');
     splitter.setAttribute('orientation', isHorizontalSplit ? 'horizontal' : 'vertical');
 
     // Remove dragged pane from its current location
@@ -884,7 +884,7 @@ export class GlPane extends BaseElement {
   }
 
   private checkAndCleanupParent(parent: Element): void {
-    const children = Array.from(parent.children).filter((child) => child.tagName !== 'GL-SPLITTER');
+    const children = Array.from(parent.children).filter((child) => child.tagName !== 'TX-SPLITTER');
 
     if (children.length === 0 && parent.parentElement) {
       // Parent is empty, remove it
@@ -895,7 +895,7 @@ export class GlPane extends BaseElement {
     } else if (
       children.length === 1 &&
       parent.parentElement &&
-      (parent.tagName === 'GL-ROW' || parent.tagName === 'GL-COLUMN')
+      (parent.tagName === 'TX-ROW' || parent.tagName === 'TX-COLUMN')
     ) {
       // Parent has only one child, replace parent with that child
       const onlyChild = children[0];
@@ -918,21 +918,21 @@ export class GlPane extends BaseElement {
       const child = children[i];
 
       // Remove splitter if it's at the start
-      if (i === 0 && child.tagName === 'GL-SPLITTER') {
+      if (i === 0 && child.tagName === 'TX-SPLITTER') {
         child.remove();
         children.splice(i, 1);
         continue;
       }
 
       // Remove splitter if it's at the end
-      if (i === children.length - 1 && child.tagName === 'GL-SPLITTER') {
+      if (i === children.length - 1 && child.tagName === 'TX-SPLITTER') {
         child.remove();
         children.splice(i, 1);
         continue;
       }
 
       // Remove splitter if it's adjacent to another splitter
-      if (i > 0 && child.tagName === 'GL-SPLITTER' && children[i - 1].tagName === 'GL-SPLITTER') {
+      if (i > 0 && child.tagName === 'TX-SPLITTER' && children[i - 1].tagName === 'TX-SPLITTER') {
         child.remove();
         children.splice(i, 1);
         continue;
@@ -942,7 +942,7 @@ export class GlPane extends BaseElement {
     }
   }
 
-  private isNoOpDrop(sourcePane: GlPane, dropPosition: string): boolean {
+  private isNoOpDrop(sourcePane: TilexPane, dropPosition: string): boolean {
     const sourceParent = sourcePane.parentElement;
     const targetParent = this.parentElement;
 
@@ -954,8 +954,8 @@ export class GlPane extends BaseElement {
     const sourcePos = this.getPanePosition(sourcePane, siblings);
     const targetPos = this.getPanePosition(this, siblings);
 
-    const isRow = sourceParent?.tagName === 'GL-ROW';
-    const isColumn = sourceParent?.tagName === 'GL-COLUMN';
+    const isRow = sourceParent?.tagName === 'TX-ROW';
+    const isColumn = sourceParent?.tagName === 'TX-COLUMN';
 
     if (isRow) {
       if (dropPosition === 'left' && targetPos === sourcePos + 1) {
@@ -982,7 +982,7 @@ export class GlPane extends BaseElement {
       if (sibling === pane) {
         return position;
       }
-      if (sibling.tagName === 'GL-PANE') {
+      if (sibling.tagName === 'TX-PANE') {
         position++;
       }
     }
@@ -991,7 +991,7 @@ export class GlPane extends BaseElement {
 
   private triggerParentResize(parent: Element): void {
     // Dispatch a resize event to trigger the parent's resize observer
-    if (parent && (parent.tagName === 'GL-ROW' || parent.tagName === 'GL-COLUMN')) {
+    if (parent && (parent.tagName === 'TX-ROW' || parent.tagName === 'TX-COLUMN')) {
       // Call the public updateLayout method
       const updateMethod = (parent as HTMLElement & { updateLayout?: () => void }).updateLayout;
       if (typeof updateMethod === 'function') {
@@ -1006,7 +1006,7 @@ export class GlPane extends BaseElement {
 
     if (!panelTypes.includes(this._panelType)) {
       console.error(
-        `Invalid panel type "${this._panelType}" for gl-pane. Valid options are: ${panelTypes.join(', ')}`,
+        `Invalid panel type "${this._panelType}" for tx-pane. Valid options are: ${panelTypes.join(', ')}`,
       );
       // Add visual indicator
       this.setAttribute('invalid-panel-type', '');
@@ -1027,9 +1027,9 @@ export class GlPane extends BaseElement {
     }
 
     // Check for duplicate ids within the layout
-    const layout = this.closest('gl-layout');
+    const layout = this.closest('tx-layout');
     if (layout) {
-      const allPanes = layout.querySelectorAll('gl-pane');
+      const allPanes = layout.querySelectorAll('tx-pane');
       const duplicates = Array.from(allPanes).filter(
         (pane) => pane !== this && pane.getAttribute('id') === this._id,
       );
@@ -1044,7 +1044,7 @@ export class GlPane extends BaseElement {
   }
 
   private notifyLayoutChange(): void {
-    const layout = this.closest('gl-layout') as HTMLElement & { emitLayoutChange?: () => void };
+    const layout = this.closest('tx-layout') as HTMLElement & { emitLayoutChange?: () => void };
     const emitLayoutChange = layout?.emitLayoutChange;
     if (emitLayoutChange) {
       // Use setTimeout to ensure DOM is updated
@@ -1085,4 +1085,4 @@ export class GlPane extends BaseElement {
   }
 }
 
-customElements.define('gl-pane', GlPane);
+customElements.define('tx-pane', TilexPane);

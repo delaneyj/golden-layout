@@ -1,13 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
-import type { GlLayoutElement } from '@/types/elements';
+import type { TilexLayoutElement } from '@/types/elements';
 
 // Test-specific interfaces to access private properties
-interface GlLayoutTestElement extends GlLayoutElement {
+interface TilexLayoutTestElement extends TilexLayoutElement {
   _draggedElement: HTMLElement | null;
 }
 
-interface GlDropIndicatorTestElement extends HTMLElement {
+interface TilexDropIndicatorTestElement extends HTMLElement {
   position: string;
 }
 
@@ -29,7 +29,7 @@ describe('complex no-op drop prevention', () => {
   };
 
   beforeEach(() => {
-    document.documentElement.style.setProperty('--gl-splitter-size', '5px');
+    document.documentElement.style.setProperty('--tx-splitter-size', '5px');
 
     container = document.createElement('div');
     container.style.width = '800px';
@@ -39,34 +39,34 @@ describe('complex no-op drop prevention', () => {
 
   afterEach(() => {
     container.remove();
-    document.querySelectorAll('gl-drop-indicator').forEach((el) => el.remove());
+    document.querySelectorAll('tx-drop-indicator').forEach((el) => el.remove());
   });
 
   it('allows drops that would create new structure even between siblings', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
-    const tab1 = stack1.querySelector('gl-tab');
+    const tab1 = stack1.querySelector('tx-tab');
 
     // Start drag from stack1
     layout._draggedElement = tab1;
@@ -91,7 +91,9 @@ describe('complex no-op drop prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should show drop indicator (creates new structure)
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorTestElement;
+    const dropIndicator = document.querySelector(
+      'tx-drop-indicator',
+    ) as TilexDropIndicatorTestElement;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
     expect(dropIndicator?.position).toBe('top');
     expect(stack2.classList.contains('drag-over')).toBe(true);
@@ -99,38 +101,38 @@ describe('complex no-op drop prevention', () => {
 
   it('handles nested layouts correctly', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-column>
-            <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-column>
+            <tx-pane id="stack1">
               
                 <div>Content 1</div>
               
-            </gl-pane>
-            <gl-splitter orientation="vertical"></gl-splitter>
-            <gl-pane id="stack2">
+            </tx-pane>
+            <tx-splitter orientation="vertical"></tx-splitter>
+            <tx-pane id="stack2">
               
                 <div>Content 2</div>
               
-            </gl-pane>
-          </gl-column>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack3">
+            </tx-pane>
+          </tx-column>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack3">
             
               <div>Content 3</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
     const stack3 = container.querySelector('#stack3') as HTMLElement;
-    const tab1 = stack1.querySelector('gl-tab');
+    const tab1 = stack1.querySelector('tx-tab');
 
     // Stack1 and stack2 are siblings in a column
     layout._draggedElement = tab1;
@@ -154,7 +156,7 @@ describe('complex no-op drop prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should not show drop indicator (no-op)
-    let dropIndicator = document.querySelector('gl-drop-indicator');
+    let dropIndicator = document.querySelector('tx-drop-indicator');
     expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
 
     // But dropping on stack3 (different parent) should work
@@ -176,7 +178,7 @@ describe('complex no-op drop prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should show drop indicator (different parent)
-    dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorTestElement;
+    dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicatorTestElement;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
     expect(dropIndicator?.position).toBe('top');
   });
@@ -184,30 +186,30 @@ describe('complex no-op drop prevention', () => {
   it('prevents no-op with multiple splitters between', async () => {
     // Even with splitters, the logical position matters
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-splitter orientation="horizontal"></gl-splitter> <!-- Double splitter -->
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-splitter orientation="horizontal"></tx-splitter> <!-- Double splitter -->
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
-    const tab1 = stack1.querySelector('gl-tab');
+    const tab1 = stack1.querySelector('tx-tab');
 
     // Start drag from stack1
     layout._draggedElement = tab1;
@@ -232,7 +234,7 @@ describe('complex no-op drop prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should not show drop indicator (no-op)
-    const dropIndicator = document.querySelector('gl-drop-indicator');
+    const dropIndicator = document.querySelector('tx-drop-indicator');
     expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
     expect(stack2.classList.contains('drag-over')).toBe(false);
   });

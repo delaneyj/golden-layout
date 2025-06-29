@@ -1,13 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
-import type { GlLayoutElement } from '@/types/elements';
+import type { TilexLayoutElement } from '@/types/elements';
 
 // Test-specific interfaces to access private properties
-interface GlLayoutTestElement extends GlLayoutElement {
+interface TilexLayoutTestElement extends TilexLayoutElement {
   _draggedElement: HTMLElement | null;
 }
 
-interface GlDropIndicatorTestElement extends HTMLElement {
+interface TilexDropIndicatorTestElement extends HTMLElement {
   position: string;
 }
 
@@ -29,7 +29,7 @@ describe('self-target prevention', () => {
   };
 
   beforeEach(() => {
-    document.documentElement.style.setProperty('--gl-splitter-size', '5px');
+    document.documentElement.style.setProperty('--tx-splitter-size', '5px');
 
     container = document.createElement('div');
     container.style.width = '800px';
@@ -39,28 +39,28 @@ describe('self-target prevention', () => {
 
   afterEach(() => {
     container.remove();
-    document.querySelectorAll('gl-drop-indicator').forEach((el) => el.remove());
+    document.querySelectorAll('tx-drop-indicator').forEach((el) => el.remove());
   });
 
   it('prevents center drop on same stack', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane id="stack1">
+      <tx-layout>
+        <tx-pane id="stack1">
           
             <div>Content 1</div>
           
           
             <div>Content 2</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
     const stack = container.querySelector('#stack1') as HTMLElement;
-    const tab = stack.querySelector('gl-tab');
+    const tab = stack.querySelector('tx-tab');
 
     // Start drag from same stack
     layout._draggedElement = tab;
@@ -92,7 +92,7 @@ describe('self-target prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Drop indicator should not be visible
-    const dropIndicator = document.querySelector('gl-drop-indicator');
+    const dropIndicator = document.querySelector('tx-drop-indicator');
     expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
 
     // Stack should not have drag-over class
@@ -101,23 +101,23 @@ describe('self-target prevention', () => {
 
   it('prevents edge drop on same stack', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane id="stack1">
+      <tx-layout>
+        <tx-pane id="stack1">
           
             <div>Content 1</div>
           
           
             <div>Content 2</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
     const stack = container.querySelector('#stack1') as HTMLElement;
-    const tab = stack.querySelector('gl-tab');
+    const tab = stack.querySelector('tx-tab');
 
     // Start drag from same stack
     layout._draggedElement = tab;
@@ -145,7 +145,9 @@ describe('self-target prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Drop indicator should not be visible
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorTestElement;
+    const dropIndicator = document.querySelector(
+      'tx-drop-indicator',
+    ) as TilexDropIndicatorTestElement;
     expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
 
     // Stack should not have drag-over class
@@ -154,29 +156,29 @@ describe('self-target prevention', () => {
 
   it('allows center drop on different stack', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
-    const tab = stack1.querySelector('gl-tab');
+    const tab = stack1.querySelector('tx-tab');
 
     // Start drag from stack1
     layout._draggedElement = tab;
@@ -204,7 +206,9 @@ describe('self-target prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Drop indicator should be visible with center position
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorTestElement;
+    const dropIndicator = document.querySelector(
+      'tx-drop-indicator',
+    ) as TilexDropIndicatorTestElement;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
     expect(dropIndicator?.position).toBe('center');
 
@@ -214,23 +218,23 @@ describe('self-target prevention', () => {
 
   it('prevents any drop position on same stack', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane id="stack1">
+      <tx-layout>
+        <tx-pane id="stack1">
           
             <div>Content 1</div>
           
           
             <div>Content 2</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
     const stack = container.querySelector('#stack1') as HTMLElement;
-    const tab = stack.querySelector('gl-tab');
+    const tab = stack.querySelector('tx-tab');
 
     // Start drag from same stack
     layout._draggedElement = tab;
@@ -267,7 +271,7 @@ describe('self-target prevention', () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       // Drop indicator should never be visible for same stack
-      const dropIndicator = document.querySelector('gl-drop-indicator');
+      const dropIndicator = document.querySelector('tx-drop-indicator');
       expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
 
       // Stack should never have drag-over class for same stack

@@ -24,18 +24,18 @@ describe('component state', () => {
     const initialState = { testValue: 'initial', count: 0 };
 
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div id="content">Content</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const component = container.querySelector('gl-component-container') as ComponentWithState;
+    const component = container.querySelector('tx-component-container') as ComponentWithState;
 
     // Set initial state
     component.componentState = initialState;
@@ -56,7 +56,7 @@ describe('component state', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const component = container.querySelector('gl-component-container') as ComponentWithState;
+    const component = container.querySelector('tx-component-container') as ComponentWithState;
     component.addEventListener('state-changed', stateChangedHandler);
 
     // Update state
@@ -80,7 +80,7 @@ describe('component state', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const component = container.querySelector('gl-component-container') as ComponentWithState;
+    const component = container.querySelector('tx-component-container') as ComponentWithState;
 
     // Set initial state
     component.componentState = { foo: 'bar', count: 1 };
@@ -98,18 +98,18 @@ describe('component state', () => {
 
   it('preserves state when moving components', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content</div>
             
-          </gl-pane>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-pane id="stack2">
             <!-- Empty stack -->
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -140,7 +140,7 @@ describe('component state', () => {
       
     `;
 
-    const component = testDiv.querySelector('gl-component-container') as ComponentWithState;
+    const component = testDiv.querySelector('tx-component-container') as ComponentWithState;
 
     // Set state before adding to DOM
     const initialState = { preloaded: true };
@@ -176,7 +176,7 @@ describe('component state', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const component = container.querySelector('gl-component-container') as ComponentWithState;
+    const component = container.querySelector('tx-component-container') as ComponentWithState;
     component.addEventListener('component-destroyed', destroyedHandler);
 
     // Set state
@@ -190,20 +190,20 @@ describe('component state', () => {
 
   it('serializes layout with component states', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane>
+      <tx-layout>
+        <tx-row>
+          <tx-pane>
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-pane>
+          </tx-pane>
+          <tx-pane>
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -221,7 +221,7 @@ describe('component state', () => {
 
     // In a real implementation, we would serialize the entire layout
     // For now, we verify each component maintains its state
-    const components = container.querySelectorAll('gl-component-container');
+    const components = container.querySelectorAll('tx-component-container');
     const states = Array.from(components).map((c) => ({
       title: (c as ComponentWithState).title,
       state: (c as ComponentWithState).getState(),

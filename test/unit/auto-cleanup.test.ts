@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
-import type { GlLayoutElement } from '@/types/elements';
+import type { TilexLayoutElement } from '@/types/elements';
 
 // Test-specific interface to access private properties
-interface GlLayoutTestElement extends GlLayoutElement {
+interface TilexLayoutTestElement extends TilexLayoutElement {
   _draggedElement: HTMLElement | null;
 }
 
@@ -21,28 +21,28 @@ describe('auto cleanup empty containers', () => {
 
   it('removes empty stack when last component is closed', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const stack1 = container.querySelector('#stack1');
-    const _row = container.querySelector('gl-row');
-    const tab = stack1?.querySelector('gl-tab');
+    const _row = container.querySelector('tx-row');
+    const tab = stack1?.querySelector('tx-tab');
 
     // Close the only tab in stack1
     const closeBtn = tab?.shadowRoot?.querySelector('.close') as HTMLElement;
@@ -54,12 +54,12 @@ describe('auto cleanup empty containers', () => {
     expect(container.querySelector('#stack1')).toBeNull();
 
     // Check if row still exists
-    const rowAfter = container.querySelector('gl-row');
-    const layoutChildren = container.querySelector('gl-layout')?.children;
+    const rowAfter = container.querySelector('tx-row');
+    const layoutChildren = container.querySelector('tx-layout')?.children;
 
     if (rowAfter) {
       // Row still exists
-      expect(rowAfter.querySelectorAll('gl-splitter').length).toBe(0);
+      expect(rowAfter.querySelectorAll('tx-splitter').length).toBe(0);
       expect(rowAfter.children.length).toBe(1);
       expect(rowAfter.children[0].id).toBe('stack2');
     } else {
@@ -71,21 +71,21 @@ describe('auto cleanup empty containers', () => {
 
   it('removes row/column when it becomes empty', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row id="main-row">
-          <gl-pane>
+      <tx-layout>
+        <tx-row id="main-row">
+          <tx-pane>
             
               <div>Content 1</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-pane');
-    const tab = stack?.querySelector('gl-tab');
+    const stack = container.querySelector('tx-pane');
+    const tab = stack?.querySelector('tx-tab');
 
     // Close the only tab
     const closeBtn = tab?.shadowRoot?.querySelector('.close') as HTMLElement;
@@ -94,7 +94,7 @@ describe('auto cleanup empty containers', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Stack should be removed
-    expect(container.querySelector('gl-pane')).toBeNull();
+    expect(container.querySelector('tx-pane')).toBeNull();
 
     // Row should also be removed since it's empty
     expect(container.querySelector('#main-row')).toBeNull();
@@ -102,28 +102,28 @@ describe('auto cleanup empty containers', () => {
 
   it('replaces row/column with only child when one child remains', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout');
+    const layout = container.querySelector('tx-layout');
     const stack1 = container.querySelector('#stack1');
-    const tab = stack1?.querySelector('gl-tab');
+    const tab = stack1?.querySelector('tx-tab');
 
     // Close the tab in stack1
     const closeBtn = tab?.shadowRoot?.querySelector('.close') as HTMLElement;
@@ -132,36 +132,36 @@ describe('auto cleanup empty containers', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Row should be replaced by stack2
-    expect(container.querySelector('gl-row')).toBeNull();
+    expect(container.querySelector('tx-row')).toBeNull();
     expect(layout?.children.length).toBe(1);
     expect(layout?.children[0].id).toBe('stack2');
   });
 
   it('removes empty stack after drag and drop', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="source">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="source">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="target">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="target">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
     const sourceStack = container.querySelector('#source') as HTMLElement;
     const targetStack = container.querySelector('#target');
-    const tab = sourceStack?.querySelector('gl-tab');
+    const tab = sourceStack?.querySelector('tx-tab');
 
     // Simulate drag and drop
     const dragStartEvent = new DragEvent('dragstart', {
@@ -183,7 +183,7 @@ describe('auto cleanup empty containers', () => {
     expect(container.querySelector('#source')).toBeNull();
 
     // Splitter should be removed
-    expect(container.querySelectorAll('gl-splitter').length).toBe(0);
+    expect(container.querySelectorAll('tx-splitter').length).toBe(0);
 
     // Only target stack should remain
     expect(layout?.children.length).toBe(1);
@@ -192,29 +192,29 @@ describe('auto cleanup empty containers', () => {
 
   it('handles nested empty container cleanup', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-column>
-            <gl-pane id="nested-stack">
+      <tx-layout>
+        <tx-row>
+          <tx-column>
+            <tx-pane id="nested-stack">
               
                 <div>Content 1</div>
               
-            </gl-pane>
-          </gl-column>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="other-stack">
+            </tx-pane>
+          </tx-column>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="other-stack">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const nestedStack = container.querySelector('#nested-stack');
-    const tab = nestedStack?.querySelector('gl-tab');
+    const tab = nestedStack?.querySelector('tx-tab');
 
     // Close the tab in nested stack
     const closeBtn = tab?.shadowRoot?.querySelector('.close') as HTMLElement;
@@ -226,15 +226,15 @@ describe('auto cleanup empty containers', () => {
     expect(container.querySelector('#nested-stack')).toBeNull();
 
     // Column should be removed
-    expect(container.querySelector('gl-column')).toBeNull();
+    expect(container.querySelector('tx-column')).toBeNull();
 
     // Check the final structure
-    const layout = container.querySelector('gl-layout');
-    const remainingRow = container.querySelector('gl-row');
+    const layout = container.querySelector('tx-layout');
+    const remainingRow = container.querySelector('tx-row');
 
     if (remainingRow) {
       // Row still exists with only other-stack
-      expect(remainingRow.querySelectorAll('gl-splitter').length).toBe(0);
+      expect(remainingRow.querySelectorAll('tx-splitter').length).toBe(0);
       expect(remainingRow.children.length).toBe(1);
       expect(remainingRow.children[0].id).toBe('other-stack');
     } else {

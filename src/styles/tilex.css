@@ -1,0 +1,200 @@
+/* Tilex CSS Variables - Override these to theme your layout */
+/* Components include Gruvbox Dark Medium as default theme */
+
+/* Custom theme example - Light theme */
+.theme-light {
+  --tx-layout-bg: #ffffff;
+  --tx-layout-border: #e5e7eb;
+  --tx-pane-bg: #ffffff;
+  --tx-pane-border: #e5e7eb;
+  --tx-header-bg: #f3f4f6;
+  --tx-header-border: #e5e7eb;
+  --tx-header-color: #111827;
+  --tx-control-hover-bg: #e5e7eb;
+  --tx-control-active-bg: #d1d5db;
+  --tx-control-color: #6b7280;
+  --tx-splitter-bg: #e5e7eb;
+  --tx-splitter-hover-bg: #d1d5db;
+  --tx-splitter-active-bg: #3b82f6;
+  --tx-drop-indicator-bg: rgba(59, 130, 246, 0.15);
+  --tx-drop-indicator-border: #3b82f6;
+  --tx-drop-indicator-label-bg: #3b82f6;
+  --tx-drop-indicator-label-color: #ffffff;
+  --tx-pane-drag-over-border: #3b82f6;
+  --tx-pane-drag-over-shadow: rgba(59, 130, 246, 0.25);
+  --tx-pane-drag-over-bg: rgba(59, 130, 246, 0.05);
+}
+
+/* Custom theme example - High contrast */
+.theme-high-contrast {
+  --tx-layout-bg: #000000;
+  --tx-layout-border: #ffffff;
+  --tx-pane-bg: #000000;
+  --tx-pane-border: #ffffff;
+  --tx-header-bg: #1a1a1a;
+  --tx-header-border: #ffffff;
+  --tx-header-color: #ffffff;
+  --tx-control-hover-bg: #333333;
+  --tx-control-active-bg: #666666;
+  --tx-control-color: #ffffff;
+  --tx-splitter-bg: #ffffff;
+  --tx-splitter-hover-bg: #cccccc;
+  --tx-splitter-active-bg: #ffff00;
+  --tx-drop-indicator-bg: rgba(255, 255, 0, 0.2);
+  --tx-drop-indicator-border: #ffff00;
+  --tx-drop-indicator-label-bg: #ffff00;
+  --tx-drop-indicator-label-color: #000000;
+  --tx-pane-drag-over-border: #ffff00;
+  --tx-pane-drag-over-shadow: rgba(255, 255, 0, 0.5);
+  --tx-pane-drag-over-bg: rgba(255, 255, 0, 0.1);
+}
+
+/* GitHub Dark theme */
+.theme-github-dark {
+  --tx-layout-bg: #0d1117;
+  --tx-layout-border: #30363d;
+  --tx-pane-bg: #161b22;
+  --tx-pane-border: #30363d;
+  --tx-header-bg: #21262d;
+  --tx-header-border: #30363d;
+  --tx-header-color: #c9d1d9;
+  --tx-control-hover-bg: #30363d;
+  --tx-control-active-bg: #484f58;
+  --tx-control-color: #8b949e;
+  --tx-splitter-bg: #21262d;
+  --tx-splitter-hover-bg: #30363d;
+  --tx-splitter-active-bg: #58a6ff;
+  --tx-drop-indicator-bg: rgba(88, 166, 255, 0.15);
+  --tx-drop-indicator-border: #58a6ff;
+  --tx-drop-indicator-label-bg: #58a6ff;
+  --tx-drop-indicator-label-color: #0d1117;
+  --tx-pane-drag-over-border: #58a6ff;
+  --tx-pane-drag-over-shadow: rgba(88, 166, 255, 0.25);
+  --tx-pane-drag-over-bg: rgba(88, 166, 255, 0.05);
+}
+
+/* Dracula theme */
+.theme-dracula {
+  --tx-layout-bg: #282a36;
+  --tx-layout-border: #44475a;
+  --tx-pane-bg: #282a36;
+  --tx-pane-border: #44475a;
+  --tx-header-bg: #343746;
+  --tx-header-border: #44475a;
+  --tx-header-color: #f8f8f2;
+  --tx-control-hover-bg: #44475a;
+  --tx-control-active-bg: #6272a4;
+  --tx-control-color: #6272a4;
+  --tx-splitter-bg: #44475a;
+  --tx-splitter-hover-bg: #6272a4;
+  --tx-splitter-active-bg: #bd93f9;
+  --tx-drop-indicator-bg: rgba(189, 147, 249, 0.15);
+  --tx-drop-indicator-border: #bd93f9;
+  --tx-drop-indicator-label-bg: #bd93f9;
+  --tx-drop-indicator-label-color: #282a36;
+  --tx-pane-drag-over-border: #bd93f9;
+  --tx-pane-drag-over-shadow: rgba(189, 147, 249, 0.25);
+  --tx-pane-drag-over-bg: rgba(189, 147, 249, 0.05);
+}
+
+/* Night Owl theme */
+.theme-night-owl {
+  --tx-layout-bg: #011627;
+  --tx-layout-border: #1d3b53;
+  --tx-pane-bg: #011627;
+  --tx-pane-border: #1d3b53;
+  --tx-header-bg: #0e293f;
+  --tx-header-border: #1d3b53;
+  --tx-header-color: #d6deeb;
+  --tx-control-hover-bg: #1d3b53;
+  --tx-control-active-bg: #2d5876;
+  --tx-control-color: #637777;
+  --tx-splitter-bg: #0e293f;
+  --tx-splitter-hover-bg: #1d3b53;
+  --tx-splitter-active-bg: #82aaff;
+  --tx-drop-indicator-bg: rgba(130, 170, 255, 0.15);
+  --tx-drop-indicator-border: #82aaff;
+  --tx-drop-indicator-label-bg: #82aaff;
+  --tx-drop-indicator-label-color: #011627;
+  --tx-pane-drag-over-border: #82aaff;
+  --tx-pane-drag-over-shadow: rgba(130, 170, 255, 0.25);
+  --tx-pane-drag-over-bg: rgba(130, 170, 255, 0.05);
+}
+
+/* Monokai Pro theme */
+.theme-monokai-pro {
+  --tx-layout-bg: #2d2a2e;
+  --tx-layout-border: #423f42;
+  --tx-pane-bg: #2d2a2e;
+  --tx-pane-border: #423f42;
+  --tx-header-bg: #3a3639;
+  --tx-header-border: #423f42;
+  --tx-header-color: #fcfcfa;
+  --tx-control-hover-bg: #423f42;
+  --tx-control-active-bg: #524f52;
+  --tx-control-color: #939293;
+  --tx-splitter-bg: #3a3639;
+  --tx-splitter-hover-bg: #423f42;
+  --tx-splitter-active-bg: #ffd866;
+  --tx-drop-indicator-bg: rgba(255, 216, 102, 0.15);
+  --tx-drop-indicator-border: #ffd866;
+  --tx-drop-indicator-label-bg: #ffd866;
+  --tx-drop-indicator-label-color: #2d2a2e;
+  --tx-pane-drag-over-border: #ffd866;
+  --tx-pane-drag-over-shadow: rgba(255, 216, 102, 0.25);
+  --tx-pane-drag-over-bg: rgba(255, 216, 102, 0.05);
+}
+
+/* Cobalt2 theme */
+.theme-cobalt2 {
+  --tx-layout-bg: #193549;
+  --tx-layout-border: #2e5775;
+  --tx-pane-bg: #193549;
+  --tx-pane-border: #2e5775;
+  --tx-header-bg: #1f4662;
+  --tx-header-border: #2e5775;
+  --tx-header-color: #aec2e0;
+  --tx-control-hover-bg: #2e5775;
+  --tx-control-active-bg: #3d6888;
+  --tx-control-color: #9fb7d0;
+  --tx-splitter-bg: #1f4662;
+  --tx-splitter-hover-bg: #2e5775;
+  --tx-splitter-active-bg: #ffc600;
+  --tx-drop-indicator-bg: rgba(255, 198, 0, 0.15);
+  --tx-drop-indicator-border: #ffc600;
+  --tx-drop-indicator-label-bg: #ffc600;
+  --tx-drop-indicator-label-color: #193549;
+  --tx-pane-drag-over-border: #ffc600;
+  --tx-pane-drag-over-shadow: rgba(255, 198, 0, 0.25);
+  --tx-pane-drag-over-bg: rgba(255, 198, 0, 0.05);
+}
+
+/* PowerShell theme */
+.theme-powershell {
+  --tx-layout-bg: #012456;
+  --tx-layout-border: #0250a2;
+  --tx-pane-bg: #012456;
+  --tx-pane-border: #0250a2;
+  --tx-header-bg: #013a7c;
+  --tx-header-border: #0250a2;
+  --tx-header-color: #eeedf0;
+  --tx-control-hover-bg: #0250a2;
+  --tx-control-active-bg: #0366c8;
+  --tx-control-color: #c7c7c7;
+  --tx-splitter-bg: #013a7c;
+  --tx-splitter-hover-bg: #0250a2;
+  --tx-splitter-active-bg: #ffff00;
+  --tx-drop-indicator-bg: rgba(255, 255, 0, 0.15);
+  --tx-drop-indicator-border: #ffff00;
+  --tx-drop-indicator-label-bg: #ffff00;
+  --tx-drop-indicator-label-color: #012456;
+  --tx-pane-drag-over-border: #ffff00;
+  --tx-pane-drag-over-shadow: rgba(255, 255, 0, 0.25);
+  --tx-pane-drag-over-bg: rgba(255, 255, 0, 0.05);
+}
+
+/* Utility classes */
+.tx-no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}

@@ -1,16 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
-import type { GlDropIndicator } from '@/components/gl-drop-indicator';
-import type { GlPane } from '@/components/gl-pane';
-import type { GlLayoutElement } from '@/types/elements';
+import type { TilexDropIndicator } from '@/components/tx-drop-indicator';
+import type { TilexPane } from '@/components/tx-pane';
+import type { TilexLayoutElement } from '@/types/elements';
 
 // Test-specific interface to access private properties
-interface GlLayoutTestElement extends GlLayoutElement {
+interface TilexLayoutTestElement extends TilexLayoutElement {
   _draggedElement: HTMLElement | null;
-  _dropIndicator: GlDropIndicator | null;
+  _dropIndicator: TilexDropIndicator | null;
 }
 
-describe('gl-pane', () => {
+describe('tx-pane', () => {
   let container: HTMLElement;
 
   beforeEach(() => {
@@ -26,14 +26,14 @@ describe('gl-pane', () => {
 
   it('renders with title', () => {
     container.innerHTML = `
-      <gl-pane title="Test Pane">
+      <tx-pane title="Test Pane">
         
           <div>Content</div>
         
-      </gl-pane>
+      </tx-pane>
     `;
 
-    const pane = container.querySelector('gl-pane') as GlPane;
+    const pane = container.querySelector('tx-pane') as TilexPane;
     expect(pane).toBeTruthy();
     expect(pane.title).toBe('Test Pane');
 
@@ -43,32 +43,32 @@ describe('gl-pane', () => {
 
   it('gets title from child component if not set', async () => {
     container.innerHTML = `
-      <gl-pane>
+      <tx-pane>
         
           <div>Content</div>
         
-      </gl-pane>
+      </tx-pane>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const pane = container.querySelector('gl-pane') as GlPane;
+    const pane = container.querySelector('tx-pane') as TilexPane;
     const titleElement = pane.shadowRoot?.querySelector('.title');
     expect(titleElement?.textContent).toBe('Component Title');
   });
 
   it('emits close event when close button clicked', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane title="Test Pane">
+      <tx-layout>
+        <tx-pane title="Test Pane">
           
             <div>Content</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
-    const pane = container.querySelector('gl-pane') as GlPane;
+    const pane = container.querySelector('tx-pane') as TilexPane;
     let closeEmitted = false;
 
     pane.addEventListener('pane-close', () => {
@@ -79,19 +79,19 @@ describe('gl-pane', () => {
     closeBtn.click();
 
     expect(closeEmitted).toBe(true);
-    expect(container.querySelector('gl-pane')).toBeFalsy();
+    expect(container.querySelector('tx-pane')).toBeFalsy();
   });
 
   it('toggles maximize state', () => {
     container.innerHTML = `
-      <gl-pane title="Test Pane">
+      <tx-pane title="Test Pane">
         
           <div>Content</div>
         
-      </gl-pane>
+      </tx-pane>
     `;
 
-    const pane = container.querySelector('gl-pane') as GlPane;
+    const pane = container.querySelector('tx-pane') as TilexPane;
     const maximizeBtn = pane.shadowRoot?.querySelector('.maximize') as HTMLElement;
 
     expect(pane.isMaximized).toBe(false);
@@ -110,26 +110,26 @@ describe('gl-pane', () => {
 
   it('supports drag and drop to create splits', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="pane1" title="Pane 1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="pane1" title="Pane 1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="pane2" title="Pane 2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="pane2" title="Pane 2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
     const pane1 = container.querySelector('#pane1') as HTMLElement;
     const pane2 = container.querySelector('#pane2') as HTMLElement;
 
@@ -179,13 +179,13 @@ describe('gl-pane', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should create a column with pane1 on top
-    const column = container.querySelector('gl-column');
+    const column = container.querySelector('tx-column');
     expect(column).toBeTruthy();
 
     const columnChildren = Array.from(column?.children);
     expect(columnChildren.length).toBe(3);
     expect(columnChildren[0].id).toBe('pane1');
-    expect(columnChildren[1].tagName).toBe('GL-SPLITTER');
+    expect(columnChildren[1].tagName).toBe('TX-SPLITTER');
     expect(columnChildren[2].id).toBe('pane2');
   });
 });

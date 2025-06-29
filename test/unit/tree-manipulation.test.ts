@@ -15,31 +15,31 @@ describe('tree manipulation', () => {
 
   it('adds components to existing stack', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane id="target-stack">
+      <tx-layout>
+        <tx-pane id="target-stack">
           
             <div>Content 1</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const stack = container.querySelector('#target-stack');
-    const initialComponentCount = stack?.querySelectorAll('gl-component-container').length;
+    const initialComponentCount = stack?.querySelectorAll('tx-component-container').length;
     expect(initialComponentCount).toBe(1);
 
     // Add new component
-    const newComponent = document.createElement('gl-component-container');
+    const newComponent = document.createElement('tx-component-container');
     newComponent.setAttribute('title', 'Component 2');
     newComponent.innerHTML = '<div>Content 2</div>';
     stack?.appendChild(newComponent);
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const components = stack?.querySelectorAll('gl-component-container');
-    const tabs = stack?.querySelectorAll('gl-tab');
+    const components = stack?.querySelectorAll('tx-component-container');
+    const tabs = stack?.querySelectorAll('tx-tab');
 
     expect(components?.length).toBe(2);
     expect(tabs?.length).toBe(2);
@@ -48,21 +48,21 @@ describe('tree manipulation', () => {
 
   it('removes components from stack', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Content 1</div>
           
           
             <div>Content 2</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-pane');
+    const stack = container.querySelector('tx-pane');
     const comp1 = container.querySelector('#comp1');
 
     // Remove first component
@@ -70,8 +70,8 @@ describe('tree manipulation', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const remainingComponents = stack?.querySelectorAll('gl-component-container');
-    const remainingTabs = stack?.querySelectorAll('gl-tab');
+    const remainingComponents = stack?.querySelectorAll('tx-component-container');
+    const remainingTabs = stack?.querySelectorAll('tx-tab');
 
     expect(remainingComponents?.length).toBe(1);
     expect(remainingTabs?.length).toBe(1);
@@ -80,22 +80,22 @@ describe('tree manipulation', () => {
 
   it('replaces component with another', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Original content</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stack = container.querySelector('gl-pane');
+    const stack = container.querySelector('tx-pane');
     const original = container.querySelector('#original');
 
     // Create replacement
-    const replacement = document.createElement('gl-component-container');
+    const replacement = document.createElement('tx-component-container');
     replacement.setAttribute('title', 'Replacement');
     replacement.innerHTML = '<div>Replacement content</div>';
 
@@ -104,8 +104,8 @@ describe('tree manipulation', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const components = stack?.querySelectorAll('gl-component-container');
-    const tabs = stack?.querySelectorAll('gl-tab');
+    const components = stack?.querySelectorAll('tx-component-container');
+    const tabs = stack?.querySelectorAll('tx-tab');
 
     expect(components?.length).toBe(1);
     expect(components?.[0].getAttribute('title')).toBe('Replacement');
@@ -114,15 +114,15 @@ describe('tree manipulation', () => {
 
   it('adds new stack to row', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row id="target-row">
-          <gl-pane>
+      <tx-layout>
+        <tx-row id="target-row">
+          <tx-pane>
             
               <div>Content 1</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -130,13 +130,13 @@ describe('tree manipulation', () => {
     const row = container.querySelector('#target-row');
 
     // Add splitter
-    const splitter = document.createElement('gl-splitter');
+    const splitter = document.createElement('tx-splitter');
     splitter.setAttribute('orientation', 'horizontal');
     row?.appendChild(splitter);
 
     // Add new stack
-    const newStack = document.createElement('gl-pane');
-    const newComponent = document.createElement('gl-component-container');
+    const newStack = document.createElement('tx-pane');
+    const newComponent = document.createElement('tx-component-container');
     newComponent.setAttribute('title', 'Component 2');
     newComponent.innerHTML = '<div>Content 2</div>';
     newStack.appendChild(newComponent);
@@ -144,31 +144,31 @@ describe('tree manipulation', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const stacks = row?.querySelectorAll('gl-pane');
+    const stacks = row?.querySelectorAll('tx-pane');
     expect(stacks?.length).toBe(2);
 
-    const components = container.querySelectorAll('gl-component-container');
+    const components = container.querySelectorAll('tx-component-container');
     expect(components.length).toBe(2);
   });
 
   it('converts stack to row with multiple stacks', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane id="original-stack">
+      <tx-layout>
+        <tx-pane id="original-stack">
           
             <div>Content 1</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout');
+    const layout = container.querySelector('tx-layout');
     const originalStack = container.querySelector('#original-stack');
 
     // Create row with two stacks
-    const row = document.createElement('gl-row');
+    const row = document.createElement('tx-row');
 
     // Move original stack to row
     if (originalStack) {
@@ -176,13 +176,13 @@ describe('tree manipulation', () => {
     }
 
     // Add splitter
-    const splitter = document.createElement('gl-splitter');
+    const splitter = document.createElement('tx-splitter');
     splitter.setAttribute('orientation', 'horizontal');
     row.appendChild(splitter);
 
     // Add second stack
-    const stack2 = document.createElement('gl-pane');
-    const comp2 = document.createElement('gl-component-container');
+    const stack2 = document.createElement('tx-pane');
+    const comp2 = document.createElement('tx-component-container');
     comp2.setAttribute('title', 'Component 2');
     comp2.innerHTML = '<div>Content 2</div>';
     stack2.appendChild(comp2);
@@ -194,32 +194,32 @@ describe('tree manipulation', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     expect(row.parentElement).toBe(layout);
-    expect(row.querySelectorAll('gl-pane').length).toBe(2);
-    expect(container.querySelectorAll('gl-component-container').length).toBe(2);
+    expect(row.querySelectorAll('tx-pane').length).toBe(2);
+    expect(container.querySelectorAll('tx-component-container').length).toBe(2);
   });
 
   it('maintains parent-child relationships', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-column>
-            <gl-pane>
+      <tx-layout>
+        <tx-row>
+          <tx-column>
+            <tx-pane>
               
                 <div>Content 1</div>
               
-            </gl-pane>
-          </gl-column>
-        </gl-row>
-      </gl-layout>
+            </tx-pane>
+          </tx-column>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout');
-    const row = container.querySelector('gl-row');
-    const column = container.querySelector('gl-column');
-    const stack = container.querySelector('gl-pane');
-    const component = container.querySelector('gl-component-container');
+    const layout = container.querySelector('tx-layout');
+    const row = container.querySelector('tx-row');
+    const column = container.querySelector('tx-column');
+    const stack = container.querySelector('tx-pane');
+    const component = container.querySelector('tx-component-container');
 
     // Verify hierarchy
     expect(component?.parentElement).toBe(stack);
@@ -230,21 +230,21 @@ describe('tree manipulation', () => {
 
   it('removes empty containers', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -253,7 +253,7 @@ describe('tree manipulation', () => {
     const _comp2 = container.querySelector('#comp2');
 
     // Close the only component in stack2
-    const tab2 = stack2?.querySelector('gl-tab');
+    const tab2 = stack2?.querySelector('tx-tab');
     const closeBtn = tab2?.shadowRoot?.querySelector('.close') as HTMLElement;
     closeBtn?.click();
 
@@ -263,30 +263,30 @@ describe('tree manipulation', () => {
     expect(container.querySelector('#stack2')).toBeNull();
 
     // Splitter should also be removed
-    expect(container.querySelectorAll('gl-splitter').length).toBe(0);
+    expect(container.querySelectorAll('tx-splitter').length).toBe(0);
 
     // Only stack1 should remain
-    const layout = container.querySelector('gl-layout');
+    const layout = container.querySelector('tx-layout');
     expect(layout?.children.length).toBe(1);
     expect(layout?.children[0].id).toBe('stack1');
   });
 
   it('moves components between stacks', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="source">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="source">
             
               <div>I will move</div>
             
-          </gl-pane>
-          <gl-pane id="target">
+          </tx-pane>
+          <tx-pane id="target">
             
               <div>I stay here</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -304,11 +304,11 @@ describe('tree manipulation', () => {
 
     // Verify move
     expect(movingComponent?.parentElement).toBe(targetStack);
-    expect(sourceStack?.querySelectorAll('gl-component-container').length).toBe(0);
-    expect(targetStack?.querySelectorAll('gl-component-container').length).toBe(2);
+    expect(sourceStack?.querySelectorAll('tx-component-container').length).toBe(0);
+    expect(targetStack?.querySelectorAll('tx-component-container').length).toBe(2);
 
     // Check tabs - source stack will still have the old tab until cleanup
     // This is a limitation of our current implementation
-    expect(targetStack?.querySelectorAll('gl-tab').length).toBe(2);
+    expect(targetStack?.querySelectorAll('tx-tab').length).toBe(2);
   });
 });

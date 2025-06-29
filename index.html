@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Golden Layout - Web Components Demo</title>
+  <title>Tilex - Web Components Demo</title>
   <style>
     /* Define page-level theme variables with Gruvbox Dark Medium defaults */
     :root {
@@ -144,7 +144,7 @@
       min-height: 0;
     }
     
-    /* Demo content styles removed - now handled by gl-pane component */
+    /* Demo content styles removed - now handled by tx-pane component */
     
     .theme-selector {
       margin-bottom: 20px;
@@ -166,7 +166,7 @@
 </head>
 <body>
   <div class="page-header">
-    <h1>Golden Layout - Web Components Demo</h1>
+    <h1>Tilex - Web Components Demo</h1>
     
     <div class="theme-selector">
       <label>Theme: 
@@ -186,9 +186,9 @@
   </div>
   
   <div class="demo-container">
-    <gl-layout id="layout" panel-types='["editor", "terminal", "console", "preview", "explorer", "debug", "output"]' pane-prefix="foo">
-      <gl-row>
-        <gl-pane panel-type="debug">
+    <tx-layout id="layout" panel-types='["editor", "terminal", "console", "preview", "explorer", "debug", "output"]' pane-prefix="foo">
+      <tx-row>
+        <tx-pane panel-type="debug">
           <span slot="header-center" style="color: var(--page-accent); font-size: 12px;">Debug View</span>
           <h2>Component 1</h2>
           <p>This is a non-modal pane layout.</p>
@@ -196,12 +196,12 @@
           <p><strong>Use the dropdown</strong> to change panel types!</p>
           <p><strong>Click ⋮</strong> in the header to split panes!</p>
           <p><strong>Drag panes to edges</strong> for smart positioning!</p>
-        </gl-pane>
+        </tx-pane>
         
-        <gl-splitter orientation="horizontal"></gl-splitter>
+        <tx-splitter orientation="horizontal"></tx-splitter>
         
-        <gl-column>
-          <gl-pane panel-type="terminal">
+        <tx-column>
+          <tx-pane panel-type="terminal">
             <span slot="header-center" style="font-family: monospace; font-size: 11px; opacity: 0.7;">~/project</span>
             <h2>Component 2</h2>
             <p>Each pane shows its content directly.</p>
@@ -210,21 +210,21 @@
               <span>user@host:~/project$</span>
               <span>bash</span>
             </div>
-          </gl-pane>
+          </tx-pane>
           
-          <gl-splitter orientation="vertical"></gl-splitter>
+          <tx-splitter orientation="vertical"></tx-splitter>
           
-          <gl-pane panel-type="console">
+          <tx-pane panel-type="console">
             <h2>Component 3</h2>
             <p>Drag splitters to resize panes.</p>
             <p>Use the ⋮ menu for split, maximize, and close.</p>
             <span slot="footer">Console: 0 errors, 3 warnings</span>
-          </gl-pane>
-        </gl-column>
+          </tx-pane>
+        </tx-column>
         
-        <gl-splitter orientation="horizontal"></gl-splitter>
+        <tx-splitter orientation="horizontal"></tx-splitter>
         
-        <gl-pane panel-type="preview">
+        <tx-pane panel-type="preview">
           <span slot="header-center" style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
             <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%;"></span>
             Live Preview
@@ -237,17 +237,17 @@
             <span>Last updated: 2 seconds ago</span>
             <span>100% zoom</span>
           </div>
-        </gl-pane>
-      </gl-row>
-    </gl-layout>
+        </tx-pane>
+      </tx-row>
+    </tx-layout>
   </div>
   
   <script type="module">
     import './src/index.ts';
-    import './src/styles/golden-layout.css';
+    import './src/styles/tilex.css';
     
     // Example of listening to events
-    const layoutElement = document.querySelector('gl-layout');
+    const layoutElement = document.querySelector('tx-layout');
     
     layoutElement.addEventListener('tab-changed', (e) => {
       console.log('Tab changed:', e.detail);
@@ -273,13 +273,13 @@
     // layoutElement.panelTypes = ['code', 'markdown', 'json', 'yaml', 'xml'];
     
     // Test invalid panel type (will show error and use first valid type)
-    // const testPane = document.createElement('gl-pane');
+    // const testPane = document.createElement('tx-pane');
     // testPane.setAttribute('panel-type', 'invalid-type');
     
     // Test auto-generated id (will be assigned automatically)
-    // const testPaneNoId = document.createElement('gl-pane');
+    // const testPaneNoId = document.createElement('tx-pane');
     // testPaneNoId.setAttribute('panel-type', 'editor');
-    // layoutElement.querySelector('gl-row').appendChild(testPaneNoId);
+    // layoutElement.querySelector('tx-row').appendChild(testPaneNoId);
     // setTimeout(() => console.log('Auto-generated ID:', testPaneNoId.id), 100);
     
     // Theme selector

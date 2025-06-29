@@ -15,28 +15,28 @@ describe('empty stack', () => {
 
   it('renders empty stack correctly', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
+      <tx-layout>
+        <tx-row>
           
             <div>Component 1</div>
           
           
             <div>Component 2</div>
           
-          <gl-pane>
+          <tx-pane>
             <!-- Empty stack -->
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const row = container.querySelector('gl-row');
+    const row = container.querySelector('tx-row');
     expect(row).toBeTruthy();
     expect(row?.children.length).toBe(3);
 
-    const stack = container.querySelector('gl-pane');
+    const stack = container.querySelector('tx-pane');
     expect(stack).toBeTruthy();
 
     // Check that stack has no content children (only tabs in slot)
@@ -48,13 +48,13 @@ describe('empty stack', () => {
 
   it('can add component to empty stack', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="empty-stack">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="empty-stack">
             <!-- Empty stack -->
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -63,7 +63,7 @@ describe('empty stack', () => {
     expect(stack).toBeTruthy();
 
     // Add a component to the empty stack
-    const newComponent = document.createElement('gl-component-container');
+    const newComponent = document.createElement('tx-component-container');
     newComponent.setAttribute('title', 'New Component');
     newComponent.innerHTML = '<div>New Content</div>';
 
@@ -73,22 +73,22 @@ describe('empty stack', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Verify component was added
-    const components = stack?.querySelectorAll('gl-component-container');
+    const components = stack?.querySelectorAll('tx-component-container');
     expect(components?.length).toBe(1);
 
     // Verify tab was created
-    const tabs = stack?.querySelectorAll('gl-tab');
+    const tabs = stack?.querySelectorAll('tx-tab');
     expect(tabs?.length).toBe(1);
     expect(tabs?.[0].getAttribute('title')).toBe('New Component');
   });
 
   it('handles multiple components added to empty stack', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane id="empty-stack">
+      <tx-layout>
+        <tx-pane id="empty-stack">
           <!-- Empty stack -->
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -97,7 +97,7 @@ describe('empty stack', () => {
 
     // Add multiple components
     for (let i = 1; i <= 3; i++) {
-      const component = document.createElement('gl-component-container');
+      const component = document.createElement('tx-component-container');
       component.setAttribute('title', `Component ${i}`);
       component.innerHTML = `<div>Content ${i}</div>`;
       stack?.appendChild(component);
@@ -107,11 +107,11 @@ describe('empty stack', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Verify all components were added
-    const components = stack?.querySelectorAll('gl-component-container');
+    const components = stack?.querySelectorAll('tx-component-container');
     expect(components?.length).toBe(3);
 
     // Verify all tabs were created
-    const tabs = stack?.querySelectorAll('gl-tab');
+    const tabs = stack?.querySelectorAll('tx-tab');
     expect(tabs?.length).toBe(3);
 
     // Verify first tab is active
@@ -125,20 +125,20 @@ describe('empty stack', () => {
 
   it('removes empty stack when all components are removed', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Content 1</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout');
-    const _stack = container.querySelector('gl-pane');
-    const tab = container.querySelector('gl-tab');
+    const layout = container.querySelector('tx-layout');
+    const _stack = container.querySelector('tx-pane');
+    const tab = container.querySelector('tx-tab');
 
     // Close the tab
     const closeButton = tab?.shadowRoot?.querySelector('.close') as HTMLElement;
@@ -148,7 +148,7 @@ describe('empty stack', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Stack should be removed due to auto-cleanup
-    expect(container.querySelector('gl-pane')).toBeNull();
+    expect(container.querySelector('tx-pane')).toBeNull();
 
     // Layout should be empty
     expect(layout?.children.length).toBe(0);

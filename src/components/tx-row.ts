@@ -1,6 +1,6 @@
 import { BaseElement } from '@/core/base-element';
 
-export class GlRow extends BaseElement {
+export class TilexRow extends BaseElement {
   private resizeObserver: ResizeObserver | null = null;
 
   connectedCallback(): void {
@@ -39,8 +39,8 @@ export class GlRow extends BaseElement {
           flex: 0 0 auto;
         }
         
-        ::slotted(gl-splitter) {
-          flex: 0 0 var(--gl-splitter-size, 5px);
+        ::slotted(tx-splitter) {
+          flex: 0 0 var(--tx-splitter-size, 5px);
         }
       </style>
       <slot></slot>
@@ -61,7 +61,7 @@ export class GlRow extends BaseElement {
 
   private updateChildSizes(): void {
     const children = Array.from(this.children).filter(
-      (child) => child.tagName !== 'GL-SPLITTER',
+      (child) => child.tagName !== 'TX-SPLITTER',
     ) as HTMLElement[];
 
     // Reset all children to use flexbox
@@ -73,4 +73,4 @@ export class GlRow extends BaseElement {
   }
 }
 
-customElements.define('gl-row', GlRow);
+customElements.define('tx-row', TilexRow);

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
-import type { GlPaneElement } from '@/types/elements';
-import type { GlDropIndicatorElement, GlLayoutElement } from '@/types/elements';
+import type { TilexPaneElement } from '@/types/elements';
+import type { TilexDropIndicatorElement, TilexLayoutElement } from '@/types/elements';
 
 describe('multi-zone drop', () => {
   let container: HTMLElement;
@@ -22,7 +22,7 @@ describe('multi-zone drop', () => {
 
   beforeEach(() => {
     // Set CSS custom properties
-    document.documentElement.style.setProperty('--gl-splitter-size', '5px');
+    document.documentElement.style.setProperty('--tx-splitter-size', '5px');
 
     container = document.createElement('div');
     container.style.width = '800px';
@@ -33,32 +33,32 @@ describe('multi-zone drop', () => {
   afterEach(() => {
     container.remove();
     // Clean up any drop indicators
-    document.querySelectorAll('gl-drop-indicator').forEach((el) => el.remove());
+    document.querySelectorAll('tx-drop-indicator').forEach((el) => el.remove());
   });
 
   it('detects top drop zone', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="source">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="source">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="target">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="target">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
-    const sourceTab = container.querySelector('#source gl-tab');
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
+    const sourceTab = container.querySelector('#source tx-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
     // Start drag
@@ -90,7 +90,7 @@ describe('multi-zone drop', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Check drop indicator shows top position
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
+    const dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicatorElement;
     expect(dropIndicator?.position).toBe('top');
 
     const indicator = dropIndicator?.shadowRoot?.querySelector('.indicator');
@@ -102,24 +102,24 @@ describe('multi-zone drop', () => {
 
   it('detects bottom drop zone', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane id="source">
+      <tx-layout>
+        <tx-pane id="source">
           
             <div>Content 1</div>
           
-        </gl-pane>
-        <gl-pane id="target">
+        </tx-pane>
+        <tx-pane id="target">
           
             <div>Content 2</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
-    const sourceTab = container.querySelector('#source gl-tab');
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
+    const sourceTab = container.querySelector('#source tx-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
     // Start drag
@@ -144,30 +144,30 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
+    const dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicatorElement;
     expect(dropIndicator?.position).toBe('bottom');
   });
 
   it('detects left drop zone', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane id="source">
+      <tx-layout>
+        <tx-pane id="source">
           
             <div>Content 1</div>
           
-        </gl-pane>
-        <gl-pane id="target">
+        </tx-pane>
+        <tx-pane id="target">
           
             <div>Content 2</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
-    const sourceTab = container.querySelector('#source gl-tab');
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
+    const sourceTab = container.querySelector('#source tx-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
     // Start drag
@@ -192,30 +192,30 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
+    const dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicatorElement;
     expect(dropIndicator?.position).toBe('left');
   });
 
   it('detects right drop zone', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane id="source">
+      <tx-layout>
+        <tx-pane id="source">
           
             <div>Content 1</div>
           
-        </gl-pane>
-        <gl-pane id="target">
+        </tx-pane>
+        <tx-pane id="target">
           
             <div>Content 2</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
-    const sourceTab = container.querySelector('#source gl-tab');
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
+    const sourceTab = container.querySelector('#source tx-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
     // Start drag
@@ -240,30 +240,30 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
+    const dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicatorElement;
     expect(dropIndicator?.position).toBe('right');
   });
 
   it('detects center drop zone', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane id="source">
+      <tx-layout>
+        <tx-pane id="source">
           
             <div>Content 1</div>
           
-        </gl-pane>
-        <gl-pane id="target">
+        </tx-pane>
+        <tx-pane id="target">
           
             <div>Content 2</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
-    const sourceTab = container.querySelector('#source gl-tab');
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
+    const sourceTab = container.querySelector('#source tx-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
     // Start drag
@@ -288,33 +288,33 @@ describe('multi-zone drop', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
+    const dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicatorElement;
     expect(dropIndicator?.position).toBe('center');
   });
 
   it('creates vertical split when dropping on top', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="source">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="source">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="target">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="target">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
-    const sourceTab = container.querySelector('#source gl-tab');
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
+    const sourceTab = container.querySelector('#source tx-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
     // Setup drag
@@ -335,7 +335,7 @@ describe('multi-zone drop', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Check that a column was created
-    const column = container.querySelector('gl-column');
+    const column = container.querySelector('tx-column');
     expect(column).toBeTruthy();
 
     // Check order: new stack, splitter, original stack
@@ -352,27 +352,27 @@ describe('multi-zone drop', () => {
 
   it('creates horizontal split when dropping on left', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-column>
-          <gl-pane id="source">
+      <tx-layout>
+        <tx-column>
+          <tx-pane id="source">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="vertical"></gl-splitter>
-          <gl-pane id="target">
+          </tx-pane>
+          <tx-splitter orientation="vertical"></tx-splitter>
+          <tx-pane id="target">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-column>
-      </gl-layout>
+          </tx-pane>
+        </tx-column>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
-    const sourceTab = container.querySelector('#source gl-tab');
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
+    const sourceTab = container.querySelector('#source tx-tab');
     const targetStack = container.querySelector('#target') as HTMLElement;
 
     // Setup drag
@@ -393,7 +393,7 @@ describe('multi-zone drop', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Check that a row was created
-    const row = container.querySelector('gl-row');
+    const row = container.querySelector('tx-row');
     expect(row).toBeTruthy();
 
     // Check order: new stack, splitter, original stack

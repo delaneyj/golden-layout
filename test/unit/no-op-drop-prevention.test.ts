@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
-import type { GlDropIndicatorElement, GlLayoutElement } from '@/types/elements';
+import type { TilexDropIndicatorElement, TilexLayoutElement } from '@/types/elements';
 
 describe('no-op drop prevention', () => {
   let container: HTMLElement;
@@ -20,7 +20,7 @@ describe('no-op drop prevention', () => {
   };
 
   beforeEach(() => {
-    document.documentElement.style.setProperty('--gl-splitter-size', '5px');
+    document.documentElement.style.setProperty('--tx-splitter-size', '5px');
 
     container = document.createElement('div');
     container.style.width = '800px';
@@ -30,34 +30,34 @@ describe('no-op drop prevention', () => {
 
   afterEach(() => {
     container.remove();
-    document.querySelectorAll('gl-drop-indicator').forEach((el) => el.remove());
+    document.querySelectorAll('tx-drop-indicator').forEach((el) => el.remove());
   });
 
   it('prevents drop on left edge of next sibling in row', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
-    const tab1 = stack1.querySelector('gl-tab');
+    const tab1 = stack1.querySelector('tx-tab');
 
     // Start drag from stack1
     layout._draggedElement = tab1;
@@ -86,36 +86,36 @@ describe('no-op drop prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should not show drop indicator (no-op)
-    const dropIndicator = document.querySelector('gl-drop-indicator');
+    const dropIndicator = document.querySelector('tx-drop-indicator');
     expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
     expect(stack2.classList.contains('drag-over')).toBe(false);
   });
 
   it('prevents drop on right edge of previous sibling in row', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
-    const tab2 = stack2.querySelector('gl-tab');
+    const tab2 = stack2.querySelector('tx-tab');
 
     // Start drag from stack2
     layout._draggedElement = tab2;
@@ -140,36 +140,36 @@ describe('no-op drop prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should not show drop indicator (no-op)
-    const dropIndicator = document.querySelector('gl-drop-indicator');
+    const dropIndicator = document.querySelector('tx-drop-indicator');
     expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
     expect(stack1.classList.contains('drag-over')).toBe(false);
   });
 
   it('prevents drop on top edge of next sibling in column', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-column>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-column>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="vertical"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="vertical"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-column>
-      </gl-layout>
+          </tx-pane>
+        </tx-column>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
-    const tab1 = stack1.querySelector('gl-tab');
+    const tab1 = stack1.querySelector('tx-tab');
 
     // Start drag from stack1
     layout._draggedElement = tab1;
@@ -194,36 +194,36 @@ describe('no-op drop prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should not show drop indicator (no-op)
-    const dropIndicator = document.querySelector('gl-drop-indicator');
+    const dropIndicator = document.querySelector('tx-drop-indicator');
     expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
     expect(stack2.classList.contains('drag-over')).toBe(false);
   });
 
   it('prevents drop on bottom edge of previous sibling in column', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-column>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-column>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="vertical"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="vertical"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-column>
-      </gl-layout>
+          </tx-pane>
+        </tx-column>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
-    const tab2 = stack2.querySelector('gl-tab');
+    const tab2 = stack2.querySelector('tx-tab');
 
     // Start drag from stack2
     layout._draggedElement = tab2;
@@ -248,42 +248,42 @@ describe('no-op drop prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should not show drop indicator (no-op)
-    const dropIndicator = document.querySelector('gl-drop-indicator');
+    const dropIndicator = document.querySelector('tx-drop-indicator');
     expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
     expect(stack1.classList.contains('drag-over')).toBe(false);
   });
 
   it('allows meaningful drops that change layout', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack3">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack3">
             
               <div>Content 3</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack3 = container.querySelector('#stack3') as HTMLElement;
-    const tab1 = stack1.querySelector('gl-tab');
+    const tab1 = stack1.querySelector('tx-tab');
 
     // Start drag from stack1
     layout._draggedElement = tab1;
@@ -308,7 +308,7 @@ describe('no-op drop prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should show drop indicator (meaningful change)
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
+    const dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicatorElement;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
     expect(dropIndicator?.position).toBe('left');
     expect(stack3.classList.contains('drag-over')).toBe(true);
@@ -316,29 +316,29 @@ describe('no-op drop prevention', () => {
 
   it('allows center drops between siblings', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack2">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack2">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
     const stack1 = container.querySelector('#stack1') as HTMLElement;
     const stack2 = container.querySelector('#stack2') as HTMLElement;
-    const tab1 = stack1.querySelector('gl-tab');
+    const tab1 = stack1.querySelector('tx-tab');
 
     // Start drag from stack1
     layout._draggedElement = tab1;
@@ -363,7 +363,7 @@ describe('no-op drop prevention', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Should show drop indicator (center drops always allowed between different stacks)
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicatorElement;
+    const dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicatorElement;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
     expect(dropIndicator?.position).toBe('center');
     expect(stack2.classList.contains('drag-over')).toBe(true);

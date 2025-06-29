@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import '@/components/gl-layout';
-import '@/components/gl-pane';
-import '@/components/gl-column';
-import '@/components/gl-component-container';
+import '@/components/tx-layout';
+import '@/components/tx-pane';
+import '@/components/tx-column';
+import '@/components/tx-component-container';
 
 describe('component creation events', () => {
   let container: HTMLElement;
@@ -20,18 +20,18 @@ describe('component creation events', () => {
     const componentCreatedHandler = vi.fn();
 
     // Create component separately to add listener before connecting
-    const component = document.createElement('gl-component-container');
+    const component = document.createElement('tx-component-container');
     component.setAttribute('title', 'Test Component');
     component.innerHTML = '<span>that worked</span>';
     component.addEventListener('component-created', componentCreatedHandler);
 
     container.innerHTML = `
-      <gl-layout>
-        <gl-column>
-          <gl-pane id="target-stack">
-          </gl-pane>
-        </gl-column>
-      </gl-layout>
+      <tx-layout>
+        <tx-column>
+          <tx-pane id="target-stack">
+          </tx-pane>
+        </tx-column>
+      </tx-layout>
     `;
 
     // Add component to DOM
@@ -52,8 +52,8 @@ describe('component creation events', () => {
     );
 
     // Verify all components exist
-    const layout = container.querySelector('gl-layout');
-    const column = container.querySelector('gl-column');
+    const layout = container.querySelector('tx-layout');
+    const column = container.querySelector('tx-column');
 
     expect(layout).toBeTruthy();
     expect(column).toBeTruthy();
@@ -74,7 +74,7 @@ describe('component creation events', () => {
       
     `;
 
-    const component = container.querySelector('gl-component-container');
+    const component = container.querySelector('tx-component-container');
     component?.addEventListener('component-destroyed', componentDestroyedHandler);
 
     // Wait for component to initialize

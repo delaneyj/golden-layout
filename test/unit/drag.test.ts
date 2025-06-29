@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/index';
-import type { GlLayoutElement } from '@/types/elements';
+import type { TilexLayoutElement } from '@/types/elements';
 
 // Test-specific interface to access private properties
-interface GlLayoutTestElement extends GlLayoutElement {
+interface TilexLayoutTestElement extends TilexLayoutElement {
   _draggedElement: HTMLElement | null;
 }
 
@@ -34,21 +34,21 @@ describe('drag and drop', () => {
     const dragStartHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Content 1</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
-    const layout = container.querySelector('gl-layout');
+    const layout = container.querySelector('tx-layout');
     layout?.addEventListener('item-drag-start', dragStartHandler);
 
     // Get a tab which is draggable
     await new Promise((resolve) => setTimeout(resolve, 50));
-    const tab = container.querySelector('gl-tab');
+    const tab = container.querySelector('tx-tab');
 
     // Simulate drag start
     const dragStartEvent = new DragEvent('dragstart', {
@@ -70,26 +70,26 @@ describe('drag and drop', () => {
 
   it('handles drag over event', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane>
+      <tx-layout>
+        <tx-row>
+          <tx-pane>
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-pane>
+          </tx-pane>
+          <tx-pane>
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout');
-    const firstTab = container.querySelector('gl-tab');
+    const layout = container.querySelector('tx-layout');
+    const firstTab = container.querySelector('tx-tab');
 
     // Start drag
     const dataTransfer = new DataTransfer();
@@ -128,24 +128,24 @@ describe('drag and drop', () => {
     const itemDroppedHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Content 1</div>
           
           
             <div>Content 2</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
     layout?.addEventListener('item-dropped', itemDroppedHandler);
 
-    const tabs = container.querySelectorAll('gl-tab');
+    const tabs = container.querySelectorAll('tx-tab');
     const firstTab = tabs[0];
 
     // Simulate dragging first tab
@@ -192,21 +192,21 @@ describe('drag and drop', () => {
     const dragEndHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Content 1</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout');
+    const layout = container.querySelector('tx-layout');
     layout?.addEventListener('item-drag-end', dragEndHandler);
 
-    const tab = container.querySelector('gl-tab');
+    const tab = container.querySelector('tx-tab');
 
     // Simulate drag operations
     const dataTransfer = new DataTransfer();

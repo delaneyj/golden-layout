@@ -1,6 +1,6 @@
 import { BaseElement } from '@/core/base-element';
 
-export class GlSplitter extends BaseElement {
+export class TilexSplitter extends BaseElement {
   private _orientation: 'horizontal' | 'vertical' = 'vertical';
   private _isDragging = false;
   private _startPos = 0;
@@ -56,7 +56,7 @@ export class GlSplitter extends BaseElement {
       <style>
         :host {
           display: block;
-          background: var(--gl-splitter-bg, #3c3836); /* gruvbox bg1 */
+          background: var(--tx-splitter-bg, #3c3836); /* gruvbox bg1 */
           position: relative;
           user-select: none;
           touch-action: none;
@@ -64,22 +64,22 @@ export class GlSplitter extends BaseElement {
           ${isHorizontal ? 'cursor: ew-resize;' : 'cursor: ns-resize;'}
           ${
             isHorizontal
-              ? `width: var(--gl-splitter-size, 5px);
-             min-width: var(--gl-splitter-size, 5px);
-             max-width: var(--gl-splitter-size, 5px);
+              ? `width: var(--tx-splitter-size, 5px);
+             min-width: var(--tx-splitter-size, 5px);
+             max-width: var(--tx-splitter-size, 5px);
              height: 100%;`
-              : `height: var(--gl-splitter-size, 5px);
-             min-height: var(--gl-splitter-size, 5px);
-             max-height: var(--gl-splitter-size, 5px);
+              : `height: var(--tx-splitter-size, 5px);
+             min-height: var(--tx-splitter-size, 5px);
+             max-height: var(--tx-splitter-size, 5px);
              width: 100%;`
           }
           
           &:hover {
-            background: var(--gl-splitter-hover-bg, #665c54); /* gruvbox bg3 */
+            background: var(--tx-splitter-hover-bg, #665c54); /* gruvbox bg3 */
           }
           
           &.dragging {
-            background: var(--gl-splitter-active-bg, #fe8019); /* gruvbox orange */
+            background: var(--tx-splitter-active-bg, #fe8019); /* gruvbox orange */
           }
         }
       </style>
@@ -194,7 +194,7 @@ export class GlSplitter extends BaseElement {
   }
 
   private notifyLayoutChange(): void {
-    const layout = this.closest('gl-layout') as HTMLElement & { emitLayoutChange?: () => void };
+    const layout = this.closest('tx-layout') as HTMLElement & { emitLayoutChange?: () => void };
     if (layout?.emitLayoutChange) {
       // Use setTimeout to ensure DOM is updated
       setTimeout(() => layout.emitLayoutChange(), 0);
@@ -202,4 +202,4 @@ export class GlSplitter extends BaseElement {
   }
 }
 
-customElements.define('gl-splitter', GlSplitter);
+customElements.define('tx-splitter', TilexSplitter);

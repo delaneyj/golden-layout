@@ -1,4 +1,4 @@
-import type { GlDropIndicator } from '@/components/gl-drop-indicator';
+import type { TilexDropIndicator } from '@/components/tx-drop-indicator';
 import { BaseElement } from '@/core/base-element';
 import type { LayoutConfig } from '@/types/config';
 
@@ -9,10 +9,10 @@ interface LayoutNode {
   children?: LayoutNode[];
 }
 
-export class GlLayout extends BaseElement {
+export class TilexLayout extends BaseElement {
   #config: LayoutConfig | null = null;
   #draggedElement: HTMLElement | null = null;
-  #dropIndicator: GlDropIndicator | null = null;
+  #dropIndicator: TilexDropIndicator | null = null;
   #panelTypes: string[] = ['default'];
   #panePrefix = 'pane';
   #paneCounter = 0;
@@ -63,11 +63,11 @@ export class GlLayout extends BaseElement {
     this.#draggedElement = value;
   }
 
-  get dropIndicator(): GlDropIndicator | null {
+  get dropIndicator(): TilexDropIndicator | null {
     return this.#dropIndicator;
   }
 
-  set dropIndicator(value: GlDropIndicator | null) {
+  set dropIndicator(value: TilexDropIndicator | null) {
     this.#dropIndicator = value;
   }
 
@@ -79,7 +79,7 @@ export class GlLayout extends BaseElement {
     this.addEventListener('dragend', this.handleDragEnd);
 
     // Create drop indicator
-    this.#dropIndicator = document.createElement('gl-drop-indicator') as GlDropIndicator;
+    this.#dropIndicator = document.createElement('tx-drop-indicator') as TilexDropIndicator;
     document.body.appendChild(this.#dropIndicator);
 
     // Parse panel-types attribute if present
@@ -144,31 +144,31 @@ export class GlLayout extends BaseElement {
           position: relative;
           overflow: hidden;
           /* Define default theme colors as CSS variables for child components */
-          --gl-layout-bg: #282828;
+          --tx-layout-bg: #282828;
           
           /* Use the CSS variable for background */
-          background: var(--gl-layout-bg);
-          --gl-layout-border: #504945;
-          --gl-pane-bg: #282828;
-          --gl-pane-border: #504945;
-          --gl-header-bg: #3c3836;
-          --gl-header-border: #504945;
-          --gl-header-color: #ebdbb2;
-          --gl-control-hover-bg: #504945;
-          --gl-control-active-bg: #665c54;
-          --gl-control-color: #bdae93;
-          --gl-splitter-bg: #3c3836;
-          --gl-splitter-hover-bg: #665c54;
-          --gl-splitter-active-bg: #fe8019;
-          --gl-component-padding: 20px;
-          --gl-drop-indicator-bg: rgba(131, 165, 152, 0.15);
-          --gl-drop-indicator-border: #83a598;
-          --gl-drop-indicator-radius: 4px;
-          --gl-drop-indicator-label-bg: #83a598;
-          --gl-drop-indicator-label-color: #282828;
-          --gl-pane-drag-over-border: #83a598;
-          --gl-pane-drag-over-shadow: rgba(131, 165, 152, 0.25);
-          --gl-pane-drag-over-bg: rgba(131, 165, 152, 0.05);
+          background: var(--tx-layout-bg);
+          --tx-layout-border: #504945;
+          --tx-pane-bg: #282828;
+          --tx-pane-border: #504945;
+          --tx-header-bg: #3c3836;
+          --tx-header-border: #504945;
+          --tx-header-color: #ebdbb2;
+          --tx-control-hover-bg: #504945;
+          --tx-control-active-bg: #665c54;
+          --tx-control-color: #bdae93;
+          --tx-splitter-bg: #3c3836;
+          --tx-splitter-hover-bg: #665c54;
+          --tx-splitter-active-bg: #fe8019;
+          --tx-component-padding: 20px;
+          --tx-drop-indicator-bg: rgba(131, 165, 152, 0.15);
+          --tx-drop-indicator-border: #83a598;
+          --tx-drop-indicator-radius: 4px;
+          --tx-drop-indicator-label-bg: #83a598;
+          --tx-drop-indicator-label-color: #282828;
+          --tx-pane-drag-over-border: #83a598;
+          --tx-pane-drag-over-shadow: rgba(131, 165, 152, 0.25);
+          --tx-pane-drag-over-bg: rgba(131, 165, 152, 0.05);
         }
         ::slotted(*) {
           width: 100%;
@@ -176,7 +176,7 @@ export class GlLayout extends BaseElement {
         }
         
         /* Ensure maximized panes fill the entire layout */
-        ::slotted(gl-pane[maximized]) {
+        ::slotted(tx-pane[maximized]) {
           position: absolute !important;
           top: 0 !important;
           left: 0 !important;
@@ -192,7 +192,7 @@ export class GlLayout extends BaseElement {
   private handleDragStart = (e: DragEvent): void => {
     // Check if it's a pane header being dragged
     const target = e.target as HTMLElement;
-    const pane = target.closest('gl-pane');
+    const pane = target.closest('tx-pane');
 
     if (pane && target.classList.contains('header')) {
       this.#draggedElement = pane as HTMLElement;
@@ -247,27 +247,27 @@ export class GlLayout extends BaseElement {
 
   private getLayoutStructure(): LayoutNode | null {
     const serializeElement = (element: Element): LayoutNode | null => {
-      if (element.tagName === 'GL-PANE') {
+      if (element.tagName === 'TX-PANE') {
         return {
           type: 'pane',
           id: element.getAttribute('id') || undefined,
           panelType: element.getAttribute('panel-type') || 'default',
         };
       }
-      if (element.tagName === 'GL-ROW') {
+      if (element.tagName === 'TX-ROW') {
         return {
           type: 'row',
           children: Array.from(element.children)
-            .filter((child) => child.tagName !== 'GL-SPLITTER')
+            .filter((child) => child.tagName !== 'TX-SPLITTER')
             .map((child) => serializeElement(child))
             .filter((child): child is LayoutNode => child !== null),
         };
       }
-      if (element.tagName === 'GL-COLUMN') {
+      if (element.tagName === 'TX-COLUMN') {
         return {
           type: 'column',
           children: Array.from(element.children)
-            .filter((child) => child.tagName !== 'GL-SPLITTER')
+            .filter((child) => child.tagName !== 'TX-SPLITTER')
             .map((child) => serializeElement(child))
             .filter((child): child is LayoutNode => child !== null),
         };
@@ -277,7 +277,7 @@ export class GlLayout extends BaseElement {
 
     // Find the root container (first child that's not a slot)
     const rootContainer = Array.from(this.children).find((child) =>
-      ['GL-ROW', 'GL-COLUMN', 'GL-PANE'].includes(child.tagName),
+      ['TX-ROW', 'TX-COLUMN', 'TX-PANE'].includes(child.tagName),
     );
 
     return rootContainer ? serializeElement(rootContainer) : null;
@@ -290,12 +290,12 @@ export class GlLayout extends BaseElement {
   }
 
   private getMaximizedPaneId(): string | null {
-    const maximizedPane = this.querySelector('gl-pane[maximized]');
+    const maximizedPane = this.querySelector('tx-pane[maximized]');
     return maximizedPane ? maximizedPane.getAttribute('id') : null;
   }
 
   private assignPaneIds(): void {
-    const allPanes = this.querySelectorAll('gl-pane');
+    const allPanes = this.querySelectorAll('tx-pane');
     allPanes.forEach((pane) => {
       if (!pane.hasAttribute('id') || pane.getAttribute('id') === '') {
         pane.setAttribute('id', this.generatePaneId());
@@ -304,4 +304,4 @@ export class GlLayout extends BaseElement {
   }
 }
 
-customElements.define('gl-layout', GlLayout);
+customElements.define('tx-layout', TilexLayout);

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/index';
-import type { GlLayoutElement } from '@/types/elements';
+import type { TilexLayoutElement } from '@/types/elements';
 
 describe('drag and drop tabs between stacks', () => {
   let container: HTMLElement;
@@ -20,35 +20,35 @@ describe('drag and drop tabs between stacks', () => {
     const componentMovedHandler = vi.fn();
 
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="source-stack">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="source-stack">
             
               <div>Content 1</div>
             
             
               <div>Content 2</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="target-stack">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="target-stack">
             
               <div>Content 3</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
     const sourceStack = container.querySelector('#source-stack');
     const targetStack = container.querySelector('#target-stack');
     targetStack?.addEventListener('component-moved', componentMovedHandler);
 
     // Get the first tab from source stack
-    const firstTab = sourceStack?.querySelector('gl-tab');
+    const firstTab = sourceStack?.querySelector('tx-tab');
     const comp1 = container.querySelector('#comp1');
 
     // Simulate drag start
@@ -80,12 +80,12 @@ describe('drag and drop tabs between stacks', () => {
 
     // Verify component was moved
     expect(comp1?.parentElement).toBe(targetStack);
-    expect(sourceStack?.querySelectorAll('gl-component-container').length).toBe(1);
-    expect(targetStack?.querySelectorAll('gl-component-container').length).toBe(2);
+    expect(sourceStack?.querySelectorAll('tx-component-container').length).toBe(1);
+    expect(targetStack?.querySelectorAll('tx-component-container').length).toBe(2);
 
     // Verify tabs were updated
-    expect(sourceStack?.querySelectorAll('gl-tab').length).toBe(1);
-    expect(targetStack?.querySelectorAll('gl-tab').length).toBe(2);
+    expect(sourceStack?.querySelectorAll('tx-tab').length).toBe(1);
+    expect(targetStack?.querySelectorAll('tx-tab').length).toBe(2);
 
     // Verify event was emitted
     expect(componentMovedHandler).toHaveBeenCalledTimes(1);
@@ -102,28 +102,28 @@ describe('drag and drop tabs between stacks', () => {
 
   it('shows visual feedback during drag over', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="source">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="source">
             
               <div>Drag me</div>
             
-          </gl-pane>
-          <gl-pane id="target">
+          </tx-pane>
+          <tx-pane id="target">
             
               <div>Drop here</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
     const sourceStack = container.querySelector('#source');
     const targetStack = container.querySelector('#target');
-    const tab = sourceStack?.querySelector('gl-tab');
+    const tab = sourceStack?.querySelector('tx-tab');
 
     // Start drag
     const dragStartEvent = new DragEvent('dragstart', {
@@ -171,23 +171,23 @@ describe('drag and drop tabs between stacks', () => {
 
   it('does not move tab when dropped on same stack', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane id="stack">
+      <tx-layout>
+        <tx-pane id="stack">
           
             <div>Content 1</div>
           
           
             <div>Content 2</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
     const stack = container.querySelector('#stack');
-    const firstTab = stack?.querySelector('gl-tab');
+    const firstTab = stack?.querySelector('tx-tab');
 
     // Simulate dragging tab within same stack
     const dragStartEvent = new DragEvent('dragstart', {
@@ -206,7 +206,7 @@ describe('drag and drop tabs between stacks', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Verify nothing changed
-    expect(stack?.querySelectorAll('gl-component-container').length).toBe(2);
-    expect(stack?.querySelectorAll('gl-tab').length).toBe(2);
+    expect(stack?.querySelectorAll('tx-component-container').length).toBe(2);
+    expect(stack?.querySelectorAll('tx-tab').length).toBe(2);
   });
 });

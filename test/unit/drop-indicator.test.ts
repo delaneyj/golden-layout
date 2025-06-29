@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/index';
-import type { GlDropIndicator } from '@/components/gl-drop-indicator';
-import type { GlLayoutElement } from '@/types/elements';
+import type { TilexDropIndicator } from '@/components/tx-drop-indicator';
+import type { TilexLayoutElement } from '@/types/elements';
 
 // Test-specific interface to access private properties
-interface GlLayoutTestElement extends GlLayoutElement {
+interface TilexLayoutTestElement extends TilexLayoutElement {
   _draggedElement: HTMLElement | null;
-  _dropIndicator: GlDropIndicator | null;
+  _dropIndicator: TilexDropIndicator | null;
 }
 
 describe('drop indicator', () => {
@@ -22,51 +22,51 @@ describe('drop indicator', () => {
   afterEach(() => {
     container.remove();
     // Clean up any drop indicators
-    document.querySelectorAll('gl-drop-indicator').forEach((el) => el.remove());
+    document.querySelectorAll('tx-drop-indicator').forEach((el) => el.remove());
   });
 
   it('creates drop indicator when layout is connected', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Content 1</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Drop indicator should be created
-    const dropIndicator = document.querySelector('gl-drop-indicator');
+    const dropIndicator = document.querySelector('tx-drop-indicator');
     expect(dropIndicator).toBeTruthy();
     expect(dropIndicator?.hasAttribute('data-visible')).toBe(false);
   });
 
   it('shows drop indicator when dragging over stack', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="source">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="source">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="target">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="target">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
-    const sourceTab = container.querySelector('#source gl-tab');
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
+    const sourceTab = container.querySelector('#source tx-tab');
     const targetStack = container.querySelector('#target');
 
     // Start drag
@@ -87,7 +87,7 @@ describe('drop indicator', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Drop indicator should be visible
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicator;
+    const dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicator;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
 
     // Drop indicator should be positioned over target
@@ -102,27 +102,27 @@ describe('drop indicator', () => {
 
   it('hides drop indicator on drag leave', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="source">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="source">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="target">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="target">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
-    const tab = container.querySelector('#source gl-tab');
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
+    const tab = container.querySelector('#source tx-tab');
     const stack = container.querySelector('#target');
 
     // Setup drag from different stack
@@ -137,7 +137,7 @@ describe('drop indicator', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicator;
+    const dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicator;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
 
     // Drag leave
@@ -158,19 +158,19 @@ describe('drop indicator', () => {
 
   it('hides drop indicator on drag end', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Content 1</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
-    const tab = container.querySelector('gl-tab');
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
+    const tab = container.querySelector('tx-tab');
 
     // Start drag
     const dragStartEvent = new DragEvent('dragstart', {
@@ -180,12 +180,12 @@ describe('drop indicator', () => {
     tab?.dispatchEvent(dragStartEvent);
 
     // Show drop indicator
-    const stack = container.querySelector('gl-pane');
+    const stack = container.querySelector('tx-pane');
     if (stack && layout._dropIndicator) {
       layout._dropIndicator.show(stack);
     }
 
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicator;
+    const dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicator;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
 
     // End drag
@@ -201,7 +201,7 @@ describe('drop indicator', () => {
   });
 
   it('displays correct label text based on position', () => {
-    const dropIndicator = document.createElement('gl-drop-indicator') as GlDropIndicator;
+    const dropIndicator = document.createElement('tx-drop-indicator') as TilexDropIndicator;
     document.body.appendChild(dropIndicator);
 
     const target = document.createElement('div');
@@ -242,27 +242,27 @@ describe('drop indicator', () => {
 
   it('hides drop indicator after successful drop', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="source">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="source">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="target">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="target">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutTestElement;
-    const sourceTab = container.querySelector('#source gl-tab');
+    const layout = container.querySelector('tx-layout') as TilexLayoutTestElement;
+    const sourceTab = container.querySelector('#source tx-tab');
     const targetStack = container.querySelector('#target');
 
     // Start drag
@@ -282,7 +282,7 @@ describe('drop indicator', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const dropIndicator = document.querySelector('gl-drop-indicator') as GlDropIndicator;
+    const dropIndicator = document.querySelector('tx-drop-indicator') as TilexDropIndicator;
     expect(dropIndicator?.getAttribute('data-visible')).toBe('true');
 
     // Drop - should hide indicator

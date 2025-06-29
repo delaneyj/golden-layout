@@ -16,59 +16,59 @@ describe('layout structure', () => {
   it('components should be placed in stacks', async () => {
     // In our Web Components version, components must be explicitly placed in stacks
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Content</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout');
-    const stack = container.querySelector('gl-pane');
-    const component = container.querySelector('gl-component-container');
+    const layout = container.querySelector('tx-layout');
+    const stack = container.querySelector('tx-pane');
+    const component = container.querySelector('tx-component-container');
 
     // Verify the structure
     expect(component?.parentElement).toBe(stack);
     expect(stack?.parentElement).toBe(layout);
 
     // Verify a tab was created
-    const tab = stack?.querySelector('gl-tab');
+    const tab = stack?.querySelector('tx-tab');
     expect(tab).toBeTruthy();
     expect(tab?.getAttribute('title')).toBe('Standalone Component');
   });
 
   it('maintains proper DOM hierarchy', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-column>
-            <gl-pane>
+      <tx-layout>
+        <tx-row>
+          <tx-column>
+            <tx-pane>
               
                 <div>Content 1</div>
               
-            </gl-pane>
-          </gl-column>
-          <gl-pane>
+            </tx-pane>
+          </tx-column>
+          <tx-pane>
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Verify structure
-    const layout = container.querySelector('gl-layout');
-    const row = container.querySelector('gl-row');
-    const column = container.querySelector('gl-column');
-    const stacks = container.querySelectorAll('gl-pane');
-    const components = container.querySelectorAll('gl-component-container');
+    const layout = container.querySelector('tx-layout');
+    const row = container.querySelector('tx-row');
+    const column = container.querySelector('tx-column');
+    const stacks = container.querySelectorAll('tx-pane');
+    const components = container.querySelectorAll('tx-component-container');
 
     expect(layout).toBeTruthy();
     expect(row?.parentElement).toBe(layout);
@@ -81,37 +81,37 @@ describe('layout structure', () => {
 
   it('handles nested rows and columns', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-column>
-            <gl-row>
-              <gl-pane>
+      <tx-layout>
+        <tx-row>
+          <tx-column>
+            <tx-row>
+              <tx-pane>
                 
                   <div>Content 1</div>
                 
-              </gl-pane>
-              <gl-pane>
+              </tx-pane>
+              <tx-pane>
                 
                   <div>Content 2</div>
                 
-              </gl-pane>
-            </gl-row>
-          </gl-column>
-          <gl-pane>
+              </tx-pane>
+            </tx-row>
+          </tx-column>
+          <tx-pane>
             
               <div>Content 3</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const outerRow = container.querySelector('gl-row');
-    const column = container.querySelector('gl-column');
-    const innerRow = column?.querySelector('gl-row');
-    const stacks = container.querySelectorAll('gl-pane');
+    const outerRow = container.querySelector('tx-row');
+    const column = container.querySelector('tx-column');
+    const innerRow = column?.querySelector('tx-row');
+    const stacks = container.querySelectorAll('tx-pane');
 
     expect(outerRow).toBeTruthy();
     expect(column).toBeTruthy();
@@ -125,24 +125,24 @@ describe('layout structure', () => {
 
   it('single stack at root level', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-pane>
+      <tx-layout>
+        <tx-pane>
           
             <div>Content 1</div>
           
           
             <div>Content 2</div>
           
-        </gl-pane>
-      </gl-layout>
+        </tx-pane>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout');
-    const stack = container.querySelector('gl-pane');
-    const components = container.querySelectorAll('gl-component-container');
-    const tabs = container.querySelectorAll('gl-tab');
+    const layout = container.querySelector('tx-layout');
+    const stack = container.querySelector('tx-pane');
+    const components = container.querySelectorAll('tx-component-container');
+    const tabs = container.querySelectorAll('tx-tab');
 
     expect(stack?.parentElement).toBe(layout);
     expect(components.length).toBe(2);
@@ -151,28 +151,28 @@ describe('layout structure', () => {
 
   it('handles splitters between layout items', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane>
+      <tx-layout>
+        <tx-row>
+          <tx-pane>
             
               <div>Left content</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane>
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane>
             
               <div>Right content</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const row = container.querySelector('gl-row');
-    const splitter = container.querySelector('gl-splitter');
-    const stacks = container.querySelectorAll('gl-pane');
+    const row = container.querySelector('tx-row');
+    const splitter = container.querySelector('tx-splitter');
+    const stacks = container.querySelectorAll('tx-pane');
 
     expect(splitter).toBeTruthy();
     expect(splitter?.getAttribute('orientation')).toBe('horizontal');

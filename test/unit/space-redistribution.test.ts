@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/index';
-import type { GlLayoutElement, GlPaneElement } from '@/types/elements';
+import type { TilexLayoutElement, TilexPaneElement } from '@/types/elements';
 
 describe('space redistribution', () => {
   let container: HTMLElement;
@@ -18,34 +18,34 @@ describe('space redistribution', () => {
 
   it('redistributes space when a stack is removed from a row', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="stack1" data-width="30%">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="stack1" data-width="30%">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack2" data-width="40%">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack2" data-width="40%">
             
               <div>Content 2</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack3" data-width="30%">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack3" data-width="30%">
             
               <div>Content 3</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const row = container.querySelector('gl-row');
+    const row = container.querySelector('tx-row');
     const stack2 = container.querySelector('#stack2');
-    const tab2 = stack2?.querySelector('gl-tab');
+    const tab2 = stack2?.querySelector('tx-tab');
 
     // Check initial sizes
     const stack1Before = container.querySelector('#stack1') as HTMLElement;
@@ -71,33 +71,33 @@ describe('space redistribution', () => {
     expect(stack3After.getAttribute('data-width')).toBeNull();
 
     // There should be only one splitter left
-    expect(row?.querySelectorAll('gl-splitter').length).toBe(1);
+    expect(row?.querySelectorAll('tx-splitter').length).toBe(1);
   });
 
   it('redistributes space when a stack is removed from a column', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-column>
-          <gl-pane id="stack1" data-height="25%">
+      <tx-layout>
+        <tx-column>
+          <tx-pane id="stack1" data-height="25%">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="vertical"></gl-splitter>
-          <gl-pane id="stack2" data-height="25%">
+          </tx-pane>
+          <tx-splitter orientation="vertical"></tx-splitter>
+          <tx-pane id="stack2" data-height="25%">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-column>
-      </gl-layout>
+          </tx-pane>
+        </tx-column>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const column = container.querySelector('gl-column');
+    const column = container.querySelector('tx-column');
     const stack1 = container.querySelector('#stack1');
-    const tab1 = stack1?.querySelector('gl-tab');
+    const tab1 = stack1?.querySelector('tx-tab');
 
     // Close stack1
     const closeBtn = tab1?.shadowRoot?.querySelector('.close') as HTMLElement;
@@ -113,34 +113,34 @@ describe('space redistribution', () => {
     expect(stack2.getAttribute('data-height')).toBeNull();
 
     // No splitters should remain
-    expect(column?.querySelectorAll('gl-splitter').length).toBe(0);
+    expect(column?.querySelectorAll('tx-splitter').length).toBe(0);
   });
 
   it('redistributes space after drag and drop', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-pane id="source" data-width="50%">
+      <tx-layout>
+        <tx-row>
+          <tx-pane id="source" data-width="50%">
             
               <div>Content 1</div>
             
-          </gl-pane>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="target" data-width="50%">
+          </tx-pane>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="target" data-width="50%">
             
               <div>Content 2</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    const layout = container.querySelector('gl-layout') as GlLayoutElement;
-    const sourceStack = container.querySelector('#source') as GlPaneElement;
+    const layout = container.querySelector('tx-layout') as TilexLayoutElement;
+    const sourceStack = container.querySelector('#source') as TilexPaneElement;
     const targetStack = container.querySelector('#target');
-    const tab = sourceStack?.querySelector('gl-tab');
+    const tab = sourceStack?.querySelector('tx-tab');
 
     // Simulate drag and drop
     const dragStartEvent = new DragEvent('dragstart', {
@@ -162,14 +162,14 @@ describe('space redistribution', () => {
     expect(container.querySelector('#source')).toBeNull();
 
     // Check if row still exists or was replaced
-    const row = container.querySelector('gl-row');
-    const layout2 = container.querySelector('gl-layout');
+    const row = container.querySelector('tx-row');
+    const layout2 = container.querySelector('tx-layout');
 
     if (row) {
       // Row still exists
       const remainingStack = container.querySelector('#target') as HTMLElement;
       expect(remainingStack.getAttribute('data-width')).toBeNull();
-      expect(row.querySelectorAll('gl-splitter').length).toBe(0);
+      expect(row.querySelectorAll('tx-splitter').length).toBe(0);
     } else {
       // Row was replaced by target stack
       expect(layout2?.children.length).toBe(1);
@@ -179,35 +179,35 @@ describe('space redistribution', () => {
 
   it('handles complex nested redistribution', async () => {
     container.innerHTML = `
-      <gl-layout>
-        <gl-row>
-          <gl-column data-width="50%">
-            <gl-pane id="stack1" data-height="50%">
+      <tx-layout>
+        <tx-row>
+          <tx-column data-width="50%">
+            <tx-pane id="stack1" data-height="50%">
               
                 <div>Content 1</div>
               
-            </gl-pane>
-            <gl-splitter orientation="vertical"></gl-splitter>
-            <gl-pane id="stack2" data-height="50%">
+            </tx-pane>
+            <tx-splitter orientation="vertical"></tx-splitter>
+            <tx-pane id="stack2" data-height="50%">
               
                 <div>Content 2</div>
               
-            </gl-pane>
-          </gl-column>
-          <gl-splitter orientation="horizontal"></gl-splitter>
-          <gl-pane id="stack3" data-width="50%">
+            </tx-pane>
+          </tx-column>
+          <tx-splitter orientation="horizontal"></tx-splitter>
+          <tx-pane id="stack3" data-width="50%">
             
               <div>Content 3</div>
             
-          </gl-pane>
-        </gl-row>
-      </gl-layout>
+          </tx-pane>
+        </tx-row>
+      </tx-layout>
     `;
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     const stack1 = container.querySelector('#stack1');
-    const tab1 = stack1?.querySelector('gl-tab');
+    const tab1 = stack1?.querySelector('tx-tab');
 
     // Close stack1
     const closeBtn = tab1?.shadowRoot?.querySelector('.close') as HTMLElement;
@@ -219,8 +219,8 @@ describe('space redistribution', () => {
     expect(container.querySelector('#stack1')).toBeNull();
 
     // Check structure after cleanup
-    const column = container.querySelector('gl-column');
-    const row = container.querySelector('gl-row');
+    const column = container.querySelector('tx-column');
+    const row = container.querySelector('tx-row');
     const stack2 = container.querySelector('#stack2') as HTMLElement;
 
     if (column) {
@@ -231,7 +231,7 @@ describe('space redistribution', () => {
       // Column was replaced by stack2, but row still exists
       expect(stack2.parentElement).toBe(row);
       // Stack2 should now be a direct child of row
-      const rowChildren = Array.from(row.children).filter((c) => c.tagName !== 'GL-SPLITTER');
+      const rowChildren = Array.from(row.children).filter((c) => c.tagName !== 'TX-SPLITTER');
       expect(rowChildren.length).toBe(2); // stack2 and stack3
     }
   });
