@@ -320,6 +320,35 @@ export class GlPane extends BaseElement {
           background: var(--gl-pane-bg, #282828); /* gruvbox bg0 */
           padding: var(--gl-component-padding, 20px);
           box-sizing: border-box;
+          
+          /* Custom scrollbar styling */
+          &::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+          }
+          
+          &::-webkit-scrollbar-track {
+            background: var(--gl-scrollbar-track, var(--gl-header-bg, #3c3836));
+            border-radius: 6px;
+          }
+          
+          &::-webkit-scrollbar-thumb {
+            background: var(--gl-scrollbar-thumb, var(--gl-header-border, #504945));
+            border-radius: 6px;
+            border: 2px solid var(--gl-scrollbar-track, var(--gl-header-bg, #3c3836));
+            
+            &:hover {
+              background: var(--gl-scrollbar-thumb-hover, var(--gl-control-hover-bg, #665c54));
+            }
+            
+            &:active {
+              background: var(--gl-scrollbar-thumb-active, var(--gl-control-active-bg, #7c6f64));
+            }
+          }
+          
+          /* Firefox scrollbar styling */
+          scrollbar-width: thin;
+          scrollbar-color: var(--gl-scrollbar-thumb, #504945) var(--gl-scrollbar-track, #3c3836);
         }
         
         .pane-footer {
