@@ -181,13 +181,14 @@ export class GlPane extends BaseElement {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          height: var(--gl-header-height, 30px);
-          padding: 0 8px;
+          flex-wrap: wrap;
+          min-height: var(--gl-header-height, 30px);
+          padding: 4px 8px;
           background: var(--gl-header-bg, #3c3836); /* gruvbox bg1 */
           border-bottom: 1px solid var(--gl-header-border, #504945); /* gruvbox bg2 */
           cursor: move;
           user-select: none;
-          gap: 8px;
+          gap: 2px;
           
           &:active {
             cursor: grabbing;
@@ -214,8 +215,18 @@ export class GlPane extends BaseElement {
           }
         }
         
+        slot[name="header-center"] {
+          flex: 1 1 auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          color: var(--gl-header-color, #ebdbb2);
+          min-width: 0;
+          text-align: center;
+        }
+        
         .controls {
-          margin-left: auto;
           position: relative;
           display: flex;
           gap: 2px;
@@ -301,7 +312,7 @@ export class GlPane extends BaseElement {
           margin: 4px 0;
         }
         
-        .content {
+        .pane-content {
           flex: 1;
           min-height: 0;
           overflow: auto;
@@ -309,6 +320,22 @@ export class GlPane extends BaseElement {
           background: var(--gl-pane-bg, #282828); /* gruvbox bg0 */
           padding: var(--gl-component-padding, 20px);
           box-sizing: border-box;
+        }
+        
+        .pane-footer {
+          background: var(--gl-footer-bg, var(--gl-pane-bg, #282828)); /* matches content background */
+          border-top: 1px solid var(--gl-footer-border, var(--gl-header-border, #504945));
+          color: var(--gl-footer-color, var(--gl-pane-color, #ebdbb2)); /* matches content color */
+          font-size: 12px;
+          padding: 8px;
+          display: none; /* Hidden by default, JS will show if content exists */
+          
+          ::slotted(*) {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+          }
         }
       </style>
       <div class="header" draggable="true">
@@ -321,6 +348,7 @@ export class GlPane extends BaseElement {
             )
             .join('')}
         </select>
+        <slot name="header-center"></slot>
         <div class="controls">
           <button class="restore-button" title="Restore" style="display: ${this._isMaximized ? 'flex' : 'none'}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
@@ -367,8 +395,11 @@ export class GlPane extends BaseElement {
           </div>
         </div>
       </div>
-      <div class="content">
+      <div class="pane-content">
         <slot></slot>
+      </div>
+      <div class="pane-footer">
+        <slot name="footer"></slot>
       </div>
     `;
 
@@ -456,6 +487,23 @@ export class GlPane extends BaseElement {
         panelTypeDropdown.addEventListener('mousedown', (e) => {
           e.stopPropagation();
         });
+      }
+
+      // Handle footer visibility
+      const footer = this.shadowRoot?.querySelector('.pane-footer') as HTMLElement;
+      const footerSlot = this.shadowRoot?.querySelector('slot[name="footer"]') as HTMLSlotElement;
+
+      if (footer && footerSlot) {
+        const updateFooterVisibility = () => {
+          const hasContent = footerSlot.assignedNodes().length > 0;
+          footer.style.display = hasContent ? 'block' : 'none';
+        };
+
+        // Check initial content
+        updateFooterVisibility();
+
+        // Listen for slot changes
+        footerSlot.addEventListener('slotchange', updateFooterVisibility);
       }
     }, 0);
   }

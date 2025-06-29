@@ -188,7 +188,8 @@
   <div class="demo-container">
     <gl-layout id="layout" panel-types='["editor", "terminal", "console", "preview", "explorer", "debug", "output"]' pane-prefix="foo">
       <gl-row>
-        <gl-pane panel-type="foo">
+        <gl-pane panel-type="debug">
+          <span slot="header-center" style="color: var(--page-accent); font-size: 12px;">Debug View</span>
           <h2>Component 1</h2>
           <p>This is a non-modal pane layout.</p>
           <p>You can drag pane headers to rearrange the layout.</p>
@@ -201,9 +202,14 @@
         
         <gl-column>
           <gl-pane panel-type="terminal">
+            <span slot="header-center" style="font-family: monospace; font-size: 11px; opacity: 0.7;">~/project</span>
             <h2>Component 2</h2>
             <p>Each pane shows its content directly.</p>
             <p>No tabs - just like Blender, Nuke, or DaVinci Resolve.</p>
+            <div slot="footer">
+              <span>user@host:~/project$</span>
+              <span>bash</span>
+            </div>
           </gl-pane>
           
           <gl-splitter orientation="vertical"></gl-splitter>
@@ -212,15 +218,25 @@
             <h2>Component 3</h2>
             <p>Drag splitters to resize panes.</p>
             <p>Use the ⋮ menu for split, maximize, and close.</p>
+            <span slot="footer">Console: 0 errors, 3 warnings</span>
           </gl-pane>
         </gl-column>
         
         <gl-splitter orientation="horizontal"></gl-splitter>
         
         <gl-pane panel-type="preview">
+          <span slot="header-center" style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+            <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%;"></span>
+            Live Preview
+          </span>
           <h2>Component 4</h2>
           <p>Professional non-modal layout.</p>
           <p>Perfect for complex applications.</p>
+          <div slot="footer">
+            <span>1920x1080</span>
+            <span>Last updated: 2 seconds ago</span>
+            <span>100% zoom</span>
+          </div>
         </gl-pane>
       </gl-row>
     </gl-layout>
